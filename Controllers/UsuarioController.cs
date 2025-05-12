@@ -1,0 +1,86 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using WebApplication3.Data;
+using WebApplication3.Models;
+
+namespace WebApplication3.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class UsuarioController : ControllerBase
+    {
+
+        private readonly AppDbContext _context;
+
+        public UsuarioController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet("/usuarios")]
+        public async Task<ActionResult<IEnumerable<Usuario>>> Get()
+        {
+            return await _context.Usuario.ToListAsync();
+        }
+
+        [HttpGet("/usuarios/{id}")]
+        public async Task<ActionResult<Usuario>> GetById(int id)
+        {
+            var usuario = await _context.Usuario.FindAsync(id);
+            if (usuario == null)
+            {
+                return NotFound(new { message = "Usuario não encontrado" });
+            }
+            return Ok(usuario);
+        }
+
+        [HttpGet("/usuarios/filial/{id}")]
+        public async Task<ActionResult<IEnumerable<Usuario>>> GetByIdFilial(int id)
+        {
+            var usuario = await _context.Usuario.Where(u => u.id_usuario == id).ToListAsync();
+            if (usuario == null)
+            {
+                return NotFound(new { message = "Usuarios não encontrado" });
+            }
+            return Ok(usuario);
+        }
+
+        [HttpPost("/usuarios")]
+        public async Task<ActionResult<Usuario>> Post([FromBody] Usuario usuario)
+        {
+            if (usuario == null)
+            {
+                return BadRequest(new { message = "Usuario não pode ser nulo" });
+            }
+            _context.Usuario.Add(usuario);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(Get), new { id = usuario.id_usuario }, usuario);
+        }
+
+        [HttpPut("/usuarios/{id}")]
+        public async Task<ActionResult<Usuario>> Put(int id, [FromBody] Usuario usuario)
+        {
+            if (id != usuario.id_usuario)
+            {
+                return BadRequest(new { message = "Id do usuario incorreto!" });
+            }
+            _context.Entry(usuario).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("/usuarios/{id}")]
+        public async Task<ActionResult<Usuario>> Delete(int id)
+        {
+            var usuario = await _context.Usuario.FindAsync(id);
+            if (usuario == null)
+            {
+                return NotFound(new { message = "Usuario não encontrado" });
+            }
+            _context.Usuario.Remove(usuario);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+    }
+}
