@@ -24,6 +24,7 @@ namespace WebApplication3.Controllers
             return await _context.Moto.ToListAsync();
         }
 
+     
         [HttpGet("/motos/{id}")]
         public async Task<ActionResult<Moto>> GetById(int id)
         {
@@ -35,10 +36,14 @@ namespace WebApplication3.Controllers
             return Ok(moto);
         }
 
-        [HttpGet("/motos/{identificador}")]
+        /// <summary>
+        /// Busca moto pelo identificador dela, seja placa, chassi ou numero do motor
+        /// </summary>
+        /// <param name="identificador"></param>
+        [HttpGet("/motos/identificador/{identificador}")]
         public async Task<ActionResult<Moto>> GetByIdentificador(string identificador)
         {
-            var moto = await _context.Moto.Where(m=> m.IdentificadorMoto.Contains(identificador)).ToListAsync();
+            var moto = await _context.Moto.Where(m=> m.IdentificadorMoto == identificador).ToListAsync();
             if (moto == null)
             {
                 return NotFound(new { message = "Moto não encontrada" });
@@ -46,6 +51,11 @@ namespace WebApplication3.Controllers
             return Ok(moto);
         }
 
+        /// <summary>
+        /// Acha motos que estão cadastradas em uma filial especifica
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("/motos/filial/{id}")]
         public async Task<ActionResult<IEnumerable<Moto>>> GetByIdFilial(int id)
         {
@@ -58,7 +68,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpPost("/motos")]
-        public async Task<ActionResult<Moto>> Post(Moto moto)
+        public async Task<ActionResult<Moto>> Post([FromBody]Moto moto)
         {
             if (moto == null)
             {
@@ -70,11 +80,11 @@ namespace WebApplication3.Controllers
         }
 
         [HttpPut("/motos/{id}")]
-        public async Task<ActionResult<Moto>> Put(int id, Moto moto)
+        public async Task<ActionResult<Moto>> Put(int id, [FromBody] Moto moto)
         {
             if (id != moto.id_moto)
             {
-                return BadRequest(new { message = "ID da moto não confere" });
+                return BadRequest(new { message = "Id da moto incorreto" });
             }
             _context.Entry(moto).State = EntityState.Modified;
             

@@ -14,7 +14,7 @@ namespace WebApplication3.Models
         public int id_moto { get; set; }
 
         [Required]
-        [Range(1,1, ErrorMessage ="Valor para status é somente 1 e 0")]
+        [Range(0,1, ErrorMessage ="Valor para status é somente 1 e 0")]
         public int Status { get; set; }
 
         [Required]
@@ -33,7 +33,7 @@ namespace WebApplication3.Models
 
         [ForeignKey(nameof(TipoMoto))]
         [Column("id_tipo_moto")]
-        public int id_tipo_moto { get; set; }
+        public TipoMoto id_tipo_moto { get; set; }
 
     }
 }
