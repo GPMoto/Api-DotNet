@@ -12,6 +12,8 @@ namespace WebApplication3.Data
 
         public DbSet<Estado> Estado { get; set; }
 
+        public DbSet<Moto> Moto { get; set; }
+
         public DbSet<Perfil> Perfil { get; set; }
 
         public DbSet<TipoMoto> TipoMoto { get; set; }
