@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Margoth\\source\\repos\\ApiGpsMottu\\WebApplication3\\WebApplication3.csproj": {}
+    "C:\\Users\\labsfiap\\dot\\Api-DotNet\\WebApplication3.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Margoth\\source\\repos\\ApiGpsMottu\\WebApplication3\\WebApplication3.csproj": {
+    "C:\\Users\\labsfiap\\dot\\Api-DotNet\\WebApplication3.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Margoth\\source\\repos\\ApiGpsMottu\\WebApplication3\\WebApplication3.csproj",
+        "projectUniqueName": "C:\\Users\\labsfiap\\dot\\Api-DotNet\\WebApplication3.csproj",
         "projectName": "WebApplication3",
-        "projectPath": "C:\\Users\\Margoth\\source\\repos\\ApiGpsMottu\\WebApplication3\\WebApplication3.csproj",
-        "packagesPath": "C:\\Users\\Margoth\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Margoth\\source\\repos\\ApiGpsMottu\\WebApplication3\\obj\\",
+        "projectPath": "C:\\Users\\labsfiap\\dot\\Api-DotNet\\WebApplication3.csproj",
+        "packagesPath": "C:\\Softwares\\Nuget",
+        "outputPath": "C:\\Users\\labsfiap\\dot\\Api-DotNet\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Margoth\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "c:\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,32 +44,11 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "dependencies": {
-            "Microsoft.AspNetCore.OpenApi": {
-              "target": "Package",
-              "version": "[9.0.1, )"
-            },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[9.0.4, )"
-            },
-            "Oracle.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[9.23.80, )"
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[6.6.2, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -81,15 +60,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

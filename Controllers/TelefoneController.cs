@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
+using WebApplication3.Exceptions;
 using WebApplication3.Models;
 
 namespace WebApplication3.Controllers
@@ -38,13 +39,28 @@ namespace WebApplication3.Controllers
         [HttpPost("/telefones")]
         public async Task<ActionResult<Telefone>> Post([FromBody] Telefone telefone)
         {
-            if (telefone == null)
+            try
             {
-                return BadRequest(new { message = "Telefone não pode ser nulo" });
+                if (telefone == null)
+                {
+                    return BadRequest(new { message = "Telefone não pode ser nulo" });
+                }
+                if(telefone.Ddd.length != 3)
+                {
+                    throw new TamanhoInvalidoException(3);
+                }
+                if (telefone.Ddi.length != 3)
+                {
+                    throw new TamanhoInvalidoException(3);
+                }
+                _context.Telefone.Add(telefone);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction(nameof(GetById), new { id = telefone.id_telefone }, telefone);
             }
-            _context.Telefone.Add(telefone);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = telefone.id_telefone }, telefone);
+            catch (TamanhoInvalidoException error)
+            {
+                return BadRequest(new { StatusCode = 400, message = error.message });
+            }
         }
 
         [HttpPut("/telefones/{id}")]
