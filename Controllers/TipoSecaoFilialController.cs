@@ -43,15 +43,15 @@ namespace WebApplication3.Controllers
             }
             _context.TipoSecao.Add(tipoSecaoFilial);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = tipoSecaoFilial.id_tipo_secao }, tipoSecaoFilial);
+            return CreatedAtAction(nameof(GetById), new { id = tipoSecaoFilial.id_tipo_secao }, tipoSecaoFilial);
         }
 
         [HttpPut("/tiposecaofilial/{id}")]
-        public async Task<ActionResult<TipoSecao>> Put(int id, [FromBody] TipoSecao tipoSecaoFilial)
+        public async Task<ActionResult> Put(int id, [FromBody] TipoSecao tipoSecaoFilial)
         {
             if (id != tipoSecaoFilial.id_tipo_secao)
             {
-                return BadRequest(new { message = "Id do tipo de seção filial incorreto!" });
+                return BadRequest(new {StatusCode=400, message = "Id do tipo de seção filial incorreto!" });
             }
             _context.Entry(tipoSecaoFilial).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -59,7 +59,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpDelete("/tiposecaofilial/{id}")]
-        public async Task<ActionResult<TipoSecao>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var tipoSecaoFilial = await _context.TipoSecao.FindAsync(id);
             if (tipoSecaoFilial == null)

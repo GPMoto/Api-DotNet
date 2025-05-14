@@ -80,11 +80,11 @@ namespace WebApplication3.Controllers
         }
 
         [HttpPut("/motos/{id}")]
-        public async Task<ActionResult<Moto>> Put(int id, [FromBody] Moto moto)
+        public async Task<ActionResult> Put(int id, [FromBody] Moto moto)
         {
             if (id != moto.id_moto)
             {
-                return BadRequest(new { message = "Id da moto incorreto" });
+                return BadRequest(new {StatusCode=400, message = "Id da moto incorreto" });
             }
             _context.Entry(moto).State = EntityState.Modified;
             
@@ -94,7 +94,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpDelete("/motos/{id}")]
-        public async Task<ActionResult<Moto>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var moto = await _context.Moto.FindAsync(id);
             if (moto == null)

@@ -60,15 +60,15 @@ namespace WebApplication3.Controllers
             }
             _context.Filial.Add(filial);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(Get), new { id = filial.id_filial }, filial);
+            return CreatedAtAction(nameof(GetById), new { id = filial.id_filial }, filial);
         }
 
         [HttpPut("/filiais/{id}")]
-        public async Task<ActionResult<Filial>> Put(int id, [FromBody] Filial filial)
+        public async Task<ActionResult> Put(int id, [FromBody] Filial filial)
         {
             if(id != filial.id_filial)
             {
-                return NotFound(new { message = "Filial não encontrada" });
+                return NotFound(new { StatusCode=400, message = "Id da filial não está correto" });
             }
             _context.Entry(filial).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -76,9 +76,9 @@ namespace WebApplication3.Controllers
         }
 
         [HttpDelete("/filiais/{id}")]
-        public async Task<ActionResult<Filial>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var filial = await _context.FindAsync(id);
+            var filial = await _context.Filial.FindAsync(id);
             if(filial == null)
             {
                 return NotFound(new { message = "Filial não encontrada" });

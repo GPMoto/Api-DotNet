@@ -42,15 +42,15 @@ namespace WebApplication3.Controllers
             }
             _context.Pais.Add(pais);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = pais.Id_pais }, pais);
+            return CreatedAtAction(nameof(GetById), new { id = pais.Id_pais }, pais);
         }
 
         [HttpPut("/paises/{id}")]
-        public async Task<ActionResult<Pais>> Put(int id, [FromBody] Pais pais)
+        public async Task<ActionResult> Put(int id, [FromBody] Pais pais)
         {
             if (id != pais.Id_pais)
             {
-                return BadRequest(new { message = "ID do pais incorreto!" });
+                return BadRequest(new {StatusCode=400, message = "Id do pais incorreto!" });
             }
             _context.Entry(pais).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -58,7 +58,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpDelete("/paises/{id}")]
-        public async Task<ActionResult<Pais>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var pais = await _context.Pais.FindAsync(id);
             if (pais == null)

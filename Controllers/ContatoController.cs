@@ -56,15 +56,15 @@ namespace WebApplication3.Controllers
             }
             _context.Contato.Add(contato);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = contato.id_contato }, contato);
+            return CreatedAtAction(nameof(GetById), new { id = contato.id_contato }, contato);
         }
 
         [HttpPut("/contatos/{id}")]
-        public async Task<ActionResult<Contato>> Put(int id, [FromBody] Contato contato)
+        public async Task<ActionResult> Put(int id, [FromBody] Contato contato)
         {
             if (id != contato.id_contato)
             {
-                return BadRequest(new { message = "Id do contato incorreto!" });
+                return BadRequest(new { StatusCode = 400, message = "Id do contato incorreto!" });
             }
             _context.Entry(contato).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -72,7 +72,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpDelete("/contatos/{id}")]
-        public async Task<ActionResult<Contato>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var contato = await _context.Contato.FindAsync(id);
             if (contato == null)

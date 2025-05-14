@@ -47,16 +47,6 @@ namespace WebApplication3.Controllers
             return Ok(endereco);
         }
 
-        [HttpGet("/enderecos/filial/{id}")]
-        public async Task<ActionResult<IEnumerable<Endereco>>> GetByIdFilial(int id)
-        {
-            var endereco = await _context.Endereco.Where(e => e.id_filial == id).ToListAsync();
-            if (endereco == null)
-            {
-                return NotFound(new { message = "Endereco não encontrado" });
-            }
-            return Ok(endereco);
-        }
 
         [HttpPost("/enderecos")]
         public async Task<ActionResult<Endereco>> Post([FromBody] Endereco endereco)
@@ -67,15 +57,15 @@ namespace WebApplication3.Controllers
             }
             _context.Endereco.Add(endereco);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = endereco.id_endereco }, endereco);
+            return CreatedAtAction(nameof(GetById), new { id = endereco.id_endereco }, endereco);
         }
 
         [HttpPut("/enderecos/{id}")]
-        public async Task<ActionResult<Endereco>> Put(int id, [FromBody] Endereco endereco)
+        public async Task<ActionResult> Put(int id, [FromBody] Endereco endereco)
         {
             if (id != endereco.id_endereco)
             {
-                return BadRequest(new { message = "Id do endereco incorreto!" });
+                return BadRequest(new {StatusCode=400, message = "Id do endereco incorreto!" });
             }
             _context.Entry(endereco).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -83,7 +73,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpDelete("/enderecos/{id}")]
-        public async Task<ActionResult<Endereco>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var endereco = await _context.Endereco.FindAsync(id);
             if (endereco == null)

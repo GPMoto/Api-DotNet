@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebApplication3.Data.Mappings;
 using WebApplication3.Models;
 
 namespace WebApplication3.Data
@@ -36,6 +37,22 @@ namespace WebApplication3.Data
 
         public DbSet<SecoesFilial> SecoesFilial { get; set; }
 
-
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new CidadeMapping());
+            modelBuilder.ApplyConfiguration(new EstadoMapping());
+            modelBuilder.ApplyConfiguration(new MotoMapping());
+            modelBuilder.ApplyConfiguration(new PerfilMapping());
+            modelBuilder.ApplyConfiguration(new TipoMotoMapping());
+            modelBuilder.ApplyConfiguration(new PaisMapping());
+            modelBuilder.ApplyConfiguration(new UsuarioMapping());
+            modelBuilder.ApplyConfiguration(new ContatoMapping());
+            modelBuilder.ApplyConfiguration(new UwbMapping());
+            modelBuilder.ApplyConfiguration(new TipoSecaoMapping());
+            modelBuilder.ApplyConfiguration(new TelefoneMapping());
+            modelBuilder.ApplyConfiguration(new EnderecoMapping());
+            modelBuilder.ApplyConfiguration(new FilialMapping());
+            modelBuilder.ApplyConfiguration(new SecoesFilialMapping());
+        }
     }
 }

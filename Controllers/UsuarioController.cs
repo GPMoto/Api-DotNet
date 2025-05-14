@@ -54,15 +54,15 @@ namespace WebApplication3.Controllers
             }
             _context.Usuario.Add(usuario);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = usuario.id_usuario }, usuario);
+            return CreatedAtAction(nameof(GetById), new { id = usuario.id_usuario }, usuario);
         }
 
         [HttpPut("/usuarios/{id}")]
-        public async Task<ActionResult<Usuario>> Put(int id, [FromBody] Usuario usuario)
+        public async Task<ActionResult> Put(int id, [FromBody] Usuario usuario)
         {
             if (id != usuario.id_usuario)
             {
-                return BadRequest(new { message = "Id do usuario incorreto!" });
+                return BadRequest(new {StatusCode=400, message = "Id do usuario incorreto!" });
             }
             _context.Entry(usuario).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -70,7 +70,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpDelete("/usuarios/{id}")]
-        public async Task<ActionResult<Usuario>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var usuario = await _context.Usuario.FindAsync(id);
             if (usuario == null)

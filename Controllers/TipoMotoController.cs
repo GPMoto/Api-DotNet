@@ -41,15 +41,15 @@ namespace WebApplication3.Controllers
             }
             _context.TipoMoto.Add(tipoMoto);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = tipoMoto.id_tipo_moto }, tipoMoto);
+            return CreatedAtAction(nameof(GetById), new { id = tipoMoto.id_tipo_moto }, tipoMoto);
         }
 
         [HttpPut("/tipomotos/{id}")]
-        public async Task<ActionResult<TipoMoto>> Put(int id, [FromBody] TipoMoto tipoMoto)
+        public async Task<ActionResult> Put(int id, [FromBody] TipoMoto tipoMoto)
         {
             if (id != tipoMoto.id_tipo_moto)
             {
-                return BadRequest(new { message = "Id do tipo de moto incorreto!" });
+                return BadRequest(new {StatusCode=400, message = "Id do tipo de moto incorreto!" });
             }
             _context.Entry(tipoMoto).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -57,7 +57,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpDelete("/tipomotos/{id}")]
-        public async Task<ActionResult<TipoMoto>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var tipoMoto = await _context.TipoMoto.FindAsync(id);
             if (tipoMoto == null)

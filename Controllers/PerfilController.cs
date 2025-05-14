@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using WebApplication3.Data;
 using WebApplication3.Models;
 
 namespace WebApplication3.Controllers
@@ -41,15 +43,15 @@ namespace WebApplication3.Controllers
             }
             _context.Perfil.Add(perfil);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = perfil.Id_perfil }, perfil);
+            return CreatedAtAction(nameof(GetById), new { id = perfil.id_perfil }, perfil);
         }
 
         [HttpPut("/perfis/{id}")]
-        public async Task<ActionResult<Perfil>> Put(int id, [FromBody] Perfil perfil)
+        public async Task<ActionResult> Put(int id, [FromBody] Perfil perfil)
         {
-            if (id != perfil.Id_perfil)
+            if (id != perfil.id_perfil)
             {
-                return BadRequest(new { message = "ID do perfil incorreto!" });
+                return BadRequest(new {StatusCode=400, message = "Id do perfil incorreto!" });
             }
             _context.Entry(perfil).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -57,7 +59,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpDelete("/perfis/{id}")]
-        public async Task<ActionResult<Perfil>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var perfil = await _context.Perfil.FindAsync(id);
             if (perfil == null)

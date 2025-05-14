@@ -55,15 +55,15 @@ namespace WebApplication3.Controllers
             }
             _context.SecoesFilial.Add(SecoesFilial);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = SecoesFilial.id_secao_filial }, SecoesFilial);
+            return CreatedAtAction(nameof(GetById), new { id = SecoesFilial.id_secao }, SecoesFilial);
         }
 
         [HttpPut("/secoesfilial/{id}")]
-        public async Task<ActionResult<SecoesFilial>> Put(int id, [FromBody] SecoesFilial SecoesFilial)
+        public async Task<ActionResult> Put(int id, [FromBody] SecoesFilial SecoesFilial)
         {
             if (id != SecoesFilial.id_secao)
             {
-                return BadRequest(new { message = "ID da seção filial incorreto!" });
+                return BadRequest(new {StatusCode=400, message = "Id da seção filial incorreto!" });
             }
             _context.Entry(SecoesFilial).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -71,7 +71,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpDelete("/secoesfilial/{id}")]
-        public async Task<ActionResult<SecoesFilial>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var SecoesFilial = await _context.SecoesFilial.FindAsync(id);
             if (SecoesFilial == null)

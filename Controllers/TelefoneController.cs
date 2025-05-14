@@ -44,15 +44,15 @@ namespace WebApplication3.Controllers
             }
             _context.Telefone.Add(telefone);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = telefone.id_telefone }, telefone);
+            return CreatedAtAction(nameof(GetById), new { id = telefone.id_telefone }, telefone);
         }
 
         [HttpPut("/telefones/{id}")]
-        public async Task<ActionResult<Telefone>> Put(int id, [FromBody] Telefone telefone)
+        public async Task<ActionResult> Put(int id, [FromBody] Telefone telefone)
         {
             if (id != telefone.id_telefone)
             {
-                return BadRequest(new { message = "Id do telefone incorreto!" });
+                return BadRequest(new {StatusCode=400, message = "Id do telefone incorreto!" });
             }
             _context.Entry(telefone).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -60,7 +60,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpDelete("/telefones/{id}")]
-        public async Task<ActionResult<Telefone>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var telefone = await _context.Telefone.FindAsync(id);
             if (telefone == null)

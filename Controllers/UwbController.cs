@@ -43,11 +43,11 @@ namespace WebApplication3.Controllers
             }
             _context.Uwb.Add(uwb);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = uwb.id_uwb }, uwb);
+            return CreatedAtAction(nameof(GetById), new { id = uwb.id_uwb }, uwb);
         }
 
         [HttpPut("/uwb/{id}")]
-        public async Task<ActionResult<Uwb>> Put(int id, [FromBody] Uwb uwb)
+        public async Task<ActionResult> Put(int id, [FromBody] Uwb uwb)
         {
             if (id != uwb.id_uwb)
             {
@@ -59,7 +59,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpDelete("/uwb/{id}")]
-        public async Task<ActionResult<Uwb>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var uwb = await _context.Uwb.FindAsync(id);
             if (uwb == null)

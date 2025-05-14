@@ -43,11 +43,11 @@ namespace WebApplication3.Controllers
             }
             _context.Cidade.Add(cidade);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = cidade.id_cidade }, cidade);
+            return CreatedAtAction(nameof(GetById), new { id = cidade.id_cidade }, cidade);
         }
 
         [HttpPut("/cidades/{id}")]
-        public async Task<ActionResult<Cidade>> Put(int id, [FromBody] Cidade cidade)
+        public async Task<ActionResult> Put(int id, [FromBody] Cidade cidade)
         {
             if (id != cidade.id_cidade)
             {
@@ -59,7 +59,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpDelete("/cidades/{id}")]
-        public async Task<ActionResult<Cidade>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var cidade = await _context.Cidade.FindAsync(id);
             if (cidade == null)
