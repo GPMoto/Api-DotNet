@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
+using WebApplication3.Exceptions;
 using WebApplication3.Models;
 
 namespace WebApplication3.Controllers
@@ -51,13 +52,23 @@ namespace WebApplication3.Controllers
         [HttpPost("/enderecos")]
         public async Task<ActionResult<Endereco>> Post([FromBody] Endereco endereco)
         {
-            if (endereco == null)
+            try
             {
-                return BadRequest(new { message = "Endereco não pode ser nulo" });
+                if (endereco == null)
+                {
+                    return BadRequest(new { message = "Endereco não pode ser nulo" });
+                }
+                if (endereco.Cep.Length > 8)
+                {
+                    throw new CepTamanhoInvalidoException();
+                }
+                _context.Endereco.Add(endereco);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction(nameof(GetById), new { id = endereco.id_endereco }, endereco);
+            }catch(CepTamanhoInvalidoException error)
+            {
+                return BadRequest(new { StatusCode = 400, Message = error.message });
             }
-            _context.Endereco.Add(endereco);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = endereco.id_endereco }, endereco);
         }
 
         [HttpPut("/enderecos/{id}")]

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
+using WebApplication3.Exceptions;
 using WebApplication3.Models;
 
 namespace WebApplication3.Controllers
@@ -50,13 +51,23 @@ namespace WebApplication3.Controllers
         [HttpPost("/contatos")]
         public async Task<ActionResult<Contato>> Post([FromBody] Contato contato)
         {
-            if (contato == null)
+            try
             {
-                return BadRequest(new { message = "Contato não pode ser nulo" });
+                if (contato == null)
+                {
+                    return BadRequest(new { message = "Contato não pode ser nulo" });
+                }
+                if (contato.status != 0 || contato.status != 1)
+                {
+                    throw new ContatoStatusInvalidoException();
+                }
+                _context.Contato.Add(contato);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction(nameof(GetById), new { id = contato.id_contato }, contato);
+            }catch(ContatoStatusInvalidoException error)
+            {
+                return BadRequest(new { StatusCode = 400, Message = error.message });
             }
-            _context.Contato.Add(contato);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = contato.id_contato }, contato);
         }
 
         [HttpPut("/contatos/{id}")]

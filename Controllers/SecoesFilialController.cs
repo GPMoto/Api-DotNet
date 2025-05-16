@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
+using WebApplication3.Exceptions;
 using WebApplication3.Models;
 
 namespace WebApplication3.Controllers
@@ -49,13 +50,35 @@ namespace WebApplication3.Controllers
         [HttpPost("/secoesfilial")]
         public async Task<ActionResult<SecoesFilial>> Post([FromBody] SecoesFilial SecoesFilial)
         {
-            if (SecoesFilial == null)
+            try
             {
-                return BadRequest(new { message = "Seção Filial não pode ser nula" });
+                if (SecoesFilial == null)
+                {
+                    return BadRequest(new { message = "Seção Filial não pode ser nula" });
+                }
+                if (SecoesFilial.Lado4 >10000 || SecoesFilial.Lado4 <= 0)
+                {
+                    throw new TamanhoInvalidoException(10000,1);
+                }
+                if (SecoesFilial.Lado1 > 10000 || SecoesFilial.Lado1 <= 0)
+                {
+                    throw new TamanhoInvalidoException(10000, 1);
+                }
+                if (SecoesFilial.Lado2 > 10000 || SecoesFilial.Lado2 <= 0)
+                {
+                    throw new TamanhoInvalidoException(10000, 1);
+                }
+                if (SecoesFilial.Lado3 > 10000 || SecoesFilial.Lado3 <= 0)
+                {
+                    throw new TamanhoInvalidoException(10000, 1);
+                }
+                _context.SecoesFilial.Add(SecoesFilial);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction(nameof(GetById), new { id = SecoesFilial.id_secao }, SecoesFilial);
+            }catch(TamanhoInvalidoException error)
+            {
+                return BadRequest(new { StatusCode = 400, message = error.message });
             }
-            _context.SecoesFilial.Add(SecoesFilial);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = SecoesFilial.id_secao }, SecoesFilial);
         }
 
         [HttpPut("/secoesfilial/{id}")]
