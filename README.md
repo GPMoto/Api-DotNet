@@ -1,5 +1,5 @@
-# GPSMottu - Nova forma de gerir pátios
-- Nossa solução consiste no uso de sensores de geolocalização indoor (uwb) para a localização precisa de motos no pátio, assim diminuindo a perda de motos dentro do pátio e aumentando a eficiência na localização das motos.
+# GPSMottu - Nova forma de gerir pÃ¡tios
+- Nossa soluÃ§Ã£o consiste no uso de sensores de geolocalizaÃ§Ã£o indoor (uwb) para a localizaÃ§Ã£o precisa de motos no pÃ¡tio, assim diminuindo a perda de motos dentro do pÃ¡tio e aumentando a eficiÃªncia na localizaÃ§Ã£o das motos.
 
 # Rotas
 ## Cidade
@@ -67,7 +67,7 @@
 - Get all: `https://localhost:7095/motos`
 - GetbyId:`https://localhost:7095/motos/{id}`
 - GetByIdentificador : `https://localhost:7095/motos/identificador/{identificador}`
-	- Identificador (placa,chassi, número do motor)
+	- Identificador (placa,chassi, nÃºmero do motor)
 - GetByIdFilial: `https://localhost:7095/motos/filial/{id_filial}`
 ### Post
 - Post: `https://localhost:7095/motos`
@@ -168,19 +168,19 @@
 
 
 # Como Rodar o projeto localmente
-## Pré-Requisitos
+## PrÃ©-Requisitos
 - .Net 9 sdk
 - Link para o download : `https://dotnet.microsoft.com/pt-br/download/dotnet/9.0`
 
-## 1. Clone o repositório
+## 1. Clone o repositÃ³rio
 - `https://github.com/GPMoto/Api-DotNet.git`
 - cd api-DotNet
 
 ## 2. Restaure os pacotes NuGet
 - Acesse o terminal NuGet e rode o comando: `dotnet restore`
 
-## 3. Crie o appsetings.json
-- copie o seguinte conteudo e insira as suas informações:
+## 3. Crie o appsettings.json
+- copie o seguinte conteudo e insira as suas informaÃ§Ãµes:
 <pre>
 {
 
@@ -198,8 +198,8 @@
 }
 
 </pre>
-### Atenção!!!
-- É importante realizar esse passo para que o projeto funcione!!
+### AtenÃ§Ã£o!!!
+- Ã‰ importante realizar esse passo para que o projeto funcione!!
 
 ## 4. Aplique as migrations no seu banco
 - Rode o comando: Update-Database
