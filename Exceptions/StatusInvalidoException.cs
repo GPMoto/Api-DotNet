@@ -1,7 +1,7 @@
 ﻿namespace WebApplication3.Exceptions
 {
-    public class ContatoStatusInvalidoException : Exception
+    public class StatusInvalidoException : Exception
     {
-        public ContatoStatusInvalidoException() : base("O valor de status é somente 0 e 1") { }
+        public StatusInvalidoException() : base("O valor de status é somente 0 e 1") { }
     }
 }

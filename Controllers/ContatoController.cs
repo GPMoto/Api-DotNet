@@ -59,14 +59,14 @@ namespace WebApplication3.Controllers
                 }
                 if (contato.status != 0 || contato.status != 1)
                 {
-                    throw new ContatoStatusInvalidoException();
+                    throw new StatusInvalidoException();
                 }
                 _context.Contato.Add(contato);
                 await _context.SaveChangesAsync();
                 return CreatedAtAction(nameof(GetById), new { id = contato.id_contato }, contato);
-            }catch(ContatoStatusInvalidoException error)
+            }catch(StatusInvalidoException error)
             {
-                return BadRequest(new { StatusCode = 400, Message = error.message });
+                return BadRequest(new { StatusCode = 400, Message = error.Message });
             }
         }
 

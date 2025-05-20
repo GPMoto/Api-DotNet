@@ -45,13 +45,13 @@ namespace WebApplication3.Controllers
                 {
                     return BadRequest(new { message = "Telefone não pode ser nulo" });
                 }
-                if(telefone.Ddd.length != 3)
+                if(telefone.Ddd.Length != 3)
                 {
-                    throw new TamanhoInvalidoException(3);
+                    throw new TamanhoInvalidoException(3, "telefone");
                 }
-                if (telefone.Ddi.length != 3)
+                if (telefone.Ddi.Length != 3)
                 {
-                    throw new TamanhoInvalidoException(3);
+                    throw new TamanhoInvalidoException(3, "telefone");
                 }
                 _context.Telefone.Add(telefone);
                 await _context.SaveChangesAsync();
@@ -59,7 +59,7 @@ namespace WebApplication3.Controllers
             }
             catch (TamanhoInvalidoException error)
             {
-                return BadRequest(new { StatusCode = 400, message = error.message });
+                return BadRequest(new { StatusCode = 400, message = error.Message });
             }
         }
 

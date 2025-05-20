@@ -77,9 +77,10 @@ namespace WebApplication3.Controllers
                 {
                     return BadRequest(new {StatusCode=400, message = "Moto não pode ser nula" });
                 }
-                if(moto.Status != 0 || moto.Status != 1)
+                if(moto.Status != 0 && moto.Status != 1)
                 {
-                    throw StatusInvalidoException();
+                    Console.WriteLine(moto.Status);
+                    throw new StatusInvalidoException();
                 }
                 _context.Moto.Add(moto);
                 await _context.SaveChangesAsync();
@@ -87,7 +88,7 @@ namespace WebApplication3.Controllers
             }
             catch (StatusInvalidoException error)
             {
-                return BadRequest(new { StatusCode = 400, Message = error.message });
+                return BadRequest(new { StatusCode = 400, Message = error.Message });
             }
         }
 

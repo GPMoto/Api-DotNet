@@ -67,7 +67,7 @@ namespace WebApplication3.Controllers
                 return CreatedAtAction(nameof(GetById), new { id = endereco.id_endereco }, endereco);
             }catch(CepTamanhoInvalidoException error)
             {
-                return BadRequest(new { StatusCode = 400, Message = error.message });
+                return BadRequest(new { StatusCode = 400, Message = error.Message });
             }
         }
 

@@ -58,26 +58,26 @@ namespace WebApplication3.Controllers
                 }
                 if (SecoesFilial.Lado4 >10000 || SecoesFilial.Lado4 <= 0)
                 {
-                    throw new TamanhoInvalidoException(10000,1);
+                    throw new TamanhoInvalidoException(10000,1,"lado");
                 }
                 if (SecoesFilial.Lado1 > 10000 || SecoesFilial.Lado1 <= 0)
                 {
-                    throw new TamanhoInvalidoException(10000, 1);
+                    throw new TamanhoInvalidoException(10000, 1, "lado");
                 }
                 if (SecoesFilial.Lado2 > 10000 || SecoesFilial.Lado2 <= 0)
                 {
-                    throw new TamanhoInvalidoException(10000, 1);
+                    throw new TamanhoInvalidoException(10000, 1, "lado");
                 }
                 if (SecoesFilial.Lado3 > 10000 || SecoesFilial.Lado3 <= 0)
                 {
-                    throw new TamanhoInvalidoException(10000, 1);
+                    throw new TamanhoInvalidoException(10000, 1, "lado");
                 }
                 _context.SecoesFilial.Add(SecoesFilial);
                 await _context.SaveChangesAsync();
                 return CreatedAtAction(nameof(GetById), new { id = SecoesFilial.id_secao }, SecoesFilial);
             }catch(TamanhoInvalidoException error)
             {
-                return BadRequest(new { StatusCode = 400, message = error.message });
+                return BadRequest(new { StatusCode = 400, message = error.Message });
             }
         }
 
