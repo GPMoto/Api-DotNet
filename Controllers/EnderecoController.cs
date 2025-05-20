@@ -74,13 +74,24 @@ namespace WebApplication3.Controllers
         [HttpPut("/enderecos/{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] Endereco endereco)
         {
-            if (id != endereco.id_endereco)
+            try
             {
-                return BadRequest(new {StatusCode=400, message = "Id do endereco incorreto!" });
+                if (id != endereco.id_endereco)
+                {
+                    return BadRequest(new { StatusCode = 400, message = "Id do endereco incorreto!" });
+                }
+                if (endereco.Cep.Length > 8)
+                {
+                    throw new CepTamanhoInvalidoException();
+                }
+                _context.Entry(endereco).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return NoContent();
             }
-            _context.Entry(endereco).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (CepTamanhoInvalidoException error)
+            {
+                return BadRequest(new { StatusCode = 400, Message = error.Message });
+            }
         }
 
         [HttpDelete("/enderecos/{id}")]

@@ -66,13 +66,28 @@ namespace WebApplication3.Controllers
         [HttpPut("/telefones/{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] Telefone telefone)
         {
-            if (id != telefone.id_telefone)
+            try
             {
-                return BadRequest(new {StatusCode=400, message = "Id do telefone incorreto!" });
+                if (id != telefone.id_telefone)
+                {
+                    return BadRequest(new { StatusCode = 400, message = "Id do telefone incorreto!" });
+                }
+                if (telefone.Ddd.Length != 3)
+                {
+                    throw new TamanhoInvalidoException(3, "telefone");
+                }
+                if (telefone.Ddi.Length != 3)
+                {
+                    throw new TamanhoInvalidoException(3, "telefone");
+                }
+                _context.Entry(telefone).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return NoContent();
             }
-            _context.Entry(telefone).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (TamanhoInvalidoException error)
+            {
+                return BadRequest(new { StatusCode = 400, message = error.Message });
+            }
         }
 
         [HttpDelete("/telefones/{id}")]

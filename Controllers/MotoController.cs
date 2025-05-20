@@ -95,15 +95,27 @@ namespace WebApplication3.Controllers
         [HttpPut("/motos/{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] Moto moto)
         {
-            if (id != moto.id_moto)
+            try
             {
-                return BadRequest(new {StatusCode=400, message = "Id da moto incorreto" });
+                if (id != moto.id_moto)
+                {
+                    return BadRequest(new { StatusCode = 400, message = "Id da moto incorreto" });
+                }
+                if (moto.Status != 0 && moto.Status != 1)
+                {
+                    Console.WriteLine(moto.Status);
+                    throw new StatusInvalidoException();
+                }
+                _context.Entry(moto).State = EntityState.Modified;
+
+                await _context.SaveChangesAsync();
+
+                return NoContent();
             }
-            _context.Entry(moto).State = EntityState.Modified;
-            
-            await _context.SaveChangesAsync();
-            
-            return NoContent();
+            catch (StatusInvalidoException error)
+            {
+                return BadRequest(new { StatusCode = 400, Message = error.Message });
+            }
         }
 
         [HttpDelete("/motos/{id}")]

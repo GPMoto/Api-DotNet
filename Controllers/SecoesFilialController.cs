@@ -84,13 +84,36 @@ namespace WebApplication3.Controllers
         [HttpPut("/secoesfilial/{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] SecoesFilial SecoesFilial)
         {
-            if (id != SecoesFilial.id_secao)
+            try
             {
-                return BadRequest(new {StatusCode=400, message = "Id da seção filial incorreto!" });
+                if (id != SecoesFilial.id_secao)
+                {
+                    return BadRequest(new { StatusCode = 400, message = "Id da seção filial incorreto!" });
+                }
+                if (SecoesFilial.Lado4 > 10000 || SecoesFilial.Lado4 <= 0)
+                {
+                    throw new TamanhoInvalidoException(10000, 1, "lado");
+                }
+                if (SecoesFilial.Lado1 > 10000 || SecoesFilial.Lado1 <= 0)
+                {
+                    throw new TamanhoInvalidoException(10000, 1, "lado");
+                }
+                if (SecoesFilial.Lado2 > 10000 || SecoesFilial.Lado2 <= 0)
+                {
+                    throw new TamanhoInvalidoException(10000, 1, "lado");
+                }
+                if (SecoesFilial.Lado3 > 10000 || SecoesFilial.Lado3 <= 0)
+                {
+                    throw new TamanhoInvalidoException(10000, 1, "lado");
+                }
+                _context.Entry(SecoesFilial).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return NoContent();
             }
-            _context.Entry(SecoesFilial).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (TamanhoInvalidoException error)
+            {
+                return BadRequest(new { StatusCode = 400, message = error.Message });
+            }
         }
 
         [HttpDelete("/secoesfilial/{id}")]
