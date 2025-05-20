@@ -1,6 +1,16 @@
 # GPSMottu - Nova forma de gerir pátios
 - Nossa solução consiste no uso de sensores de geolocalização indoor (uwb) para a localização precisa de motos no pátio, assim diminuindo a perda de motos dentro do pátio e aumentando a eficiência na localização das motos.
 
+# Equipe
+
+
+- Gustavo Dias da Silva Cruz - RM556448
+
+- Júlia Medeiros Angelozi - RM556364
+
+- Felipe Ribeiro Tardochi da Silva - RM555100
+
+
 # Rotas
 ## Cidade
 ### Get
