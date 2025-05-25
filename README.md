@@ -215,4 +215,5 @@
 - Rode o comando: Update-Database
 
 ## 5. Rode o projeto e acesse a url
+- Utilize o comando: `dotnet run --launch-profile https`
 - rode o projeto e acesse a url : `https://localhost:7095/swagger/index.html`
