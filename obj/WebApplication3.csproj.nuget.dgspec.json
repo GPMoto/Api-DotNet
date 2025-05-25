@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\challenge\\CLonde teste dnv\\Api-DotNet\\WebApplication3.csproj": {}
+    "C:\\Users\\Margoth\\source\\repos\\ApiGpsMottu\\WebApplication3\\WebApplication3.csproj": {}
   },
   "projects": {
-    "D:\\challenge\\CLonde teste dnv\\Api-DotNet\\WebApplication3.csproj": {
+    "C:\\Users\\Margoth\\source\\repos\\ApiGpsMottu\\WebApplication3\\WebApplication3.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\challenge\\CLonde teste dnv\\Api-DotNet\\WebApplication3.csproj",
+        "projectUniqueName": "C:\\Users\\Margoth\\source\\repos\\ApiGpsMottu\\WebApplication3\\WebApplication3.csproj",
         "projectName": "WebApplication3",
-        "projectPath": "D:\\challenge\\CLonde teste dnv\\Api-DotNet\\WebApplication3.csproj",
+        "projectPath": "C:\\Users\\Margoth\\source\\repos\\ApiGpsMottu\\WebApplication3\\WebApplication3.csproj",
         "packagesPath": "C:\\Users\\Margoth\\.nuget\\packages\\",
-        "outputPath": "D:\\challenge\\CLonde teste dnv\\Api-DotNet\\obj\\",
+        "outputPath": "C:\\Users\\Margoth\\source\\repos\\ApiGpsMottu\\WebApplication3\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
