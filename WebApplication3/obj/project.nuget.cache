@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tZNoIkVpIdE=",
+  "dgSpecHash": "hLqCWziVBCo=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Margoth\\source\\repos\\ApiGpsMottu\\WebApplication3\\WebApplication3.csproj",
+  "projectFilePath": "D:\\challenge\\teste2\\Api-DotNet\\WebApplication3\\WebApplication3.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Margoth\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Margoth\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.1\\microsoft.aspnetcore.openapi.9.0.1.nupkg.sha512",
