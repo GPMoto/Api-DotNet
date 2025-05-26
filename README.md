@@ -1,5 +1,12 @@
+# Problema
+A empresa Mottu enfrenta problemas pela falta de um sistema eficiente para a gestão de frotas nos pátios das suas filiais, o que compromete a automatização dos processos de identificação e controle das motocicletas. Como consequência, a verificação e localização dos veículos são realizadas manualmente, tornando o processo demorado e propenso a falhas.
+
 # GPSMottu - Nova forma de gerir pátios
-- Nossa solução consiste no uso de sensores de geolocalização indoor (uwb) para a localização precisa de motos no pátio, assim diminuindo a perda de motos dentro do pátio e aumentando a eficiência na localização das motos.
+- Nossa solução propõe a utilização integrada de visão computacional e tecnologia UWB (Ultra Wideband) para realizar a localização precisa e em tempo real de motocicletas nos pátios das filiais. Ao entrar no pátio, a moto é identificada automaticamente por câmeras equipadas com algoritmos de visão computacional, que reconhecem sua placa ou características visuais. Esse processo associa a moto a uma tag UWB acoplada, criando um vínculo entre a identidade da moto e sua futura localização no espaço físico do pátio.
+
+A posição da moto é continuamente rastreada por meio de âncoras UWB distribuídas estrategicamente no pátio, que triangulam a posição das tags com uma precisão de aproximadamente 20 a 30 centímetros, mesmo em ambientes densos e sujeitos a interferências metálicas. Os dados são enviados a um servidor local que, por sua vez, atualiza em tempo real a posição de cada moto em um mapa interativo da planta do pátio, facilitando a gestão auditoria e operações internas de retirada, separação e logística.
+
+Essa abordagem oferece uma infraestrutura escalável e com longa vida útil, além de um número enxuto de âncoras para cobrir os pátios. A solução é facilmente replicável em outras unidades da empresa e proporciona ganhos expressivos em agilidade, controle operacional e eficiência no gerenciamento do pátio.
 
 # Equipe
 
