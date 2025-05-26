@@ -186,10 +186,14 @@
 - `https://github.com/GPMoto/Api-DotNet.git`
 - cd api-DotNet
 
-## 2. Restaure os pacotes NuGet
+## 2. Abra o arquivo .sln
+- Abra o arquivo `ApiGpsMottu.sln`
+
+## 3. Restaure os pacotes NuGet
+- Abra o package manager console de: `cd .\WebApplication3`
 - Acesse o terminal NuGet e rode o comando: `dotnet restore`
 
-## 3. Crie o appsettings.json
+## 4. atualize o appsettings.json
 - copie o seguinte conteudo e insira as suas informações:
 <pre>
 {
@@ -211,9 +215,9 @@
 ### Atenção!!!
 - É importante realizar esse passo para que o projeto funcione!!
 
-## 4. Aplique as migrations no seu banco
+## 5. Aplique as migrations no seu banco
 - Rode o comando: Update-Database
 
-## 5. Rode o projeto e acesse a url
+## 6. Rode o projeto e acesse a url
 - Utilize o comando: `dotnet run --launch-profile https`
 - rode o projeto e acesse a url : `https://localhost:7095/swagger/index.html`
