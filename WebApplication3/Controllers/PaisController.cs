@@ -16,13 +16,40 @@ namespace WebApplication3.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Obtém uma lista de todos os países.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     GET /paises
+        ///
+        /// </remarks>
+        /// <returns>Uma lista de países</returns>
+        /// <response code="200">Retorna a lista completa de países</response>
         [HttpGet("/paises")]
+        [ProducesResponseType(typeof(IEnumerable<Pais>), 200)]
         public async Task<ActionResult<IEnumerable<Pais>>> Get()
         {
             return await _context.Pais.ToListAsync();
         }
 
+        /// <summary>
+        /// Obtém um país pelo ID.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     GET /paises/1
+        ///
+        /// </remarks>
+        /// <param name="id">ID do país</param>
+        /// <returns>Dados do país</returns>
+        /// <response code="200">Retorna o país encontrado</response>
+        /// <response code="404">País não encontrado</response>
         [HttpGet("/paises/{id}")]
+        [ProducesResponseType(typeof(Pais), 200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<Pais>> GetById(int id)
         {
             var pais = await _context.Pais.FindAsync(id);
@@ -33,7 +60,26 @@ namespace WebApplication3.Controllers
             return Ok(pais);
         }
 
+        /// <summary>
+        /// Cria um novo país.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     POST /paises
+        ///     {
+        ///         "Id_pais": 1,
+        ///         "NomePais": "Brasil"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="pais">Dados do país</param>
+        /// <returns>País criado</returns>
+        /// <response code="201">País criado com sucesso</response>
+        /// <response code="400">Dados inválidos</response>
         [HttpPost("/paises")]
+        [ProducesResponseType(typeof(Pais), 201)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Pais>> Post([FromBody] Pais pais)
         {
             if (pais == null)
@@ -45,7 +91,29 @@ namespace WebApplication3.Controllers
             return CreatedAtAction(nameof(GetById), new { id = pais.Id_pais }, pais);
         }
 
+        /// <summary>
+        /// Atualiza os dados de um país existente.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     PUT /paises/1
+        ///     {
+        ///         "Id_pais": 1,
+        ///         "NomePais": "Argentina"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id">ID do país a ser atualizado</param>
+        /// <param name="pais">Dados atualizados do país</param>
+        /// <returns>Sem conteúdo em caso de sucesso</returns>
+        /// <response code="204">País atualizado com sucesso</response>
+        /// <response code="400">Dados inválidos ou ID incorreto</response>
+        /// <response code="404">País não encontrado</response>
         [HttpPut("/paises/{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult> Put(int id, [FromBody] Pais pais)
         {
             if (id != pais.Id_pais)
@@ -57,7 +125,22 @@ namespace WebApplication3.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Remove um país pelo ID.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     DELETE /paises/1
+        ///
+        /// </remarks>
+        /// <param name="id">ID do país a ser removido</param>
+        /// <returns>Sem conteúdo em caso de sucesso</returns>
+        /// <response code="204">País removido com sucesso</response>
+        /// <response code="404">País não encontrado</response>
         [HttpDelete("/paises/{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
             var pais = await _context.Pais.FindAsync(id);

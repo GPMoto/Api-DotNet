@@ -19,13 +19,39 @@ namespace WebApplication3.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Obtém uma lista de todos os telefones.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     GET /telefones
+        ///
+        /// </remarks>
+        /// <returns>Uma lista de telefones</returns>
+        /// <response code="200">Retorna a lista completa de telefones</response>
         [HttpGet("/telefones")]
         public async Task<ActionResult<IEnumerable<Telefone>>> Get()
         {
             return await _context.Telefone.ToListAsync();
         }
 
+        /// <summary>
+        /// Obtém um telefone pelo ID.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     GET /telefones/1
+        ///
+        /// </remarks>
+        /// <param name="id">ID do telefone</param>
+        /// <returns>Dados do telefone</returns>
+        /// <response code="200">Retorna o telefone encontrado</response>
+        /// <response code="404">Telefone não encontrado</response>
         [HttpGet("/telefones/{id}")]
+        [ProducesResponseType(typeof(Telefone), 200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<Telefone>> GetById(int id)
         {
             var telefone = await _context.Telefone.FindAsync(id);
@@ -36,6 +62,25 @@ namespace WebApplication3.Controllers
             return Ok(telefone);
         }
 
+        /// <summary>
+        /// Cria um novo telefone.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     POST /telefones
+        ///     {
+        ///         "id_telefone": 1,
+        ///         "Ddd": "011",
+        ///         "Ddi": "055",
+        ///         "Numero": "912345678"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="telefone">Dados do telefone</param>
+        /// <returns>Telefone criado</returns>
+        /// <response code="201">Telefone criado com sucesso</response>
+        /// <response code="400">Dados inválidos</response>
         [HttpPost("/telefones")]
         public async Task<ActionResult<Telefone>> Post([FromBody] Telefone telefone)
         {
@@ -63,7 +108,31 @@ namespace WebApplication3.Controllers
             }
         }
 
+        /// <summary>
+        /// Atualiza os dados de um telefone existente.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     PUT /telefones/1
+        ///     {
+        ///         "id_telefone": 1,
+        ///         "Ddd": "021",
+        ///         "Ddi": "055",
+        ///         "Numero": "998877665"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id">ID do telefone a ser atualizado</param>
+        /// <param name="telefone">Dados atualizados do telefone</param>
+        /// <returns>Sem conteúdo em caso de sucesso</returns>
+        /// <response code="204">Telefone atualizado com sucesso</response>
+        /// <response code="400">Dados inválidos ou ID incorreto</response>
+        /// <response code="404">Telefone não encontrado</response>
         [HttpPut("/telefones/{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult> Put(int id, [FromBody] Telefone telefone)
         {
             try
@@ -90,7 +159,22 @@ namespace WebApplication3.Controllers
             }
         }
 
+        /// <summary>
+        /// Remove um telefone pelo ID.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     DELETE /telefones/1
+        ///
+        /// </remarks>
+        /// <param name="id">ID do telefone a ser removido</param>
+        /// <returns>Sem conteúdo em caso de sucesso</returns>
+        /// <response code="204">Telefone removido com sucesso</response>
+        /// <response code="404">Telefone não encontrado</response>
         [HttpDelete("/telefones/{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
             var telefone = await _context.Telefone.FindAsync(id);

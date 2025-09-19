@@ -19,14 +19,40 @@ namespace WebApplication3.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Obtém uma lista de todos os endereços.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     GET /enderecos
+        ///
+        /// </remarks>
+        /// <returns>Uma lista de endereços</returns>
+        /// <response code="200">Retorna a lista completa de endereços</response>
         [HttpGet("/enderecos")]
+        [ProducesResponseType(typeof(IEnumerable<Endereco>), 200)]
         public async Task<ActionResult<IEnumerable<Endereco>>> Get()
         {
             return await _context.Endereco.ToListAsync();
         }
         
-        
+        /// <summary>
+        /// Obtém um endereço pelo ID.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     GET /enderecos/1
+        ///
+        /// </remarks>
+        /// <param name="id">ID do endereço</param>
+        /// <returns>Dados do endereço</returns>
+        /// <response code="200">Retorna o endereço encontrado</response>
+        /// <response code="404">Endereço não encontrado</response>
         [HttpGet("/enderecos/{id}")]
+        [ProducesResponseType(typeof(Endereco), 200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<Endereco>> GetById(int id)
         {
             var endereco = await _context.Endereco.FindAsync(id);
@@ -37,7 +63,22 @@ namespace WebApplication3.Controllers
             return Ok(endereco);
         }
 
+        /// <summary>
+        /// Obtém endereços pelo CEP.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     GET /enderecos/cep/12345678
+        ///
+        /// </remarks>
+        /// <param name="cep">CEP do endereço</param>
+        /// <returns>Lista de endereços encontrados</returns>
+        /// <response code="200">Retorna os endereços encontrados</response>
+        /// <response code="404">Endereço não encontrado</response>
         [HttpGet("/enderecos/cep/{cep}")]
+        [ProducesResponseType(typeof(IEnumerable<Endereco>), 200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<Endereco>> GetByCep(string cep)
         {
             var endereco = await _context.Endereco.Where(e => e.Cep == cep).ToListAsync();
@@ -49,7 +90,29 @@ namespace WebApplication3.Controllers
         }
 
 
+        /// <summary>
+        /// Cria um novo endereço.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     POST /enderecos
+        ///     {
+        ///         "id_endereco": 1,
+        ///         "NomeLogradouro": "Rua das Flores",
+        ///         "NumeroLogradouro": "123",
+        ///         "Cep": "12345678",
+        ///         "id_cidade": 2
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="endereco">Dados do endereço</param>
+        /// <returns>Endereço criado</returns>
+        /// <response code="201">Endereço criado com sucesso</response>
+        /// <response code="400">Dados inválidos</response>
         [HttpPost("/enderecos")]
+        [ProducesResponseType(typeof(Endereco), 201)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<Endereco>> Post([FromBody] Endereco endereco)
         {
             try
@@ -71,7 +134,32 @@ namespace WebApplication3.Controllers
             }
         }
 
+        /// <summary>
+        /// Atualiza os dados de um endereço existente.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     PUT /enderecos/1
+        ///     {
+        ///         "id_endereco": 1,
+        ///         "NomeLogradouro": "Rua das Flores",
+        ///         "NumeroLogradouro": "123",
+        ///         "Cep": "12345678",
+        ///         "id_cidade": 2
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id">ID do endereço a ser atualizado</param>
+        /// <param name="endereco">Dados atualizados do endereço</param>
+        /// <returns>Sem conteúdo em caso de sucesso</returns>
+        /// <response code="204">Endereço atualizado com sucesso</response>
+        /// <response code="400">Dados inválidos ou ID incorreto</response>
+        /// <response code="404">Endereço não encontrado</response>
         [HttpPut("/enderecos/{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult> Put(int id, [FromBody] Endereco endereco)
         {
             try
@@ -94,7 +182,22 @@ namespace WebApplication3.Controllers
             }
         }
 
+        /// <summary>
+        /// Remove um endereço pelo ID.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     DELETE /enderecos/1
+        ///
+        /// </remarks>
+        /// <param name="id">ID do endereço a ser removido</param>
+        /// <returns>Sem conteúdo em caso de sucesso</returns>
+        /// <response code="204">Endereço removido com sucesso</response>
+        /// <response code="404">Endereço não encontrado</response>
         [HttpDelete("/enderecos/{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
             var endereco = await _context.Endereco.FindAsync(id);

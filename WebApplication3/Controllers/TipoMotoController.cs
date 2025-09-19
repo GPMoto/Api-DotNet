@@ -16,12 +16,41 @@ namespace WebApplication3.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Obtém uma lista de todos os tipos de moto.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     GET /tipomotos
+        ///
+        /// </remarks>
+        /// <returns>Uma lista de tipos de moto</returns>
+        /// <response code="200">Retorna a lista completa de tipos de moto</response>
         [HttpGet("/tipomotos")]
+        [ProducesResponseType(typeof(IEnumerable<TipoMoto>), 200)]
         public async Task<ActionResult<IEnumerable<TipoMoto>>> Get()
         {
             return await _context.TipoMoto.ToListAsync();
         }
+
+
+        /// <summary>
+        /// Obtém um tipo de moto pelo ID.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     GET /tipomotos/1
+        ///
+        /// </remarks>
+        /// <param name="id">ID do tipo de moto</param>
+        /// <returns>Dados do tipo de moto</returns>
+        /// <response code="200">Retorna o tipo de moto encontrado</response>
+        /// <response code="404">Tipo de moto não encontrado</response>
         [HttpGet("/tipomotos/{id}")]
+        [ProducesResponseType(typeof(TipoMoto), 200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<TipoMoto>> GetById(int id)
         {
             var tipoMoto = await _context.TipoMoto.FindAsync(id);
@@ -32,7 +61,26 @@ namespace WebApplication3.Controllers
             return Ok(tipoMoto);
         }
 
+        /// <summary>
+        /// Cria um novo tipo de moto.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     POST /tipomotos
+        ///     {
+        ///         "id_tipo_moto": 1,
+        ///         "NomeTipoMoto": "Scooter"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="tipoMoto">Dados do tipo de moto</param>
+        /// <returns>Tipo de moto criado</returns>
+        /// <response code="201">Tipo de moto criado com sucesso</response>
+        /// <response code="400">Dados inválidos</response>
         [HttpPost("/tipomotos")]
+        [ProducesResponseType(typeof(TipoMoto), 201)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<TipoMoto>> Post([FromBody] TipoMoto tipoMoto)
         {
             if (tipoMoto == null)
@@ -44,7 +92,29 @@ namespace WebApplication3.Controllers
             return CreatedAtAction(nameof(GetById), new { id = tipoMoto.id_tipo_moto }, tipoMoto);
         }
 
+        /// <summary>
+        /// Atualiza os dados de um tipo de moto existente.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     PUT /tipomotos/1
+        ///     {
+        ///         "id_tipo_moto": 1,
+        ///         "NomeTipoMoto": "Custom"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id">ID do tipo de moto a ser atualizado</param>
+        /// <param name="tipoMoto">Dados atualizados do tipo de moto</param>
+        /// <returns>Sem conteúdo em caso de sucesso</returns>
+        /// <response code="204">Tipo de moto atualizado com sucesso</response>
+        /// <response code="400">Dados inválidos ou ID incorreto</response>
+        /// <response code="404">Tipo de moto não encontrado</response>
         [HttpPut("/tipomotos/{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult> Put(int id, [FromBody] TipoMoto tipoMoto)
         {
             if (id != tipoMoto.id_tipo_moto)
@@ -56,7 +126,22 @@ namespace WebApplication3.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Remove um tipo de moto pelo ID.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     DELETE /tipomotos/1
+        ///
+        /// </remarks>
+        /// <param name="id">ID do tipo de moto a ser removido</param>
+        /// <returns>Sem conteúdo em caso de sucesso</returns>
+        /// <response code="204">Tipo de moto removido com sucesso</response>
+        /// <response code="404">Tipo de moto não encontrado</response>
         [HttpDelete("/tipomotos/{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
             var tipoMoto = await _context.TipoMoto.FindAsync(id);
