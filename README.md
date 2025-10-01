@@ -8,6 +8,17 @@ A posição da moto é continuamente rastreada por meio de âncoras UWB distribu
 
 Essa abordagem oferece uma infraestrutura escalável e com longa vida útil, além de um número enxuto de âncoras para cobrir os pátios. A solução é facilmente replicável em outras unidades da empresa e proporciona ganhos expressivos em agilidade, controle operacional e eficiência no gerenciamento do pátio.
 
+# Explicação dos dominios
+- Eu criei as tabelas relacionadas com endereço por conta da boa prática da estrutura de banco de dados, para guardar endereços.
+- As models relacionadas com a filial, como a filial, moto, uwb, tipomoto, usuario, perfil, secoesFilial, telefone, contato, foram criadas com o intuito de organizar/monitorar as filiais, o tema do challenge, elas nos auxialiaram no monitoramento e na organização de cada filial o que corresponde com a nossa proposta de solução.
+
+# Explicação da estrutura de pastas
+- Essa estrutura de pasta foi escolhida pensando na separação básica de responsabilidades e com compatibilidade com o projeto.
+  - Controllers: Implementando o padrão MVC, separando a lógica de controle da aplicação.
+  - Connection: Centraliza as responsabilidades de conexão com o banco.
+  - Models: Centraliza todas as entidades do banco de dados.
+  - Migrations: Serve para manter o banco de dados versionado.
+
 # Equipe
 
 
@@ -226,5 +237,19 @@ Essa abordagem oferece uma infraestrutura escalável e com longa vida útil, al�
 - Rode o comando: Update-Database
 
 ## 6. Rode o projeto e acesse a url
+- Utilize o comando: `cd ./WebApplication3`
 - Utilize o comando: `dotnet run --launch-profile https`
 - rode o projeto e acesse a url : `https://localhost:7095/swagger/index.html`
+
+## 7. Teste de adicionar estado
+```
+curl -X 'POST' \
+  'https://localhost:7095/cidades' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+
+  "nomeCidade": "teste",
+  "id_estado": 1
+}'
+```
