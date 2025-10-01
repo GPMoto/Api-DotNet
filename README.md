@@ -241,7 +241,7 @@ Essa abordagem oferece uma infraestrutura escalável e com longa vida útil, al�
 - Utilize o comando: `dotnet run --launch-profile https`
 - rode o projeto e acesse a url : `https://localhost:7095/swagger/index.html`
 
-## 7. Teste de adicionar estado
+## 7. Teste de adicionar cidade
 ```
 curl -X 'POST' \
   'https://localhost:7095/cidades' \
