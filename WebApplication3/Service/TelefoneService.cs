@@ -20,9 +20,10 @@ namespace WebApplication3.Service
         {
             return await telefoneRepository.GetById(id);
         }
-        public async Task CreateAsync(Telefone telefone)
+        public async Task<Telefone> CreateAsync(Telefone telefone)
         {
             await telefoneRepository.Add(telefone);
+            return telefone;
         }
         public async Task<bool> DeleteAsync(int id)
         {

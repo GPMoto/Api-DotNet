@@ -19,10 +19,11 @@ namespace WebApplication3.Repositories
         {
             return await _context.Uwb.FindAsync(id);
         }
-        public async Task Add(Uwb uwb)
+        public async Task<Uwb> Add(Uwb uwb)
         {
             _context.Uwb.Add(uwb);
             await _context.SaveChangesAsync();
+            return uwb;
         }
         public async Task Update(Uwb uwb)
         {

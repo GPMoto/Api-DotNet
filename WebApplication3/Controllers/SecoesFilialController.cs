@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Exceptions;
 using WebApplication3.Models;
+using WebApplication3.Service;
 
 namespace WebApplication3.Controllers
 {
@@ -12,11 +13,11 @@ namespace WebApplication3.Controllers
     public class SecoesFilialController : ControllerBase
     {
 
-        private readonly AppDbContext _context;
+        private readonly SecoesFilialService secoesFilialService;
 
-        public SecoesFilialController(AppDbContext context)
+        public SecoesFilialController(SecoesFilialService context)
         {
-            _context = context;
+            secoesFilial = context;
         }
 
         /// <summary>
@@ -34,7 +35,8 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(typeof(IEnumerable<SecoesFilial>), 200)]
         public async Task<ActionResult<IEnumerable<SecoesFilial>>> Get()
         {
-            return await _context.SecoesFilial.ToListAsync();
+            return Ok(await secoesFilialService.GetAllAsync());
+
         }
 
         /// <summary>
@@ -55,12 +57,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<SecoesFilial>> GetById(int id)
         {
-            var SecoesFilial = await _context.SecoesFilial.FindAsync(id);
+            var SecoesFilial = await secoesFilialService.GetByIdAsync(id);
             if (SecoesFilial == null)
             {
                 return NotFound(new { message = "Seção Filial não encontrada" });
             }
             return Ok(SecoesFilial);
+
         }
 
         /// <summary>
@@ -81,12 +84,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<SecoesFilial>>> GetByIdFilial(int id)
         {
-            var SecoesFilial = await _context.SecoesFilial.Where(s => s.id_filial == id).ToListAsync();
-            if (SecoesFilial == null)
+            var secoesFilialAchadas = await secoesFilialService.GetByIdFilial(id);
+            if (secoesFilialAchadas == null)
             {
                 return NotFound(new { message = "Seção Filial não encontrada" });
             }
-            return Ok(SecoesFilial);
+            return Ok(secoesFilialAchadas);
+
         }
 
         /// <summary>
@@ -138,10 +142,11 @@ namespace WebApplication3.Controllers
                 {
                     throw new TamanhoInvalidoException(10000, 1, "lado");
                 }
-                _context.SecoesFilial.Add(SecoesFilial);
-                await _context.SaveChangesAsync();
-                return CreatedAtAction(nameof(GetById), new { id = SecoesFilial.id_secao }, SecoesFilial);
-            }catch(TamanhoInvalidoException error)
+                var createdSecao = await secoesFilialService.AddAsync(SecoesFilial);
+                return CreatedAtAction(nameof(GetById), new { id = createdSecao.id_secao }, createdSecao);
+
+            }
+            catch(TamanhoInvalidoException error)
             {
                 return BadRequest(new { StatusCode = 400, message = error.Message });
             }
@@ -199,9 +204,18 @@ namespace WebApplication3.Controllers
                 {
                     throw new TamanhoInvalidoException(10000, 1, "lado");
                 }
-                _context.Entry(SecoesFilial).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                var existingSecoesFilial = await secoesFilialService.GetByIdAsync(id);
+                if (existingSecoesFilial == null)
+                {
+                    return NotFound(new { message = "Seção Filial não encontrada" });
+                }
+                if (id != SecoesFilial.id_secao)
+                {
+                    return BadRequest(new { StatusCode = 400, message = "Id da seção filial incorreto!" });
+                }
+                await secoesFilialService.UpdateAsync(SecoesFilial);
                 return NoContent();
+
             }
             catch (TamanhoInvalidoException error)
             {
@@ -227,14 +241,18 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
-            var SecoesFilial = await _context.SecoesFilial.FindAsync(id);
-            if (SecoesFilial == null)
+            var existingSecoesFilial = await secoesFilialService.GetByIdAsync(id);
+            if (existingSecoesFilial == null)
             {
                 return NotFound(new { message = "Seção Filial não encontrada" });
             }
-            _context.SecoesFilial.Remove(SecoesFilial);
-            await _context.SaveChangesAsync();
+            var result = await secoesFilialService.DeleteAsync(id);
+            if (!result)
+            {
+                return NotFound(new { message = "Seção Filial não encontrada" });
+            }
             return NoContent();
+
         }
     }
 }

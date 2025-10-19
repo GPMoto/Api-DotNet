@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Models;
+using WebApplication3.Service;
 
 namespace WebApplication3.Controllers
 {
@@ -10,11 +11,11 @@ namespace WebApplication3.Controllers
     public class UwbController : ControllerBase
     {
 
-        private readonly AppDbContext _context;
+        private readonly UwbService uwbService;
 
-        public UwbController(AppDbContext context)
+        public UwbController(UwbService context)
         {
-            _context = context;
+            uwbService = context;
         }
 
         /// <summary>
@@ -32,7 +33,8 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(typeof(IEnumerable<Uwb>), 200)]
         public async Task<ActionResult<IEnumerable<Uwb>>> Get()
         {
-            return await _context.Uwb.ToListAsync();
+            return Ok(await uwbService.GetAllTagsAsync());
+
         }
 
         /// <summary>
@@ -53,12 +55,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Uwb>> GetById(int id)
         {
-            var uwb = await _context.Uwb.FindAsync(id);
+            var uwb = await uwbService.GetTagByIdAsync(id);
             if (uwb == null)
             {
                 return NotFound(new { message = "UWB não encontrado" });
             }
             return Ok(uwb);
+
         }
 
         /// <summary>
@@ -84,13 +87,15 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<Uwb>> Post([FromBody] Uwb uwb)
         {
-            if (uwb == null)
+            try 
             {
-                return BadRequest(new { message = "UWB não pode ser nulo" });
+                var createdUwb = await uwbService.CreateTagAsync(uwb);
+                return CreatedAtAction(nameof(GetById), new { id = createdUwb.id_uwb }, createdUwb);
             }
-            _context.Uwb.Add(uwb);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = uwb.id_uwb }, uwb);
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         /// <summary>
@@ -119,13 +124,24 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Put(int id, [FromBody] Uwb uwb)
         {
-            if (id != uwb.id_uwb)
+            try 
             {
-                return BadRequest(new { message = "Id do UWB incorreto!" });
+                if (id != uwb.id_uwb)
+                {
+                    return BadRequest(new { message = "ID do UWB incorreto" });
+                }
+                var existingUwb = await uwbService.GetTagByIdAsync(id);
+                if (existingUwb == null)
+                {
+                    return NotFound(new { message = "UWB não encontrado" });
+                }
+                await uwbService.UpdateTagAsync(uwb);
+                return NoContent();
             }
-            _context.Entry(uwb).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         /// <summary>
@@ -146,14 +162,14 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
-            var uwb = await _context.Uwb.FindAsync(id);
-            if (uwb == null)
+            var existingUwb = await uwbService.GetTagByIdAsync(id);
+            if (existingUwb == null)
             {
                 return NotFound(new { message = "UWB não encontrado" });
             }
-            _context.Uwb.Remove(uwb);
-            await _context.SaveChangesAsync();
+            await uwbService.DeleteTagAsync(id);
             return NoContent();
+
         }
     }
 }

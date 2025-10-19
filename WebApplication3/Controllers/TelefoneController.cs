@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Exceptions;
 using WebApplication3.Models;
+using WebApplication3.Service;
 
 namespace WebApplication3.Controllers
 {
@@ -12,11 +13,11 @@ namespace WebApplication3.Controllers
     public class TelefoneController : ControllerBase
     {
 
-        private readonly AppDbContext _context;
+        private readonly TelefoneService telefoneService;
 
-        public TelefoneController(AppDbContext context)
+        public TelefoneController(TelefoneService context)
         {
-            _context = context;
+            telefoneService = context;
         }
 
         /// <summary>
@@ -33,7 +34,8 @@ namespace WebApplication3.Controllers
         [HttpGet("/telefones")]
         public async Task<ActionResult<IEnumerable<Telefone>>> Get()
         {
-            return await _context.Telefone.ToListAsync();
+            return Ok(await telefoneService.GetAllAsync());
+
         }
 
         /// <summary>
@@ -54,12 +56,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Telefone>> GetById(int id)
         {
-            var telefone = await _context.Telefone.FindAsync(id);
+            var telefone = await telefoneService.GetByIdAsync(id);
             if (telefone == null)
             {
                 return NotFound(new { message = "Telefone não encontrado" });
             }
             return Ok(telefone);
+
         }
 
         /// <summary>
@@ -98,9 +101,9 @@ namespace WebApplication3.Controllers
                 {
                     throw new TamanhoInvalidoException(3, "telefone");
                 }
-                _context.Telefone.Add(telefone);
-                await _context.SaveChangesAsync();
-                return CreatedAtAction(nameof(GetById), new { id = telefone.id_telefone }, telefone);
+                var createdTelefone = await telefoneService.CreateAsync(telefone);
+                return CreatedAtAction(nameof(GetById), new { id = createdTelefone.id_telefone }, createdTelefone);
+
             }
             catch (TamanhoInvalidoException error)
             {
@@ -149,9 +152,18 @@ namespace WebApplication3.Controllers
                 {
                     throw new TamanhoInvalidoException(3, "telefone");
                 }
-                _context.Entry(telefone).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                var existingTelefone = await telefoneService.GetByIdAsync(id);
+                if (existingTelefone == null)
+                {
+                    return NotFound(new { message = "Telefone não encontrado" });
+                }
+                if (id != telefone.id_telefone)
+                {
+                    return BadRequest(new { StatusCode = 400, message = "Id do telefone incorreto!" });
+                }
+                await telefoneService.UpdateAsync(telefone);
                 return NoContent();
+
             }
             catch (TamanhoInvalidoException error)
             {
@@ -177,14 +189,14 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
-            var telefone = await _context.Telefone.FindAsync(id);
-            if (telefone == null)
+            var existingTelefone = await telefoneService.GetByIdAsync(id);
+            if (existingTelefone == null)
             {
                 return NotFound(new { message = "Telefone não encontrado" });
             }
-            _context.Telefone.Remove(telefone);
-            await _context.SaveChangesAsync();
+            await telefoneService.DeleteAsync(id);
             return NoContent();
+
         }
     }
 }

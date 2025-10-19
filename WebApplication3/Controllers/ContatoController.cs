@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Exceptions;
 using WebApplication3.Models;
+using WebApplication3.Service;
 
 namespace WebApplication3.Controllers
 {
@@ -13,11 +14,11 @@ namespace WebApplication3.Controllers
     {
 
 
-        private readonly AppDbContext _context;
+        private readonly ContatoService contatoService;
 
-        public ContatoController(AppDbContext context)
+        public ContatoController(ContatoService service)
         {
-            _context = context;
+            contatoService = service;
         }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(typeof(IEnumerable<Contato>), 200)]
         public async Task<ActionResult<IEnumerable<Contato>>> Get()
         {
-            return await _context.Contato.ToListAsync();
+            return Ok(await contatoService.GetAllContatos());
         }
 
         /// <summary>
@@ -56,7 +57,8 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Contato>> GetById(int id)
         {
-            var contato = await _context.Contato.FindAsync(id);
+ 
+            var contato = await contatoService.GetById(id);
             if (contato == null)
             {
                 return NotFound(new { message = "Contato não encontrado" });
@@ -82,12 +84,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Contato>> GetByNameDono(string nome)
         {
-            var contato = await _context.Contato.Where(c => c.nmDono.Contains(nome)).ToListAsync();
-            if(contato == null)
+            
+            var contatos = await contatoService.GetByNameDono(nome);
+            if (contatos == null)
             {
                 return NotFound(new { message = "Contato não encontrado" });
             }
-            return Ok(contato);
+            return Ok(contatos);
         }
 
 
@@ -125,9 +128,8 @@ namespace WebApplication3.Controllers
                 {
                     throw new StatusInvalidoException();
                 }
-                _context.Contato.Add(contato);
-                await _context.SaveChangesAsync();
-                return CreatedAtAction(nameof(GetById), new { id = contato.id_contato }, contato);
+                var createdContato = await contatoService.CreateContato(contato);
+                return CreatedAtAction(nameof(GetById), new { id = createdContato.id_contato }, createdContato);
             }
             catch (StatusInvalidoException error)
             {
@@ -172,9 +174,13 @@ namespace WebApplication3.Controllers
                 {
                     throw new StatusInvalidoException();
                 }
-                _context.Entry(contato).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                var result = await contatoService.UpdateContato(id, contato);
+                if (result == null)
+                {
+                    return NotFound(new { message = "Contato não encontrado" });
+                }
                 return NoContent();
+
             }
             catch (StatusInvalidoException error)
             {
@@ -201,13 +207,11 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
-            var contato = await _context.Contato.FindAsync(id);
-            if (contato == null)
+            var result = await contatoService.DeleteContato(id);
+            if (result == false)
             {
                 return NotFound(new { message = "Contato não encontrado" });
             }
-            _context.Contato.Remove(contato);
-            await _context.SaveChangesAsync();
             return NoContent();
         }
     }

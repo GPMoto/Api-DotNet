@@ -22,10 +22,11 @@ namespace WebApplication3.Repositories
             return await _context.TipoSecao.FindAsync(id);
         }
 
-        public async Task Add(TipoSecao tipoSecao)
+        public async Task<TipoSecao> Add(TipoSecao tipoSecao)
         {
             _context.TipoSecao.Add(tipoSecao);
             await _context.SaveChangesAsync();
+            return tipoSecao;
         }
 
         public async Task Update(TipoSecao tipoSecao)

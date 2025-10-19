@@ -26,7 +26,7 @@ namespace WebApplication3.Repositories
             await  _context.SaveChangesAsync();
             return perfil;
         }
-        public async Task UpdateAsync(Perfil perfil)
+        public async Task UpdateAsync(Perfil perfil, int id)
         {
             _context.Entry(perfil).State = EntityState.Modified;
             await _context.SaveChangesAsync();

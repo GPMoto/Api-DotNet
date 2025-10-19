@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Models;
+using WebApplication3.Service;
 
 namespace WebApplication3.Controllers
 {
@@ -10,10 +11,10 @@ namespace WebApplication3.Controllers
     [Route("[controller]")]
     public class PaisController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        public PaisController(AppDbContext context)
+        private readonly PaisService paisService;
+        public PaisController(PaisService context)
         {
-            _context = context;
+            paisService = context;
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(typeof(IEnumerable<Pais>), 200)]
         public async Task<ActionResult<IEnumerable<Pais>>> Get()
         {
-            return await _context.Pais.ToListAsync();
+            return Ok(await paisService.GetAllAsync());
         }
 
         /// <summary>
@@ -52,12 +53,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Pais>> GetById(int id)
         {
-            var pais = await _context.Pais.FindAsync(id);
+            var pais = await paisService.GetByIdAsync(id);
             if (pais == null)
             {
                 return NotFound(new { message = "Pais não encontrado" });
             }
             return Ok(pais);
+
         }
 
         /// <summary>
@@ -82,13 +84,16 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<Pais>> Post([FromBody] Pais pais)
         {
-            if (pais == null)
+            try 
             {
-                return BadRequest(new { message = "Pais não pode ser nulo" });
+                var createdPais = await paisService.AddAsync(pais);
+                return CreatedAtAction(nameof(GetById), new { id = createdPais.Id_pais }, createdPais);
             }
-            _context.Pais.Add(pais);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = pais.Id_pais }, pais);
+            catch (Exception ex)
+            {
+                return BadRequest(new { StatusCode = 400, message = ex.Message });
+            }
+
         }
 
         /// <summary>
@@ -120,9 +125,13 @@ namespace WebApplication3.Controllers
             {
                 return BadRequest(new {StatusCode=400, message = "Id do pais incorreto!" });
             }
-            _context.Entry(pais).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            var existingPais = await paisService.GetByIdAsync(id);
+            if (existingPais == null)
+            {
+                return NotFound(new { message = "Pais não encontrado" });
+            }
+            return Ok(existingPais);
+
         }
 
         /// <summary>
@@ -143,14 +152,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
-            var pais = await _context.Pais.FindAsync(id);
-            if (pais == null)
+            var result = await paisService.DeleteAsync(id);
+            if (!result)
             {
                 return NotFound(new { message = "Pais não encontrado" });
             }
-            _context.Pais.Remove(pais);
-            await _context.SaveChangesAsync();
             return NoContent();
+
         }
     }
 }

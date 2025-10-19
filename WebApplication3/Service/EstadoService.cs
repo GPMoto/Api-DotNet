@@ -28,9 +28,9 @@ namespace WebApplication3.Service
             return await estadoRepository.AddAsync(estado);
         }
 
-        public async Task UpdateEstadoAsync(Estado estado)
+        public async Task UpdateEstadoAsync(Estado estado,int id)
         {
-            await estadoRepository.UpdateAsync(estado);
+            await estadoRepository.UpdateAsync(estado, id);
         }
 
         public async Task<bool> DeleteEstadoAsync(int id)

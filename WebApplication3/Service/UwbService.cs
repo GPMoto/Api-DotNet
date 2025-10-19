@@ -21,9 +21,10 @@ namespace WebApplication3.Service
             return await uwbRepository.GetById(id);
         }
 
-        public async Task CreateTagAsync(Uwb uwb)
+        public async Task<Uwb> CreateTagAsync(Uwb uwb)
         {
             await uwbRepository.Add(uwb);
+            return uwb;
         }
         public async Task UpdateTagAsync(Uwb uwb)
         {

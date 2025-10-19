@@ -24,9 +24,9 @@ namespace WebApplication3.Service
         {
             return await _perfilRepository.AddAsync(perfil);
         }
-        public async Task UpdatePerfilAsync(Perfil perfil)
+        public async Task UpdatePerfilAsync(Perfil perfil,int id)
         {
-            await _perfilRepository.UpdateAsync(perfil);
+            await _perfilRepository.UpdateAsync(perfil,id);
         }
         public async Task<bool> DeletePerfilAsync(int id)
         {

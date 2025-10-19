@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Models;
+using WebApplication3.Service;
 
 namespace WebApplication3.Controllers
 {
@@ -10,11 +11,11 @@ namespace WebApplication3.Controllers
     public class PerfilController : ControllerBase
     { 
 
-        private readonly AppDbContext _context;
+        private readonly PerfilService perfilService;
 
-        public PerfilController(AppDbContext context)
+        public PerfilController(PerfilService context)
         {
-            _context = context;
+            perfilService = context;
         }
 
         /// <summary>
@@ -32,7 +33,8 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(typeof(IEnumerable<Perfil>), 200)]
         public async Task<ActionResult<IEnumerable<Perfil>>> Get()
         {
-            return await _context.Perfil.ToListAsync();
+            return Ok(await perfilService.GetAllPerfisAsync());
+
         }
 
         /// <summary>
@@ -53,12 +55,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Perfil>> GetById(int id)
         {
-            var perfil = await _context.Perfil.FindAsync(id);
+            var perfil = await perfilService.GetPerfilByIdAsync(id);
             if (perfil == null)
             {
                 return NotFound(new { message = "Perfil não encontrado" });
             }
             return Ok(perfil);
+
         }
 
         /// <summary>
@@ -83,13 +86,16 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<Perfil>> Post([FromBody] Perfil perfil)
         {
-            if (perfil == null)
+            try 
             {
-                return BadRequest(new { message = "Perfil não pode ser nulo" });
+                var createdPerfil = await perfilService.CreatePerfilAsync(perfil);
+                return CreatedAtAction(nameof(GetById), new { id = createdPerfil.id_perfil }, createdPerfil);
             }
-            _context.Perfil.Add(perfil);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = perfil.id_perfil }, perfil);
+            catch (Exception ex)
+            {
+                return BadRequest(new { StatusCode = 400, message = ex.Message });
+            }
+
         }
 
         /// <summary>
@@ -117,13 +123,20 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Put(int id, [FromBody] Perfil perfil)
         {
-            if (id != perfil.id_perfil)
+            try
             {
-                return BadRequest(new {StatusCode=400, message = "Id do perfil incorreto!" });
+                if(id != perfil.id_perfil)
+                {
+                    return BadRequest(new { message = "ID do perfil incorreto" });
+                }
+                await perfilService.UpdatePerfilAsync(perfil,id);
+                return NoContent();
             }
-            _context.Entry(perfil).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (Exception ex)
+            {
+                return BadRequest(new { StatusCode = 400, message = ex.Message });
+            }
+
         }
 
         /// <summary>
@@ -144,14 +157,20 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
-            var perfil = await _context.Perfil.FindAsync(id);
-            if (perfil == null)
+            try
             {
-                return NotFound(new { message = "Perfil não encontrado" });
+                var result = await perfilService.DeletePerfilAsync(id);
+                if(!result)
+                {
+                    return NotFound(new { message = "Perfil não encontrado" });
+                }
+                return NoContent();
             }
-            _context.Perfil.Remove(perfil);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+
 
         }
     }

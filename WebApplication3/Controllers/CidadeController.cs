@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Models;
+using WebApplication3.Service;
 
 namespace WebApplication3.Controllers
 {
@@ -18,10 +19,10 @@ namespace WebApplication3.Controllers
     [Tags("Cidades")]
     public class CidadeController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        public CidadeController(AppDbContext context)
+        private readonly CidadeService cidadeService;
+        public CidadeController(CidadeService service)
         {
-            _context = context;
+            cidadeService = service;
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(typeof(IEnumerable<Cidade>), 200)]
         public async Task<ActionResult<IEnumerable<Cidade>>> Get()
         {
-            return await _context.Cidade.ToListAsync();
+            return Ok(await cidadeService.GetgetAllCidades());
         }
 
 
@@ -61,7 +62,7 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Cidade>> GetById(int id)
         {
-            var cidade = await _context.Cidade.FindAsync(id);
+            var cidade = await cidadeService.GetgetCidadeById(id);
             if (cidade == null)
             {
                 return NotFound(new { message = "Cidade não encontrada" });
@@ -70,7 +71,7 @@ namespace WebApplication3.Controllers
         }
 
 
-         /// <summary>
+        /// <summary>
         /// Cria uma nova cidade.
         /// </summary>
         /// <remarks>
@@ -93,15 +94,16 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<Cidade>> Post([FromBody] Cidade cidade)
         {
-            if (cidade == null)
+            try
             {
-                return BadRequest(new { message = "Cidade não pode ser nula" });
+                var createdCidade = await cidadeService.CreateCidade(cidade);
+                return CreatedAtAction(nameof(GetById), new { id = createdCidade.id_cidade }, createdCidade);
             }
-            _context.Cidade.Add(cidade);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = cidade.id_cidade }, cidade);
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
-
         /// <summary>
         /// Atualiza os dados de uma cidade existente.
         /// </summary>
@@ -127,42 +129,46 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public async Task<ActionResult> Put(int id, [FromBody] Cidade cidade)
-        {
-            if (id != cidade.id_cidade)
             {
-                return BadRequest(new { message = "Id da cidade incorreto!" });
+                try
+                {
+                    var result = await cidadeService.UpdateCidade(id, cidade);
+                  
+                    return NoContent();
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new { message = ex.Message });
+                }
             }
-            _context.Entry(cidade).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return NoContent();
-        }
+            
 
-        /// <summary>
-        /// Remove uma cidade pelo ID.
-        /// </summary>
-        /// <remarks>
-        /// Exemplo de requisição:
-        ///
-        ///     DELETE /cidades/1
-        ///
-        /// </remarks>
-        /// <param name="id">ID da cidade a ser removida.</param>
-        /// <returns>Sem conteúdo em caso de sucesso.</returns>
-        /// <response code="204">Cidade removida com sucesso.</response>
-        /// <response code="404">Cidade não encontrada.</response>
-        [HttpDelete("/cidades/{id}")]
+            /// <summary>
+            /// Remove uma cidade pelo ID.
+            /// </summary>
+            /// <remarks>
+            /// Exemplo de requisição:
+            ///
+            ///     DELETE /cidades/1
+            ///
+            /// </remarks>
+            /// <param name="id">ID da cidade a ser removida.</param>
+            /// <returns>Sem conteúdo em caso de sucesso.</returns>
+            /// <response code="204">Cidade removida com sucesso.</response>
+            /// <response code="404">Cidade não encontrada.</response>
+            [HttpDelete("/cidades/{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
-            var cidade = await _context.Cidade.FindAsync(id);
-            if (cidade == null)
-            {
-                return NotFound(new { message = "Cidade não encontrada" });
+            try { 
+                var result = await cidadeService.DeleteCidade(id);
+                return NoContent();
             }
-            _context.Cidade.Remove(cidade);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

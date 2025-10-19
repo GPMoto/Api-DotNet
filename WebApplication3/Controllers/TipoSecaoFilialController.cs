@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Models;
+using WebApplication3.Service;
 
 namespace WebApplication3.Controllers
 {
@@ -10,11 +11,11 @@ namespace WebApplication3.Controllers
     [Route("[controller]")]
     public class TipoSecaoFilialController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly TIpoSecaoFilialService tipoSecaoFilialService;
 
-        public TipoSecaoFilialController(AppDbContext context)
+        public TipoSecaoFilialController(TIpoSecaoFilialService context)
         {
-            _context = context;
+            tipoSecaoFilialService = context;
         }
 
         /// <summary>
@@ -32,7 +33,8 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(typeof(IEnumerable<TipoSecao>), 200)]
         public async Task<ActionResult<IEnumerable<TipoSecao>>> Get()
         {
-            return await _context.TipoSecao.ToListAsync();
+            return Ok(await tipoSecaoFilialService.GetAllAsync());
+
         }
 
         /// <summary>
@@ -53,12 +55,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<TipoSecao>> GetById(int id)
         {
-            var tipoSecaoFilial = await _context.TipoSecao.FindAsync(id);
+            var tipoSecaoFilial = await tipoSecaoFilialService.GetByIdAsync(id);
             if (tipoSecaoFilial == null)
             {
                 return NotFound(new { message = "Tipo de seção filial não encontrado" });
             }
             return Ok(tipoSecaoFilial);
+
         }
 
         /// <summary>
@@ -83,13 +86,16 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<TipoSecao>> Post([FromBody] TipoSecao tipoSecaoFilial)
         {
-            if (tipoSecaoFilial == null)
+            try 
             {
-                return BadRequest(new { message = "Tipo de seção filial não pode ser nulo" });
+                var createdTipoSecaoFilial = await tipoSecaoFilialService.CreateAsync(tipoSecaoFilial);
+                return CreatedAtAction(nameof(GetById), new { id = createdTipoSecaoFilial.id_tipo_secao }, createdTipoSecaoFilial);
             }
-            _context.TipoSecao.Add(tipoSecaoFilial);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = tipoSecaoFilial.id_tipo_secao }, tipoSecaoFilial);
+            catch (Exception ex)
+            {
+                return BadRequest(new { StatusCode = 400, message = ex.Message });
+            }
+
         }
 
         /// <summary>
@@ -117,13 +123,24 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Put(int id, [FromBody] TipoSecao tipoSecaoFilial)
         {
-            if (id != tipoSecaoFilial.id_tipo_secao)
+            try 
             {
-                return BadRequest(new {StatusCode=400, message = "Id do tipo de seção filial incorreto!" });
+                if (id != tipoSecaoFilial.id_tipo_secao)
+                {
+                    return BadRequest(new { message = "ID incorreto" });
+                }
+                var existingTipoSecaoFilial = await tipoSecaoFilialService.GetByIdAsync(id);
+                if (existingTipoSecaoFilial == null)
+                {
+                    return NotFound(new { message = "Tipo de seção filial não encontrado" });
+                }
+                await tipoSecaoFilialService.UpdateAsync(tipoSecaoFilial);
+                return NoContent();
             }
-            _context.Entry(tipoSecaoFilial).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (Exception ex)
+            {
+                return BadRequest(new { StatusCode = 400, message = ex.Message });
+            }
         }
 
         /// <summary>
@@ -144,13 +161,18 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
-            var tipoSecaoFilial = await _context.TipoSecao.FindAsync(id);
-            if (tipoSecaoFilial == null)
+          
+            var existingTipoSecaoFilial = await tipoSecaoFilialService.GetByIdAsync(id);
+            if (existingTipoSecaoFilial == null)
             {
                 return NotFound(new { message = "Tipo de seção filial não encontrado" });
             }
-            _context.TipoSecao.Remove(tipoSecaoFilial);
-            await _context.SaveChangesAsync();
+            var result = await tipoSecaoFilialService.DeleteAsync(id);
+            if (!result)
+            {
+                return NotFound(new { message = "Tipo de seção filial não encontrado" });
+            }
+            
             return NoContent();
 
         }

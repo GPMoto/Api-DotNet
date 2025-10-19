@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Models;
+using WebApplication3.Service;
 
 namespace WebApplication3.Controllers
 {
@@ -11,11 +12,11 @@ namespace WebApplication3.Controllers
     public class FilialController : ControllerBase
     {
 
-        private readonly AppDbContext _context;
+        private readonly FilialService filialService;
 
-        public FilialController(AppDbContext context)
+        public FilialController(FilialService filialService)
         {
-            _context = context;
+            this.filialService = filialService;
         }
 
         /// <summary>
@@ -33,12 +34,9 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(typeof(IEnumerable<Filial>), 200)]
         public async Task<ActionResult<IEnumerable<Filial>>> Get()
         {
-            var filiais = await _context.Filial.ToListAsync();
-            if (filiais == null)
-            {
-                return NotFound(new { message = "Filiais não encontrada" });
-            }
+            var filiais = await filialService.GetAllAsync();
             return Ok(filiais);
+
         }
 
         /// <summary>
@@ -59,12 +57,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Filial>> GetById(int id)
         {
-            var filial = await _context.Filial.FindAsync(id);
+            var filial = await filialService.GetByIdAsync(id);
             if (filial == null)
             {
                 return NotFound(new { message = "Filial não encontrada" });
             }
             return Ok(filial);
+
         }
 
         /// <summary>
@@ -85,12 +84,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Filial>> GetByCnph(string cnpj)
         {
-            var filial = await _context.Filial.Where(f => f.Cnpj == cnpj).ToListAsync();
-            if (filial == null)
+            var filiais = await filialService.getByCNPJ(cnpj);
+            if (filiais == null || !filiais.Any())
             {
                 return NotFound(new { message = "Filial não encontrada" });
             }
-            return Ok(filial);
+            return Ok(filiais);
+
         }
 
         /// <summary>
@@ -118,13 +118,15 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<Filial>> Post([FromBody] Filial filial)
         {
-            if (filial == null)
+            try 
             {
-                return NotFound(new { message = "Filial não encontrada" });
+                var createdFilial = await filialService.AddAsync(filial);
+                return CreatedAtAction(nameof(GetById), new { id = createdFilial.id_filial }, createdFilial);
             }
-            _context.Filial.Add(filial);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = filial.id_filial }, filial);
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         /// <summary>
@@ -155,13 +157,19 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Put(int id, [FromBody] Filial filial)
         {
-            if(id != filial.id_filial)
+            try 
             {
-                return NotFound(new { StatusCode=400, message = "Id da filial não está correto" });
+                var result = await filialService.UpdateAsync(id, filial);
+                if (!result)
+                {
+                    return NotFound(new { message = "Filial não encontrada" });
+                }
+                return NoContent();
             }
-            _context.Entry(filial).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         /// <summary>
@@ -182,14 +190,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
-            var filial = await _context.Filial.FindAsync(id);
-            if(filial == null)
+            var result = await filialService.DeleteAsync(id);
+            if (!result)
             {
                 return NotFound(new { message = "Filial não encontrada" });
             }
-            _context.Filial.Remove(filial);
-            _context.SaveChanges();
             return NoContent();
+
         }
 
     }

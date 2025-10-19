@@ -31,7 +31,7 @@ namespace WebApplication3.Repositories
             return estado;
         }
 
-        public async Task UpdateAsync(Estado estado)
+        public async Task UpdateAsync(Estado estado, int id)
         {
             _context.Entry(estado).State = EntityState.Modified;
             await _context.SaveChangesAsync();

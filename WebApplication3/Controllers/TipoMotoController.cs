@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Models;
+using WebApplication3.Service;
 
 namespace WebApplication3.Controllers
 {
@@ -9,11 +10,11 @@ namespace WebApplication3.Controllers
     [Route("[controller]")]
     public class TipoMotoController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly TipoMotoService tipoMotoService;
 
-        public TipoMotoController(AppDbContext context)
+        public TipoMotoController(TipoMotoService context)
         {
-            _context = context;
+            tipoMotoService = context;
         }
 
         /// <summary>
@@ -31,7 +32,8 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(typeof(IEnumerable<TipoMoto>), 200)]
         public async Task<ActionResult<IEnumerable<TipoMoto>>> Get()
         {
-            return await _context.TipoMoto.ToListAsync();
+            return Ok(await tipoMotoService.GetAllTipoMotoAsync());
+
         }
 
 
@@ -53,12 +55,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<TipoMoto>> GetById(int id)
         {
-            var tipoMoto = await _context.TipoMoto.FindAsync(id);
+            var tipoMoto = await tipoMotoService.GetTipoMotoByIdAsync(id);
             if (tipoMoto == null)
             {
                 return NotFound(new { message = "Tipo de moto não encontrado" });
             }
             return Ok(tipoMoto);
+
         }
 
         /// <summary>
@@ -83,13 +86,16 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<TipoMoto>> Post([FromBody] TipoMoto tipoMoto)
         {
-            if (tipoMoto == null)
+            try 
             {
-                return BadRequest(new { message = "Tipo de moto não pode ser nulo" });
+                var createdTipoMoto = await tipoMotoService.CreateTipoMotoAsync(tipoMoto);
+                return CreatedAtAction(nameof(GetById), new { id = createdTipoMoto.id_tipo_moto }, createdTipoMoto);
             }
-            _context.TipoMoto.Add(tipoMoto);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = tipoMoto.id_tipo_moto }, tipoMoto);
+            catch (Exception ex)
+            {
+                return BadRequest(new { StatusCode = 400, message = ex.Message });
+            }
+
         }
 
         /// <summary>
@@ -117,13 +123,24 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Put(int id, [FromBody] TipoMoto tipoMoto)
         {
-            if (id != tipoMoto.id_tipo_moto)
+            try 
             {
-                return BadRequest(new {StatusCode=400, message = "Id do tipo de moto incorreto!" });
+                if (id != tipoMoto.id_tipo_moto)
+                {
+                    return BadRequest(new { StatusCode = 400, message = "ID incorreto" });
+                }
+                var existingTipoMoto = await tipoMotoService.GetTipoMotoByIdAsync(id);
+                if (existingTipoMoto == null)
+                {
+                    return NotFound(new { message = "Tipo de moto não encontrado" });
+                }
+                await tipoMotoService.UpdateTipoMotoAsync(tipoMoto);
+                return NoContent();
             }
-            _context.Entry(tipoMoto).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (Exception ex)
+            {
+                return BadRequest(new { StatusCode = 400, message = ex.Message });
+            }
         }
 
         /// <summary>
@@ -144,14 +161,14 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
-            var tipoMoto = await _context.TipoMoto.FindAsync(id);
-            if (tipoMoto == null)
+            var result = await tipoMotoService.DeleteTipoMotoAsync(id);
+
+            if (!result)
             {
                 return NotFound(new { message = "Tipo de moto não encontrado" });
             }
-            _context.TipoMoto.Remove(tipoMoto);
-            await _context.SaveChangesAsync();
             return NoContent();
+
 
         }
     }

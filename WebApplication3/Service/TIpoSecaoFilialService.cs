@@ -22,9 +22,10 @@ namespace WebApplication3.Service
             return await tipoSecaoFilialRepository.GetById(id);
         }
 
-        public async Task CreateAsync(TipoSecao tipoSecao)
+        public async Task<TipoSecao> CreateAsync(TipoSecao tipoSecao)
         {
             await tipoSecaoFilialRepository.Add(tipoSecao);
+            return tipoSecao;
         }
 
         public async Task<bool> DeleteAsync(int id)

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Exceptions;
 using WebApplication3.Models;
+using WebApplication3.Service;
 
 namespace WebApplication3.Controllers
 {
@@ -12,11 +13,11 @@ namespace WebApplication3.Controllers
     public class MotoController : ControllerBase
     {
 
-        private readonly AppDbContext _context;
+        private readonly MotoService motoService;
 
-        public MotoController(AppDbContext context)
+        public MotoController(MotoService context)
         {
-            _context = context;
+            motoService = context;
         }
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(typeof(IEnumerable<Moto>), 200)]
         public async Task<ActionResult<IEnumerable<Moto>>> Get()
         {
-            return await _context.Moto.ToListAsync();
+            return Ok(await motoService.GetAllAsync());
         }
 
      
@@ -56,12 +57,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Moto>> GetById(int id)
         {
-            var moto = await _context.Moto.FindAsync(id);
+            var moto = await motoService.GetByIdAsync(id);
             if (moto == null)
             {
-                return NotFound(new {message = "Moto não encontrada"});
+                return NotFound(new { message = "Moto não encontrada" });
             }
             return Ok(moto);
+
         }
 
         /// <summary>
@@ -82,12 +84,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Moto>> GetByIdentificador(string identificador)
         {
-            var moto = await _context.Moto.Where(m=> m.IdentificadorMoto == identificador).ToListAsync();
-            if (moto == null)
+            var motos = await motoService.GetByIdentificador(identificador);
+            if (motos == null)
             {
                 return NotFound(new { message = "Moto não encontrada" });
             }
-            return Ok(moto);
+            return Ok(motos);
+
         }
 
         /// <summary>
@@ -108,12 +111,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<Moto>>> GetByIdFilial(int id)
         {
-            var motos = await _context.Moto.Where(m => m.id_filial == id).ToListAsync();
-            if(motos == null )
+            var motos = await motoService.GetByIdFilial(id);
+            if (motos == null)
             {
-                return NotFound(new { message = "Motos não encontrada" });
+                return NotFound(new { message = "Motos não encontradas" });
             }
             return Ok(motos);
+
         }
 
         /// <summary>
@@ -153,9 +157,9 @@ namespace WebApplication3.Controllers
                     Console.WriteLine(moto.Status);
                     throw new StatusInvalidoException();
                 }
-                _context.Moto.Add(moto);
-                await _context.SaveChangesAsync();
-                return CreatedAtAction(nameof(GetById), new { id = moto.id_moto }, moto);
+                var createdMoto =  await motoService.AddAsync(moto);
+                return CreatedAtAction(nameof(GetById), new { id = createdMoto.id_moto }, createdMoto);
+
             }
             catch (StatusInvalidoException error)
             {
@@ -203,11 +207,14 @@ namespace WebApplication3.Controllers
                     Console.WriteLine(moto.Status);
                     throw new StatusInvalidoException();
                 }
-                _context.Entry(moto).State = EntityState.Modified;
-
-                await _context.SaveChangesAsync();
-
+                var existingMoto = await motoService.GetByIdAsync(id);
+                if (existingMoto == null)
+                {
+                    return NotFound(new { message = "Moto não encontrada" });
+                }
+                await motoService.UpdateAsync(moto);
                 return NoContent();
+
             }
             catch (StatusInvalidoException error)
             {
@@ -233,14 +240,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
-            var moto = await _context.Moto.FindAsync(id);
-            if (moto == null)
+            var result = await motoService.DeleteAsync(id);
+            if (!result)
             {
                 return NotFound(new { message = "Moto não encontrada" });
             }
-            _context.Moto.Remove(moto);
-            await _context.SaveChangesAsync();
             return NoContent();
+
         }
 
     }

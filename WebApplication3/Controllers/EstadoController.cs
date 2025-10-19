@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Models;
+using WebApplication3.Service;
 
 namespace WebApplication3.Controllers
 {
@@ -10,12 +11,13 @@ namespace WebApplication3.Controllers
     public class EstadoController : ControllerBase
     {
 
-        private readonly AppDbContext _context;
+        private readonly EstadoService estadoService;
 
-        public EstadoController(AppDbContext context)
+        public EstadoController(EstadoService estadoService)
         {
-            _context = context;
+            this.estadoService = estadoService;
         }
+
 
         /// <summary>
         /// Obtém uma lista de todos os estados.
@@ -32,7 +34,7 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(typeof(IEnumerable<Estado>), 200)]
         public async Task<ActionResult<IEnumerable<Estado>>> Get()
         {
-            return await _context.Estado.ToListAsync();
+            return await estadoService.GetAllEstadosAsync();
         }
 
         /// <summary>
@@ -53,12 +55,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Estado>> GetById(int id)
         {
-            var estado = await _context.Estado.FindAsync(id);
+            var estado = await estadoService.GetEstadoByIdAsync(id);
             if (estado == null)
             {
                 return NotFound(new { message = "Estado não encontrado" });
             }
             return Ok(estado);
+
         }
 
         /// <summary>
@@ -84,13 +87,15 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<Estado>> Post([FromBody] Estado estado)
         {
-            if (estado == null)
+            try 
             {
-                return BadRequest(new { message = "Estado não pode ser nulo" });
+                var createdEstado =  await estadoService.AddEstadoAsync(estado);
+                return CreatedAtAction(nameof(GetById), new { id = createdEstado.id_estado }, createdEstado);
             }
-            _context.Estado.Add(estado);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = estado.id_estado }, estado);
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { StatusCode = 400, message = ex.Message });
+            }
         }
 
         /// <summary>
@@ -119,13 +124,16 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Put(int id, [FromBody] Estado estado)
         {
-            if (id != estado.id_estado)
+            try 
             {
-                return BadRequest(new {StatusCode=400, message = "Id do estado incorreto!" });
+                await estadoService.UpdateEstadoAsync(estado, id);
+                
+                return NoContent();
             }
-            _context.Entry(estado).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (Exception ex)
+            {
+                return BadRequest(new { StatusCode = 400, message = ex.Message });
+            }
         }
 
         /// <summary>
@@ -146,14 +154,16 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
-            var estado = await _context.Estado.FindAsync(id);
-            if (estado == null)
+            try 
             {
-                return NotFound(new { message = "Estado não encontrado" });
+                await estadoService.DeleteEstadoAsync(id);
+                return NoContent();
             }
-            _context.Estado.Remove(estado);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+
         }
     }
 }

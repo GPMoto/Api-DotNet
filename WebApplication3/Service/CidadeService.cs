@@ -51,15 +51,16 @@ namespace WebApplication3.Service
 
         }
 
-        public async Task<Cidade> DeleteCidade(int id)
+        public async Task<bool> DeleteCidade(int id)
         {
             var existingCidade = await cidadeRepository.GetByIdAsync(id);
             if (existingCidade == null)
             {
                 throw new Exception("Cidade não encontrada");
             }
-            await cidadeRepository.DeleteAsync(id);
-            return existingCidade;
+            var result = await cidadeRepository.DeleteAsync(id);
+            return result;
+            
         }
     }
 }

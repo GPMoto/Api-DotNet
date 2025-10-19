@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Exceptions;
 using WebApplication3.Models;
+using WebApplication3.Service;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WebApplication3.Controllers
@@ -12,11 +13,11 @@ namespace WebApplication3.Controllers
     public class UsuarioController : ControllerBase
     {
 
-        private readonly AppDbContext _context;
+        private readonly UsuarioService usuarioService;
 
-        public UsuarioController(AppDbContext context)
+        public UsuarioController(UsuarioService context)
         {
-            _context = context;
+            usuarioService = context;
         }
 
         /// <summary>
@@ -34,7 +35,8 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(typeof(IEnumerable<Usuario>), 200)]
         public async Task<ActionResult<IEnumerable<Usuario>>> Get()
         {
-            return await _context.Usuario.ToListAsync();
+            return Ok(await usuarioService.GetAllAsync());
+
         }
 
         /// <summary>
@@ -55,12 +57,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Usuario>> GetById(int id)
         {
-                var usuario = await _context.Usuario.FindAsync(id);
-                if (usuario == null)
-                {
-                    return NotFound(new { message = "Usuario não encontrado" });
-                }
-                return Ok(usuario);
+            var usuario = await usuarioService.GetByIdAsync(id);
+            if (usuario == null)
+            {
+                return NotFound(new { message = "Usuario não encontrado" });
+            }
+            return Ok(usuario);
+
         }
 
         /// <summary>
@@ -81,12 +84,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetByIdFilial(int id)
         {
-            var usuario = await _context.Usuario.Where(u => u.id_usuario == id).ToListAsync();
-            if (usuario == null)
+            var usuarios = await usuarioService.getByIdFilial(id);
+            if (usuarios == null || !usuarios.Any())
             {
-                return NotFound(new { message = "Usuarios não encontrado" });
+                return NotFound(new { message = "Usuários não encontrados" });
             }
-            return Ok(usuario);
+            return Ok(usuarios);
+
         }
 
         /// <summary>
@@ -125,9 +129,9 @@ namespace WebApplication3.Controllers
                 {
                     throw new EmailInvalidoException();
                 }
-                _context.Usuario.Add(usuario);
-                await _context.SaveChangesAsync();
-                return CreatedAtAction(nameof(GetById), new { id = usuario.id_usuario }, usuario);
+                var created = await usuarioService.AddAsync(usuario);
+                return CreatedAtAction(nameof(GetById), new { id = created.id_usuario }, created);
+
             }
             catch (EmailInvalidoException error)
             {
@@ -174,9 +178,18 @@ namespace WebApplication3.Controllers
                 {
                     throw new EmailInvalidoException();
                 }
-                _context.Entry(usuario).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                if (id != usuario.id_usuario)
+                {
+                    return BadRequest(new { StatusCode = 400, message = "Id do usuario incorreto!" });
+                }
+                var existingUsuario = await usuarioService.GetByIdAsync(id);
+                if (existingUsuario == null)
+                {
+                    return NotFound(new { message = "Usuario não encontrado" });
+                }
+                await usuarioService.UpdateAsync(usuario);
                 return NoContent();
+
             }
             catch (EmailInvalidoException error)
             {
@@ -202,14 +215,18 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
-            var usuario = await _context.Usuario.FindAsync(id);
-            if (usuario == null)
+            var existingUsuario = await usuarioService.GetByIdAsync(id);
+            if (existingUsuario == null)
             {
                 return NotFound(new { message = "Usuario não encontrado" });
             }
-            _context.Usuario.Remove(usuario);
-            await _context.SaveChangesAsync();
+            var result = await usuarioService.DeleteAsync(id);
+            if (!result)
+            {
+                return NotFound(new { message = "Usuario não encontrado" });
+            }
             return NoContent();
+
         }
 
     }

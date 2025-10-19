@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Exceptions;
 using WebApplication3.Models;
+using WebApplication3.Service;
 
 namespace WebApplication3.Controllers
 {
@@ -12,11 +13,11 @@ namespace WebApplication3.Controllers
     public class EnderecoController : ControllerBase
     {
 
-        private readonly AppDbContext _context;
+        private readonly EnderecoService enderecoService;
 
-        public EnderecoController(AppDbContext context)
+        public EnderecoController(EnderecoService context)
         {
-            _context = context;
+            enderecoService = context;
         }
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(typeof(IEnumerable<Endereco>), 200)]
         public async Task<ActionResult<IEnumerable<Endereco>>> Get()
         {
-            return await _context.Endereco.ToListAsync();
+            return Ok(await enderecoService.GetAllAsync());
         }
         
         /// <summary>
@@ -55,12 +56,13 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Endereco>> GetById(int id)
         {
-            var endereco = await _context.Endereco.FindAsync(id);
+            var endereco = await enderecoService.GetByIdAsync(id);
             if (endereco == null)
             {
                 return NotFound(new { message = "Endereco não encontrado" });
             }
             return Ok(endereco);
+
         }
 
         /// <summary>
@@ -81,7 +83,7 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Endereco>> GetByCep(string cep)
         {
-            var endereco = await _context.Endereco.Where(e => e.Cep == cep).ToListAsync();
+            var endereco = await enderecoService.GetByCep(cep);
             if (endereco == null)
             {
                 return NotFound(new { message = "Endereco não encontrado" });
@@ -125,10 +127,11 @@ namespace WebApplication3.Controllers
                 {
                     throw new CepTamanhoInvalidoException();
                 }
-                _context.Endereco.Add(endereco);
-                await _context.SaveChangesAsync();
-                return CreatedAtAction(nameof(GetById), new { id = endereco.id_endereco }, endereco);
-            }catch(CepTamanhoInvalidoException error)
+                var CreatedEndereco = await enderecoService.AddAsync(endereco);
+                return CreatedAtAction(nameof(GetById), new { id = CreatedEndereco.id_endereco }, CreatedEndereco);
+
+            }
+            catch(CepTamanhoInvalidoException error)
             {
                 return BadRequest(new { StatusCode = 400, Message = error.Message });
             }
@@ -172,13 +175,16 @@ namespace WebApplication3.Controllers
                 {
                     throw new CepTamanhoInvalidoException();
                 }
-                _context.Entry(endereco).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                await enderecoService.UpdateAsync(endereco);
                 return NoContent();
             }
             catch (CepTamanhoInvalidoException error)
             {
                 return BadRequest(new { StatusCode = 400, Message = error.Message });
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
             }
         }
 
@@ -200,14 +206,19 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete(int id)
         {
-            var endereco = await _context.Endereco.FindAsync(id);
-            if (endereco == null)
+            try
             {
-                return NotFound(new { message = "Endereco não encontrado" });
+                var result = await enderecoService.DeleteAsync(id);
+                if(result == false)
+                {
+                    return NotFound(new { message = "Endereco não encontrado" });
+                }
+                return NoContent();
             }
-            _context.Endereco.Remove(endereco);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
         }
 
     }

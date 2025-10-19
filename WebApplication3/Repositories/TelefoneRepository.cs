@@ -25,10 +25,11 @@ namespace WebApplication3.Repositories
             return await _context.Telefone.FindAsync(id);
         }
 
-        public async Task Add(Telefone telefone)
+        public async Task<Telefone> Add(Telefone telefone)
         {
             _context.Telefone.Add(telefone);
             await _context.SaveChangesAsync();
+            return telefone;
         }
 
         public async Task Update(Telefone telefone)
