@@ -34,7 +34,7 @@ namespace WebApplication3.Controllers
         [ProducesResponseType(typeof(IEnumerable<Estado>), 200)]
         public async Task<ActionResult<IEnumerable<Estado>>> Get()
         {
-            return await estadoService.GetAllEstadosAsync();
+            return Ok(await estadoService.GetAllEstadosAsync());
         }
 
         /// <summary>

@@ -25,6 +25,15 @@ namespace WebApplication3.Service
         {
             return await usuarioRepository.GetByIdFilial(idFilial);
         }
+        public async Task<Usuario?> getByEmail(string email)
+        {   
+            var usuario = await usuarioRepository.GetByEmailAsync(email);
+            if (usuario != null)
+            {
+                return usuario;
+            }
+            throw new Exception("Usuário não encontrado");
+        }
         public async Task<Usuario> AddAsync(Usuario usuario)
         {
             return await usuarioRepository.AddAsync(usuario);

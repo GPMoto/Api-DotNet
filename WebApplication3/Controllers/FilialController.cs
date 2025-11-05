@@ -159,8 +159,8 @@ namespace WebApplication3.Controllers
         {
             try 
             {
-                var result = await filialService.UpdateAsync(id, filial);
-                if (!result)
+                var result = await filialService.UpdateAsync(filial);
+                if (result == null)
                 {
                     return NotFound(new { message = "Filial não encontrada" });
                 }

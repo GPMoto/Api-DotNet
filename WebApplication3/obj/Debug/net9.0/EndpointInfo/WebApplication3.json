@@ -1,36 +1,54 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "WebApplication3",
-    "version": "1.0"
+    "title": "Gps Mottu API",
+    "description": "Api desenvolvida para o challenge da mottu, ela tem como intuito ajudar na organização dos patios da mottu",
+    "version": "v3"
   },
   "paths": {
+    "/Auth/token": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/cidades": {
       "get": {
         "tags": [
-          "Cidade"
+          "Cidades"
         ],
+        "summary": "Retorna todas as cidades cadastradas.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /cidades",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a lista de cidades.",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Cidade"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Cidade"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -44,9 +62,12 @@
       },
       "post": {
         "tags": [
-          "Cidade"
+          "Cidades"
         ],
+        "summary": "Cria uma nova cidade.",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /cidades\r\n    {\r\n        \"id_cidade\": 1,\r\n        \"NomeCidade\": \"São Paulo\",\r\n        \"id_estado\": 2\r\n    }",
         "requestBody": {
+          "description": "Dados da cidade.",
           "content": {
             "application/json": {
               "schema": {
@@ -66,22 +87,22 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Cidade criada com sucesso.",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Cidade"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Cidade"
                 }
-              },
-              "text/json": {
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos.",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Cidade"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -92,12 +113,15 @@
     "/cidades/{id}": {
       "get": {
         "tags": [
-          "Cidade"
+          "Cidades"
         ],
+        "summary": "Retorna uma cidade pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /cidades/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da cidade.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -107,21 +131,21 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a cidade encontrada.",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Cidade"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Cidade"
                 }
-              },
-              "text/json": {
+              }
+            }
+          },
+          "404": {
+            "description": "Cidade não encontrada.",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Cidade"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -130,12 +154,15 @@
       },
       "put": {
         "tags": [
-          "Cidade"
+          "Cidades"
         ],
+        "summary": "Atualiza os dados de uma cidade existente.",
+        "description": "Exemplo de requisição:\r\n            \r\n    PUT /cidades/1\r\n    {\r\n        \"id_cidade\": 1,\r\n        \"NomeCidade\": \"Campinas\",\r\n        \"id_estado\": 2\r\n    }",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da cidade a ser atualizada.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -144,6 +171,7 @@
           }
         ],
         "requestBody": {
+          "description": "Dados atualizados da cidade.",
           "content": {
             "application/json": {
               "schema": {
@@ -163,19 +191,42 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Cidade atualizada com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos ou ID incorreto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cidade não encontrada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
       "delete": {
         "tags": [
-          "Cidade"
+          "Cidades"
         ],
+        "summary": "Remove uma cidade pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    DELETE /cidades/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da cidade a ser removida.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -184,8 +235,18 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Cidade removida com sucesso."
+          },
+          "404": {
+            "description": "Cidade não encontrada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -195,9 +256,11 @@
         "tags": [
           "Contato"
         ],
+        "summary": "Retorna todos os contatos cadastrados.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /contatos",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a lista de contatos.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -231,7 +294,10 @@
         "tags": [
           "Contato"
         ],
+        "summary": "Cria um novo contato.",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /contatos\r\n    {\r\n        \"id_contato\": 1,\r\n        \"nmDono\": \"João Silva\",\r\n        \"status\": 1,\r\n        \"id_Telefone\": 10\r\n    }",
         "requestBody": {
+          "description": "Dados do contato.",
           "content": {
             "application/json": {
               "schema": {
@@ -251,8 +317,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Contato criado com sucesso.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -267,6 +333,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Contato"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -279,10 +365,13 @@
         "tags": [
           "Contato"
         ],
+        "summary": "Retorna um contato pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /contatos/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do contato.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -292,7 +381,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna o contato encontrado.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -310,6 +399,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Contato não encontrado.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -317,10 +426,13 @@
         "tags": [
           "Contato"
         ],
+        "summary": "Atualiza os dados de um contato existente.",
+        "description": "Exemplo de requisição:\r\n            \r\n    PUT /contatos/1\r\n    {\r\n        \"id_contato\": 1,\r\n        \"nmDono\": \"João Silva\",\r\n        \"status\": 0,\r\n        \"id_Telefone\": 10\r\n    }",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do contato a ser atualizado.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -329,6 +441,7 @@
           }
         ],
         "requestBody": {
+          "description": "Dados atualizados do contato.",
           "content": {
             "application/json": {
               "schema": {
@@ -348,8 +461,48 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Contato atualizado com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos ou ID incorreto.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Contato não encontrado.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -357,10 +510,13 @@
         "tags": [
           "Contato"
         ],
+        "summary": "Remove um contato pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    DELETE /contatos/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do contato a ser removido.",
             "required": true,
             "schema": {
               "type": "integer",
@@ -369,8 +525,28 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Contato removido com sucesso."
+          },
+          "404": {
+            "description": "Contato não encontrado.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -380,10 +556,13 @@
         "tags": [
           "Contato"
         ],
+        "summary": "Retorna contatos pelo nome do dono.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /contatos/nomeDono/João",
         "parameters": [
           {
             "name": "nome",
             "in": "path",
+            "description": "Nome do dono do contato.",
             "required": true,
             "schema": {
               "type": "string"
@@ -392,21 +571,50 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna os contatos encontrados.",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Contato"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Contato"
+                  }
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Contato"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Contato"
+                  }
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Contato"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Contato"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Contato não encontrado.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -419,9 +627,11 @@
         "tags": [
           "Endereco"
         ],
+        "summary": "Obtém uma lista de todos os endereços.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /enderecos",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a lista completa de endereços",
             "content": {
               "text/plain": {
                 "schema": {
@@ -455,7 +665,10 @@
         "tags": [
           "Endereco"
         ],
+        "summary": "Cria um novo endereço.",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /enderecos\r\n    {\r\n        \"id_endereco\": 1,\r\n        \"NomeLogradouro\": \"Rua das Flores\",\r\n        \"NumeroLogradouro\": \"123\",\r\n        \"Cep\": \"12345678\",\r\n        \"id_cidade\": 2\r\n    }",
         "requestBody": {
+          "description": "Dados do endereço",
           "content": {
             "application/json": {
               "schema": {
@@ -475,8 +688,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Endereço criado com sucesso",
             "content": {
               "text/plain": {
                 "schema": {
@@ -491,6 +704,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Endereco"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -503,10 +736,13 @@
         "tags": [
           "Endereco"
         ],
+        "summary": "Obtém um endereço pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /enderecos/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do endereço",
             "required": true,
             "schema": {
               "type": "integer",
@@ -516,7 +752,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna o endereço encontrado",
             "content": {
               "text/plain": {
                 "schema": {
@@ -534,6 +770,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Endereço não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -541,10 +797,13 @@
         "tags": [
           "Endereco"
         ],
+        "summary": "Atualiza os dados de um endereço existente.",
+        "description": "Exemplo de requisição:\r\n            \r\n    PUT /enderecos/1\r\n    {\r\n        \"id_endereco\": 1,\r\n        \"NomeLogradouro\": \"Rua das Flores\",\r\n        \"NumeroLogradouro\": \"123\",\r\n        \"Cep\": \"12345678\",\r\n        \"id_cidade\": 2\r\n    }",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do endereço a ser atualizado",
             "required": true,
             "schema": {
               "type": "integer",
@@ -553,6 +812,7 @@
           }
         ],
         "requestBody": {
+          "description": "Dados atualizados do endereço",
           "content": {
             "application/json": {
               "schema": {
@@ -572,8 +832,48 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Endereço atualizado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos ou ID incorreto",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Endereço não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -581,10 +881,13 @@
         "tags": [
           "Endereco"
         ],
+        "summary": "Remove um endereço pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    DELETE /enderecos/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do endereço a ser removido",
             "required": true,
             "schema": {
               "type": "integer",
@@ -593,8 +896,28 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Endereço removido com sucesso"
+          },
+          "404": {
+            "description": "Endereço não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -604,10 +927,13 @@
         "tags": [
           "Endereco"
         ],
+        "summary": "Obtém endereços pelo CEP.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /enderecos/cep/12345678",
         "parameters": [
           {
             "name": "cep",
             "in": "path",
+            "description": "CEP do endereço",
             "required": true,
             "schema": {
               "type": "string"
@@ -616,21 +942,50 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna os endereços encontrados",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Endereco"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Endereco"
+                  }
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Endereco"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Endereco"
+                  }
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Endereco"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Endereco"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Endereço não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -643,9 +998,11 @@
         "tags": [
           "Estado"
         ],
+        "summary": "Obtém uma lista de todos os estados.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /estados",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a lista completa de estados",
             "content": {
               "text/plain": {
                 "schema": {
@@ -679,7 +1036,10 @@
         "tags": [
           "Estado"
         ],
+        "summary": "Cria um novo estado.",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /estados\r\n    {\r\n        \"id_estado\": 1,\r\n        \"NomeEstado\": \"São Paulo\",\r\n        \"id_pais\": 1\r\n    }",
         "requestBody": {
+          "description": "Dados do estado",
           "content": {
             "application/json": {
               "schema": {
@@ -699,8 +1059,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Estado criado com sucesso",
             "content": {
               "text/plain": {
                 "schema": {
@@ -715,6 +1075,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Estado"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -727,10 +1107,13 @@
         "tags": [
           "Estado"
         ],
+        "summary": "Obtém um estado pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /estados/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do estado",
             "required": true,
             "schema": {
               "type": "integer",
@@ -740,7 +1123,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna o estado encontrado",
             "content": {
               "text/plain": {
                 "schema": {
@@ -758,6 +1141,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Estado não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -765,10 +1168,13 @@
         "tags": [
           "Estado"
         ],
+        "summary": "Atualiza os dados de um estado existente.",
+        "description": "Exemplo de requisição:\r\n            \r\n    PUT /estados/1\r\n    {\r\n        \"id_estado\": 1,\r\n        \"NomeEstado\": \"Rio de Janeiro\",\r\n        \"id_pais\": 1\r\n    }",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do estado a ser atualizado",
             "required": true,
             "schema": {
               "type": "integer",
@@ -777,6 +1183,7 @@
           }
         ],
         "requestBody": {
+          "description": "Dados atualizados do estado",
           "content": {
             "application/json": {
               "schema": {
@@ -796,8 +1203,48 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Estado atualizado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos ou ID incorreto",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Estado não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -805,10 +1252,13 @@
         "tags": [
           "Estado"
         ],
+        "summary": "Remove um estado pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    DELETE /estados/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do estado a ser removido",
             "required": true,
             "schema": {
               "type": "integer",
@@ -817,8 +1267,28 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Estado removido com sucesso"
+          },
+          "404": {
+            "description": "Estado não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -828,9 +1298,11 @@
         "tags": [
           "Filial"
         ],
+        "summary": "Obtém uma lista de todas as filiais.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /filiais",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a lista completa de filiais",
             "content": {
               "text/plain": {
                 "schema": {
@@ -864,7 +1336,10 @@
         "tags": [
           "Filial"
         ],
+        "summary": "Cria uma nova filial.",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /filiais\r\n    {\r\n        \"id_filial\": 1,\r\n        \"Cnpj\": \"12345678000199\",\r\n        \"senha\": \"senha123\",\r\n        \"id_endereco\": 2,\r\n        \"id_contato\": 3\r\n    }",
         "requestBody": {
+          "description": "Dados da filial",
           "content": {
             "application/json": {
               "schema": {
@@ -884,8 +1359,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Filial criada com sucesso",
             "content": {
               "text/plain": {
                 "schema": {
@@ -900,6 +1375,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Filial"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -912,10 +1407,13 @@
         "tags": [
           "Filial"
         ],
+        "summary": "Obtém uma filial pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /filiais/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da filial",
             "required": true,
             "schema": {
               "type": "integer",
@@ -925,7 +1423,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a filial encontrada",
             "content": {
               "text/plain": {
                 "schema": {
@@ -943,6 +1441,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Filial não encontrada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -950,10 +1468,13 @@
         "tags": [
           "Filial"
         ],
+        "summary": "Atualiza os dados de uma filial existente.",
+        "description": "Exemplo de requisição:\r\n            \r\n    PUT /filiais/1\r\n    {\r\n        \"id_filial\": 1,\r\n        \"Cnpj\": \"12345678000199\",\r\n        \"senha\": \"novaSenha\",\r\n        \"id_endereco\": 2,\r\n        \"id_contato\": 3\r\n    }",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da filial a ser atualizada",
             "required": true,
             "schema": {
               "type": "integer",
@@ -962,6 +1483,7 @@
           }
         ],
         "requestBody": {
+          "description": "Dados atualizados da filial",
           "content": {
             "application/json": {
               "schema": {
@@ -981,8 +1503,48 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Filial atualizada com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos ou ID incorreto",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Filial não encontrada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -990,10 +1552,13 @@
         "tags": [
           "Filial"
         ],
+        "summary": "Remove uma filial pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    DELETE /filiais/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da filial a ser removida",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1002,8 +1567,28 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Filial removida com sucesso"
+          },
+          "404": {
+            "description": "Filial não encontrada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -1013,10 +1598,13 @@
         "tags": [
           "Filial"
         ],
+        "summary": "Obtém filiais pelo CNPJ.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /filiais/cnpj/12345678000199",
         "parameters": [
           {
             "name": "cnpj",
             "in": "path",
+            "description": "CNPJ da filial",
             "required": true,
             "schema": {
               "type": "string"
@@ -1025,21 +1613,50 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna as filiais encontradas",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Filial"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Filial"
+                  }
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Filial"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Filial"
+                  }
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Filial"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Filial"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Filial não encontrada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1052,9 +1669,11 @@
         "tags": [
           "Moto"
         ],
+        "summary": "Obtém uma lista de todas as motos.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /motos",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a lista completa de motos",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1088,7 +1707,10 @@
         "tags": [
           "Moto"
         ],
+        "summary": "Cria uma nova moto.",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /motos\r\n    {\r\n        \"id_moto\": 1,\r\n        \"Status\": 1,\r\n        \"CondicaoMoto\": \"Nova\",\r\n        \"IdentificadorMoto\": \"ABC1234\",\r\n        \"id_filial\": 2,\r\n        \"id_tipo_moto\": 3\r\n    }",
         "requestBody": {
+          "description": "Dados da moto",
           "content": {
             "application/json": {
               "schema": {
@@ -1108,8 +1730,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Moto criada com sucesso",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1124,6 +1746,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Moto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1136,10 +1778,13 @@
         "tags": [
           "Moto"
         ],
+        "summary": "Obtém uma moto pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /motos/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da moto",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1149,7 +1794,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a moto encontrada",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1167,6 +1812,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Moto não encontrada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -1174,10 +1839,13 @@
         "tags": [
           "Moto"
         ],
+        "summary": "Atualiza os dados de uma moto existente.",
+        "description": "Exemplo de requisição:\r\n            \r\n    PUT /motos/1\r\n    {\r\n        \"id_moto\": 1,\r\n        \"Status\": 0,\r\n        \"CondicaoMoto\": \"Usada\",\r\n        \"IdentificadorMoto\": \"ABC1234\",\r\n        \"id_filial\": 2,\r\n        \"id_tipo_moto\": 3\r\n    }",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da moto a ser atualizada",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1186,6 +1854,7 @@
           }
         ],
         "requestBody": {
+          "description": "Dados atualizados da moto",
           "content": {
             "application/json": {
               "schema": {
@@ -1205,8 +1874,48 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Moto atualizada com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos ou ID incorreto",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Moto não encontrada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -1214,10 +1923,13 @@
         "tags": [
           "Moto"
         ],
+        "summary": "Remove uma moto pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    DELETE /motos/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da moto a ser removida",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1226,8 +1938,28 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Moto removida com sucesso"
+          },
+          "404": {
+            "description": "Moto não encontrada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -1237,10 +1969,13 @@
         "tags": [
           "Moto"
         ],
+        "summary": "Busca moto pelo identificador dela, seja placa, chassi ou número do motor.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /motos/identificador/ABC1234",
         "parameters": [
           {
             "name": "identificador",
             "in": "path",
+            "description": "Identificador da moto",
             "required": true,
             "schema": {
               "type": "string"
@@ -1249,21 +1984,50 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna as motos encontradas",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Moto"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Moto"
+                  }
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Moto"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Moto"
+                  }
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Moto"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Moto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Moto não encontrada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1276,10 +2040,13 @@
         "tags": [
           "Moto"
         ],
+        "summary": "Obtém motos cadastradas em uma filial específica.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /motos/filial/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da filial",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1289,7 +2056,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna as motos da filial",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1313,6 +2080,112 @@
                   "items": {
                     "$ref": "#/components/schemas/Moto"
                   }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Motos não encontradas",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/motoml/predict": {
+      "post": {
+        "tags": [
+          "MotoMl"
+        ],
+        "summary": "Prediz a condição de uma moto usando ML",
+        "description": "Exemplo:\r\n    POST /motoml/predict\r\n    {\r\n        \"diasUso\": 45,\r\n        \"status\": 1,\r\n        \"tipoMoto\": \"Urbana\"\r\n    }",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MotoConditionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MotoConditionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MotoConditionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MotoConditionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/motoml/status": {
+      "get": {
+        "tags": [
+          "MotoMl"
+        ],
+        "summary": "Verifica status do modelo ML",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/motoml/test": {
+      "get": {
+        "tags": [
+          "MotoMl"
+        ],
+        "summary": "Teste rápido do modelo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MotoConditionResponse"
                 }
               }
             }
@@ -1325,9 +2198,11 @@
         "tags": [
           "Pais"
         ],
+        "summary": "Obtém uma lista de todos os países.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /paises",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a lista completa de países",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1361,7 +2236,10 @@
         "tags": [
           "Pais"
         ],
+        "summary": "Cria um novo país.",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /paises\r\n    {\r\n        \"Id_pais\": 1,\r\n        \"NomePais\": \"Brasil\"\r\n    }",
         "requestBody": {
+          "description": "Dados do país",
           "content": {
             "application/json": {
               "schema": {
@@ -1381,8 +2259,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "País criado com sucesso",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1397,6 +2275,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Pais"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1409,10 +2307,13 @@
         "tags": [
           "Pais"
         ],
+        "summary": "Obtém um país pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /paises/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do país",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1422,7 +2323,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna o país encontrado",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1440,6 +2341,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "País não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -1447,10 +2368,13 @@
         "tags": [
           "Pais"
         ],
+        "summary": "Atualiza os dados de um país existente.",
+        "description": "Exemplo de requisição:\r\n            \r\n    PUT /paises/1\r\n    {\r\n        \"Id_pais\": 1,\r\n        \"NomePais\": \"Argentina\"\r\n    }",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do país a ser atualizado",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1459,6 +2383,7 @@
           }
         ],
         "requestBody": {
+          "description": "Dados atualizados do país",
           "content": {
             "application/json": {
               "schema": {
@@ -1478,8 +2403,48 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "País atualizado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos ou ID incorreto",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "País não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -1487,10 +2452,13 @@
         "tags": [
           "Pais"
         ],
+        "summary": "Remove um país pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    DELETE /paises/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do país a ser removido",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1499,8 +2467,28 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "País removido com sucesso"
+          },
+          "404": {
+            "description": "País não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -1510,9 +2498,11 @@
         "tags": [
           "Perfil"
         ],
+        "summary": "Obtém uma lista de todos os perfis.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /perfis",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a lista completa de perfis",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1546,7 +2536,10 @@
         "tags": [
           "Perfil"
         ],
+        "summary": "Cria um novo perfil.",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /perfis\r\n    {\r\n        \"id_perfil\": 1,\r\n        \"NomePerfil\": \"Administrador\"\r\n    }",
         "requestBody": {
+          "description": "Dados do perfil",
           "content": {
             "application/json": {
               "schema": {
@@ -1566,8 +2559,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Perfil criado com sucesso",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1582,6 +2575,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Perfil"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1594,10 +2607,13 @@
         "tags": [
           "Perfil"
         ],
+        "summary": "Obtém um perfil pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /perfis/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do perfil",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1607,7 +2623,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna o perfil encontrado",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1625,6 +2641,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Perfil não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -1632,10 +2668,13 @@
         "tags": [
           "Perfil"
         ],
+        "summary": "Atualiza os dados de um perfil existente.",
+        "description": "Exemplo de requisição:\r\n            \r\n    PUT /perfis/1\r\n    {\r\n        \"id_perfil\": 1,\r\n        \"NomePerfil\": \"Usuário\"\r\n    }",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do perfil a ser atualizado",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1644,6 +2683,7 @@
           }
         ],
         "requestBody": {
+          "description": "Dados atualizados do perfil",
           "content": {
             "application/json": {
               "schema": {
@@ -1663,8 +2703,48 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Perfil atualizado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos ou ID incorreto",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Perfil não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -1672,10 +2752,13 @@
         "tags": [
           "Perfil"
         ],
+        "summary": "Remove um perfil pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    DELETE /perfis/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do perfil a ser removido",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1684,8 +2767,28 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Perfil removido com sucesso"
+          },
+          "404": {
+            "description": "Perfil não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -1695,9 +2798,11 @@
         "tags": [
           "SecoesFilial"
         ],
+        "summary": "Obtém uma lista de todas as seções de filial.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /secoesfilial",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a lista completa de seções de filial",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1731,7 +2836,10 @@
         "tags": [
           "SecoesFilial"
         ],
+        "summary": "Cria uma nova seção de filial.",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /secoesfilial\r\n    {\r\n        \"id_secao\": 1,\r\n        \"Lado1\": 100,\r\n        \"Lado2\": 200,\r\n        \"Lado3\": 150,\r\n        \"Lado4\": 120,\r\n        \"id_tipo_secao\": 2,\r\n        \"id_filial\": 3\r\n    }",
         "requestBody": {
+          "description": "Dados da seção de filial",
           "content": {
             "application/json": {
               "schema": {
@@ -1751,8 +2859,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Seção de filial criada com sucesso",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1767,6 +2875,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SecoesFilial"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1779,10 +2907,13 @@
         "tags": [
           "SecoesFilial"
         ],
+        "summary": "Obtém uma seção de filial pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /secoesfilial/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da seção de filial",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1792,7 +2923,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a seção de filial encontrada",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1810,6 +2941,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Seção de filial não encontrada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -1817,10 +2968,13 @@
         "tags": [
           "SecoesFilial"
         ],
+        "summary": "Atualiza os dados de uma seção de filial existente.",
+        "description": "Exemplo de requisição:\r\n            \r\n    PUT /secoesfilial/1\r\n    {\r\n        \"id_secao\": 1,\r\n        \"Lado1\": 110,\r\n        \"Lado2\": 210,\r\n        \"Lado3\": 160,\r\n        \"Lado4\": 130,\r\n        \"id_tipo_secao\": 2,\r\n        \"id_filial\": 3\r\n    }",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da seção de filial a ser atualizada",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1829,6 +2983,7 @@
           }
         ],
         "requestBody": {
+          "description": "Dados atualizados da seção de filial",
           "content": {
             "application/json": {
               "schema": {
@@ -1848,8 +3003,48 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Seção de filial atualizada com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos ou ID incorreto",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Seção de filial não encontrada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -1857,10 +3052,13 @@
         "tags": [
           "SecoesFilial"
         ],
+        "summary": "Remove uma seção de filial pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    DELETE /secoesfilial/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da seção de filial a ser removida",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1869,8 +3067,28 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Seção de filial removida com sucesso"
+          },
+          "404": {
+            "description": "Seção de filial não encontrada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -1880,10 +3098,13 @@
         "tags": [
           "SecoesFilial"
         ],
+        "summary": "Obtém seções de filial por ID da filial.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /secoesfilial/filial/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da filial",
             "required": true,
             "schema": {
               "type": "integer",
@@ -1893,7 +3114,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna as seções de filial encontradas",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1917,6 +3138,26 @@
                   "items": {
                     "$ref": "#/components/schemas/SecoesFilial"
                   }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Seção de filial não encontrada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1929,9 +3170,11 @@
         "tags": [
           "Telefone"
         ],
+        "summary": "Obtém uma lista de todos os telefones.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /telefones",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a lista completa de telefones",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1965,7 +3208,10 @@
         "tags": [
           "Telefone"
         ],
+        "summary": "Cria um novo telefone.",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /telefones\r\n    {\r\n        \"id_telefone\": 1,\r\n        \"Ddd\": \"011\",\r\n        \"Ddi\": \"055\",\r\n        \"Numero\": \"912345678\"\r\n    }",
         "requestBody": {
+          "description": "Dados do telefone",
           "content": {
             "application/json": {
               "schema": {
@@ -2004,6 +3250,12 @@
                 }
               }
             }
+          },
+          "201": {
+            "description": "Telefone criado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos"
           }
         }
       }
@@ -2013,10 +3265,13 @@
         "tags": [
           "Telefone"
         ],
+        "summary": "Obtém um telefone pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /telefones/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do telefone",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2026,7 +3281,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna o telefone encontrado",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2041,6 +3296,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Telefone"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Telefone não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2051,10 +3326,13 @@
         "tags": [
           "Telefone"
         ],
+        "summary": "Atualiza os dados de um telefone existente.",
+        "description": "Exemplo de requisição:\r\n            \r\n    PUT /telefones/1\r\n    {\r\n        \"id_telefone\": 1,\r\n        \"Ddd\": \"021\",\r\n        \"Ddi\": \"055\",\r\n        \"Numero\": \"998877665\"\r\n    }",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do telefone a ser atualizado",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2063,6 +3341,7 @@
           }
         ],
         "requestBody": {
+          "description": "Dados atualizados do telefone",
           "content": {
             "application/json": {
               "schema": {
@@ -2082,8 +3361,48 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Telefone atualizado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos ou ID incorreto",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Telefone não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -2091,10 +3410,13 @@
         "tags": [
           "Telefone"
         ],
+        "summary": "Remove um telefone pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    DELETE /telefones/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do telefone a ser removido",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2102,6 +3424,75 @@
             }
           }
         ],
+        "responses": {
+          "204": {
+            "description": "Telefone removido com sucesso"
+          },
+          "404": {
+            "description": "Telefone não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Telemetry/health": {
+      "get": {
+        "tags": [
+          "Telemetry"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Telemetry/metrics": {
+      "get": {
+        "tags": [
+          "Telemetry"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Telemetry/trace-test": {
+      "post": {
+        "tags": [
+          "Telemetry"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { }
+            },
+            "text/json": {
+              "schema": { }
+            },
+            "application/*+json": {
+              "schema": { }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -2114,9 +3505,11 @@
         "tags": [
           "TipoMoto"
         ],
+        "summary": "Obtém uma lista de todos os tipos de moto.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /tipomotos",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a lista completa de tipos de moto",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2150,7 +3543,10 @@
         "tags": [
           "TipoMoto"
         ],
+        "summary": "Cria um novo tipo de moto.",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /tipomotos\r\n    {\r\n        \"id_tipo_moto\": 1,\r\n        \"NomeTipoMoto\": \"Scooter\"\r\n    }",
         "requestBody": {
+          "description": "Dados do tipo de moto",
           "content": {
             "application/json": {
               "schema": {
@@ -2170,8 +3566,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Tipo de moto criado com sucesso",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2186,6 +3582,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TipoMoto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2198,10 +3614,13 @@
         "tags": [
           "TipoMoto"
         ],
+        "summary": "Obtém um tipo de moto pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /tipomotos/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do tipo de moto",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2211,7 +3630,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna o tipo de moto encontrado",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2229,6 +3648,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Tipo de moto não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -2236,10 +3675,13 @@
         "tags": [
           "TipoMoto"
         ],
+        "summary": "Atualiza os dados de um tipo de moto existente.",
+        "description": "Exemplo de requisição:\r\n            \r\n    PUT /tipomotos/1\r\n    {\r\n        \"id_tipo_moto\": 1,\r\n        \"NomeTipoMoto\": \"Custom\"\r\n    }",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do tipo de moto a ser atualizado",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2248,6 +3690,7 @@
           }
         ],
         "requestBody": {
+          "description": "Dados atualizados do tipo de moto",
           "content": {
             "application/json": {
               "schema": {
@@ -2267,8 +3710,48 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Tipo de moto atualizado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos ou ID incorreto",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tipo de moto não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -2276,10 +3759,13 @@
         "tags": [
           "TipoMoto"
         ],
+        "summary": "Remove um tipo de moto pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    DELETE /tipomotos/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do tipo de moto a ser removido",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2288,8 +3774,28 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Tipo de moto removido com sucesso"
+          },
+          "404": {
+            "description": "Tipo de moto não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -2299,9 +3805,11 @@
         "tags": [
           "TipoSecaoFilial"
         ],
+        "summary": "Obtém uma lista de todos os tipos de seção de filial.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /tiposecaofilial",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a lista completa de tipos de seção de filial",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2335,7 +3843,10 @@
         "tags": [
           "TipoSecaoFilial"
         ],
+        "summary": "Cria um novo tipo de seção de filial.",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /tiposecaofilial\r\n    {\r\n        \"id_tipo_secao\": 1,\r\n        \"NomeTipoSecao\": \"Coberta\"\r\n    }",
         "requestBody": {
+          "description": "Dados do tipo de seção de filial",
           "content": {
             "application/json": {
               "schema": {
@@ -2355,8 +3866,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Tipo de seção de filial criado com sucesso",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2371,6 +3882,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TipoSecao"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2383,10 +3914,13 @@
         "tags": [
           "TipoSecaoFilial"
         ],
+        "summary": "Obtém um tipo de seção de filial pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /tiposecaofilial/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do tipo de seção de filial",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2396,7 +3930,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna o tipo de seção de filial encontrado",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2414,6 +3948,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Tipo de seção de filial não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -2421,10 +3975,13 @@
         "tags": [
           "TipoSecaoFilial"
         ],
+        "summary": "Atualiza os dados de um tipo de seção de filial existente.",
+        "description": "Exemplo de requisição:\r\n            \r\n    PUT /tiposecaofilial/1\r\n    {\r\n        \"id_tipo_secao\": 1,\r\n        \"NomeTipoSecao\": \"Descoberta\"\r\n    }",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do tipo de seção de filial a ser atualizado",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2433,6 +3990,7 @@
           }
         ],
         "requestBody": {
+          "description": "Dados atualizados do tipo de seção de filial",
           "content": {
             "application/json": {
               "schema": {
@@ -2452,8 +4010,48 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Tipo de seção de filial atualizado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos ou ID incorreto",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tipo de seção de filial não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -2461,10 +4059,13 @@
         "tags": [
           "TipoSecaoFilial"
         ],
+        "summary": "Remove um tipo de seção de filial pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    DELETE /tiposecaofilial/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do tipo de seção de filial a ser removido",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2473,8 +4074,28 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Tipo de seção de filial removido com sucesso"
+          },
+          "404": {
+            "description": "Tipo de seção de filial não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -2484,9 +4105,11 @@
         "tags": [
           "Usuario"
         ],
+        "summary": "Obtém uma lista de todos os usuários.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /usuarios",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a lista completa de usuários",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2520,7 +4143,10 @@
         "tags": [
           "Usuario"
         ],
+        "summary": "Cria um novo usuário.",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /usuarios\r\n    {\r\n        \"id_usuario\": 1,\r\n        \"NomeUsuario\": \"João Silva\",\r\n        \"EmailUsuario\": \"joao@email.com\",\r\n        \"SenhaUsuario\": \"senha123\",\r\n        \"id_perfil\": 2,\r\n        \"id_filial\": 3\r\n    }",
         "requestBody": {
+          "description": "Dados do usuário",
           "content": {
             "application/json": {
               "schema": {
@@ -2540,8 +4166,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Usuário criado com sucesso",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2556,6 +4182,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Usuario"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2568,10 +4214,13 @@
         "tags": [
           "Usuario"
         ],
+        "summary": "Obtém um usuário pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /usuarios/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do usuário",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2581,7 +4230,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna o usuário encontrado",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2599,6 +4248,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -2606,10 +4275,13 @@
         "tags": [
           "Usuario"
         ],
+        "summary": "Atualiza os dados de um usuário existente.",
+        "description": "Exemplo de requisição:\r\n            \r\n    PUT /usuarios/1\r\n    {\r\n        \"id_usuario\": 1,\r\n        \"NomeUsuario\": \"João Silva\",\r\n        \"EmailUsuario\": \"joao@email.com\",\r\n        \"SenhaUsuario\": \"novaSenha\",\r\n        \"id_perfil\": 2,\r\n        \"id_filial\": 3\r\n    }",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do usuário a ser atualizado",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2618,6 +4290,7 @@
           }
         ],
         "requestBody": {
+          "description": "Dados atualizados do usuário",
           "content": {
             "application/json": {
               "schema": {
@@ -2637,8 +4310,48 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Usuário atualizado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos ou ID incorreto",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -2646,10 +4359,13 @@
         "tags": [
           "Usuario"
         ],
+        "summary": "Remove um usuário pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    DELETE /usuarios/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do usuário a ser removido",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2658,8 +4374,28 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Usuário removido com sucesso"
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -2669,10 +4405,13 @@
         "tags": [
           "Usuario"
         ],
+        "summary": "Obtém usuários por ID da filial.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /usuarios/filial/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da filial",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2682,7 +4421,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna os usuários da filial",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2709,6 +4448,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Usuários não encontrados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -2718,9 +4477,11 @@
         "tags": [
           "Uwb"
         ],
+        "summary": "Obtém uma lista de todos os UWBs.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /uwb",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna a lista completa de UWBs",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2754,7 +4515,10 @@
         "tags": [
           "Uwb"
         ],
+        "summary": "Cria um novo UWB.",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /uwb\r\n    {\r\n        \"id_uwb\": 1,\r\n        \"id_moto\": 2,\r\n        \"ValorUwb\": \"UWB123456\"\r\n    }",
         "requestBody": {
+          "description": "Dados do UWB",
           "content": {
             "application/json": {
               "schema": {
@@ -2774,8 +4538,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "UWB criado com sucesso",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2790,6 +4554,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Uwb"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2802,10 +4586,13 @@
         "tags": [
           "Uwb"
         ],
+        "summary": "Obtém um UWB pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    GET /uwb/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do UWB",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2815,7 +4602,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Retorna o UWB encontrado",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2833,6 +4620,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "UWB não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -2840,10 +4647,13 @@
         "tags": [
           "Uwb"
         ],
+        "summary": "Atualiza os dados de um UWB existente.",
+        "description": "Exemplo de requisição:\r\n            \r\n    PUT /uwb/1\r\n    {\r\n        \"id_uwb\": 1,\r\n        \"id_moto\": 2,\r\n        \"ValorUwb\": \"UWB654321\"\r\n    }",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do UWB a ser atualizado",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2852,6 +4662,7 @@
           }
         ],
         "requestBody": {
+          "description": "Dados atualizados do UWB",
           "content": {
             "application/json": {
               "schema": {
@@ -2871,8 +4682,48 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "UWB atualizado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos ou ID incorreto",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "UWB não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -2880,10 +4731,13 @@
         "tags": [
           "Uwb"
         ],
+        "summary": "Remove um UWB pelo ID.",
+        "description": "Exemplo de requisição:\r\n            \r\n    DELETE /uwb/1",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID do UWB a ser removido",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2892,8 +4746,28 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "UWB removido com sucesso"
+          },
+          "404": {
+            "description": "UWB não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -2906,14 +4780,17 @@
         "properties": {
           "id_cidade": {
             "type": "integer",
+            "description": "Identificador único da cidade.",
             "format": "int32"
           },
           "nomeCidade": {
             "type": "string",
+            "description": "Nome da cidade.",
             "nullable": true
           },
           "id_estado": {
             "type": "integer",
+            "description": "Identificador do estado ao qual a cidade pertence.",
             "format": "int32"
           }
         },
@@ -2924,18 +4801,22 @@
         "properties": {
           "id_contato": {
             "type": "integer",
+            "description": "Identificador único do contato.",
             "format": "int32"
           },
           "nmDono": {
             "type": "string",
+            "description": "Nome do dono do contato.",
             "nullable": true
           },
           "status": {
             "type": "integer",
+            "description": "Status do contato (0 = inativo, 1 = ativo).",
             "format": "int32"
           },
           "id_Telefone": {
             "type": "integer",
+            "description": "Identificador do telefone associado ao contato.",
             "format": "int32"
           }
         },
@@ -2946,22 +4827,27 @@
         "properties": {
           "id_endereco": {
             "type": "integer",
+            "description": "Identificador único do endereço.",
             "format": "int32"
           },
           "nomeLogradouro": {
             "type": "string",
+            "description": "Nome do logradouro.",
             "nullable": true
           },
           "numeroLogradouro": {
             "type": "string",
+            "description": "Número do logradouro.",
             "nullable": true
           },
           "cep": {
             "type": "string",
+            "description": "CEP do endereço.",
             "nullable": true
           },
           "id_cidade": {
             "type": "integer",
+            "description": "Identificador da cidade associada ao endereço.",
             "format": "int32"
           }
         },
@@ -2972,14 +4858,17 @@
         "properties": {
           "id_estado": {
             "type": "integer",
+            "description": "Identificador único do estado.",
             "format": "int32"
           },
           "nomeEstado": {
             "type": "string",
+            "description": "Nome do estado.",
             "nullable": true
           },
           "id_pais": {
             "type": "integer",
+            "description": "Identificador do país associado ao estado.",
             "format": "int32"
           }
         },
@@ -2990,22 +4879,27 @@
         "properties": {
           "id_filial": {
             "type": "integer",
+            "description": "Identificador único da filial.",
             "format": "int32"
           },
           "cnpj": {
             "type": "string",
+            "description": "CNPJ da filial.",
             "nullable": true
           },
           "senha": {
             "type": "string",
+            "description": "Senha da filial.",
             "nullable": true
           },
           "id_endereco": {
             "type": "integer",
+            "description": "Identificador do endereço associado à filial.",
             "format": "int32"
           },
           "id_contato": {
             "type": "integer",
+            "description": "Identificador do contato associado à filial.",
             "format": "int32"
           }
         },
@@ -3016,27 +4910,80 @@
         "properties": {
           "id_moto": {
             "type": "integer",
+            "description": "Identificador único da moto.",
             "format": "int32"
           },
           "status": {
             "type": "integer",
+            "description": "Status da moto (0 = inativa, 1 = ativa).",
             "format": "int32"
           },
           "condicaoMoto": {
             "type": "string",
+            "description": "Condição da moto (ex: Nova, Usada).",
             "nullable": true
           },
           "identificadorMoto": {
             "type": "string",
+            "description": "Identificador da moto (placa, chassi ou número do motor).",
             "nullable": true
           },
           "id_filial": {
             "type": "integer",
+            "description": "Identificador da filial associada à moto.",
             "format": "int32"
           },
           "id_tipo_moto": {
             "type": "integer",
+            "description": "Identificador do tipo da moto.",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MotoConditionRequest": {
+        "type": "object",
+        "properties": {
+          "diasUso": {
+            "type": "number",
+            "format": "float"
+          },
+          "status": {
+            "type": "number",
+            "format": "float"
+          },
+          "tipoMoto": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MotoConditionResponse": {
+        "type": "object",
+        "properties": {
+          "condicaoMoto": {
+            "type": "string",
+            "nullable": true
+          },
+          "confianca": {
+            "type": "number",
+            "format": "float"
+          },
+          "recomendacao": {
+            "type": "string",
+            "nullable": true
+          },
+          "nivelPrioridade": {
+            "type": "string",
+            "nullable": true
+          },
+          "dadosEntrada": {
+            "$ref": "#/components/schemas/MotoConditionRequest"
+          },
+          "dataPredicao": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -3046,10 +4993,12 @@
         "properties": {
           "id_pais": {
             "type": "integer",
+            "description": "Identificador único do país.",
             "format": "int32"
           },
           "nomePais": {
             "type": "string",
+            "description": "Nome do país.",
             "nullable": true
           }
         },
@@ -3060,44 +5009,80 @@
         "properties": {
           "id_perfil": {
             "type": "integer",
+            "description": "Identificador único do perfil.",
             "format": "int32"
           },
           "nomePerfil": {
             "type": "string",
+            "description": "Nome do perfil.",
             "nullable": true
           }
         },
         "additionalProperties": false
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
       },
       "SecoesFilial": {
         "type": "object",
         "properties": {
           "id_secao": {
             "type": "integer",
+            "description": "Identificador único da seção de filial.",
             "format": "int32"
           },
           "lado1": {
             "type": "integer",
+            "description": "Tamanho do lado 1 da seção.",
             "format": "int32"
           },
           "lado2": {
             "type": "integer",
+            "description": "Tamanho do lado 2 da seção.",
             "format": "int32"
           },
           "lado3": {
             "type": "integer",
+            "description": "Tamanho do lado 3 da seção.",
             "format": "int32"
           },
           "lado4": {
             "type": "integer",
+            "description": "Tamanho do lado 4 da seção.",
             "format": "int32"
           },
           "id_tipo_secao": {
             "type": "integer",
+            "description": "Identificador do tipo de seção.",
             "format": "int32"
           },
           "id_filial": {
             "type": "integer",
+            "description": "Identificador da filial associada à seção.",
             "format": "int32"
           }
         },
@@ -3108,18 +5093,22 @@
         "properties": {
           "id_telefone": {
             "type": "integer",
+            "description": "Identificador único do telefone.",
             "format": "int32"
           },
           "ddd": {
             "type": "string",
+            "description": "DDD do telefone (3 dígitos).",
             "nullable": true
           },
           "ddi": {
             "type": "string",
+            "description": "DDI do telefone (3 dígitos).",
             "nullable": true
           },
           "numero": {
             "type": "string",
+            "description": "Número do telefone.",
             "nullable": true
           }
         },
@@ -3130,10 +5119,12 @@
         "properties": {
           "id_tipo_moto": {
             "type": "integer",
+            "description": "Identificador único do tipo de moto.",
             "format": "int32"
           },
           "nomeTipoMoto": {
             "type": "string",
+            "description": "Nome do tipo de moto.",
             "nullable": true
           }
         },
@@ -3144,9 +5135,25 @@
         "properties": {
           "id_tipo_secao": {
             "type": "integer",
+            "description": "Identificador único do tipo de seção de filial.",
             "format": "int32"
           },
           "nomeTipoSecao": {
+            "type": "string",
+            "description": "Nome do tipo de seção de filial.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
             "type": "string",
             "nullable": true
           }
@@ -3158,26 +5165,32 @@
         "properties": {
           "id_usuario": {
             "type": "integer",
+            "description": "Identificador único do usuário.",
             "format": "int32"
           },
           "nomeUsuario": {
             "type": "string",
+            "description": "Nome do usuário.",
             "nullable": true
           },
           "emailUsuario": {
             "type": "string",
+            "description": "Email do usuário.",
             "nullable": true
           },
           "senhaUsuario": {
             "type": "string",
+            "description": "Senha do usuário.",
             "nullable": true
           },
           "id_perfil": {
             "type": "integer",
+            "description": "Identificador do perfil associado ao usuário.",
             "format": "int32"
           },
           "id_filial": {
             "type": "integer",
+            "description": "Identificador da filial associada ao usuário.",
             "format": "int32"
           }
         },
@@ -3188,19 +5201,35 @@
         "properties": {
           "id_uwb": {
             "type": "integer",
+            "description": "Identificador único do UWB.",
             "format": "int32"
           },
           "id_moto": {
             "type": "integer",
+            "description": "Identificador da moto associada ao UWB.",
             "format": "int32"
           },
           "valorUwb": {
             "type": "string",
+            "description": "Valor do UWB.",
             "nullable": true
           }
         },
         "additionalProperties": false
       }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "Insira o token JWT desta forma: Bearer {seu Token}",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
 }

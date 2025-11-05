@@ -40,10 +40,11 @@ namespace WebApplication3.Repositories
             return filial;
         }
 
-        public async Task UpdateAsync(Filial filial)
+        public async Task<Filial> UpdateAsync(Filial filial)
         {
             _context.Entry(filial).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+            return filial;
         }
 
         public async Task<bool> DeleteAsync(int id)

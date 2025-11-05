@@ -17,7 +17,7 @@ namespace WebApplication3.Controllers
 
         public SecoesFilialController(SecoesFilialService context)
         {
-            secoesFilial = context;
+            secoesFilialService = context;
         }
 
         /// <summary>

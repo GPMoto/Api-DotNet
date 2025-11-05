@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Exceptions;
@@ -117,6 +118,7 @@ namespace WebApplication3.Controllers
         [HttpPost("/usuarios")]
         [ProducesResponseType(typeof(Usuario), 201)]
         [ProducesResponseType(400)]
+        [AllowAnonymous]
         public async Task<ActionResult<Usuario>> Post([FromBody] Usuario usuario)
         {
             try

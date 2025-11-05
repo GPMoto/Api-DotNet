@@ -1,49 +1,58 @@
 ﻿using WebApplication3.Models;
+using WebApplication3.Repositories;
 
 namespace WebApplication3.Service
 {
     public class MotoService
     {
 
-        private readonly MotoService motoService;
+        private readonly MotoRespository motoRepository;
 
-        public MotoService(MotoService motoService)
+        public MotoService(MotoRespository repo)
         {
-            this.motoService = motoService;
+            this.motoRepository = repo;
         }
 
         public Task<IEnumerable<Moto>> GetAllAsync()
         {
-            return motoService.GetAllAsync();
+            return motoRepository.GetAllAsync();
+
+
         }
         public Task<Moto?> GetByIdAsync(int id)
         {
-            return motoService.GetByIdAsync(id);
+            return motoRepository.GetByIdAsync(id);
+
         }
 
         public Task<IEnumerable<Moto>> GetByIdentificador(string identificador)
         {
-            return motoService.GetByIdentificador(identificador);
+            return motoRepository.GetByIdentificador(identificador);
+
         }
 
         public Task<IEnumerable<Moto>> GetByIdFilial(int id)
         {
-            return motoService.GetByIdFilial(id);
+            return motoRepository.GetByIdFilial(id);
+
         }
 
         public Task<Moto> AddAsync(Moto moto)
         {
-            return motoService.AddAsync(moto);
+            return motoRepository.AddAsync(moto);
+
         }
 
         public Task UpdateAsync(Moto moto)
         {
-            return motoService.UpdateAsync(moto);
+            return motoRepository.UpdateAsync(moto);
+
         }
 
         public Task<bool> DeleteAsync(int id)
         {
-            return motoService.DeleteAsync(id);
+            return motoRepository.DeleteAsync(id);
+
         }
     }
 }

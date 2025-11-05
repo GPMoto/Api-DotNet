@@ -23,6 +23,13 @@ namespace WebApplication3.Repositories
             return await _context.Usuario.FindAsync(id);
 
         }
+
+        public async Task<Usuario?> GetByEmailAsync(string email)
+        {
+            return await _context.Usuario
+                .FirstOrDefaultAsync(u => u.EmailUsuario == email);
+        }
+
         public async Task<IEnumerable<Usuario>> GetByIdFilial(int idFilial)
         {
             return await _context.Usuario
@@ -56,3 +63,4 @@ namespace WebApplication3.Repositories
 
         }
     }
+}

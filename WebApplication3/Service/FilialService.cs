@@ -33,9 +33,9 @@ namespace WebApplication3.Service
             return await filialRepository.AddAsync(filial);
         }
 
-        public async Task UpdateAsync(Filial filial)
+        public async Task<Filial> UpdateAsync(Filial filial)
         {
-            await filialRepository.UpdateAsync(filial);
+            return await filialRepository.UpdateAsync(filial);
         }
 
         public async Task<bool> DeleteAsync(int id)

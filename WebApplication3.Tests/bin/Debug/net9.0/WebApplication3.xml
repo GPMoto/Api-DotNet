@@ -1,0 +1,1618 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebApplication3</name>
+    </assembly>
+    <members>
+        <member name="T:WebApplication3.Controllers.CidadeController">
+            <summary>
+            Controller para gerenciamento de cidades no sistema GPMoto
+            </summary>
+            <remarks>
+            Este controller permite operações CRUD completas para cidades, 
+            incluindo listagem, consulta por ID, criação, atualização e remoção.
+            </remarks>
+        </member>
+        <member name="M:WebApplication3.Controllers.CidadeController.Get">
+             <summary>
+             Retorna todas as cidades cadastradas.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /cidades
+            
+             </remarks>
+             <returns>Lista de cidades.</returns>
+             <response code="200">Retorna a lista de cidades.</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.CidadeController.GetById(System.Int32)">
+             <summary>
+             Retorna uma cidade pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /cidades/1
+            
+             </remarks>
+             <param name="id">ID da cidade.</param>
+             <returns>Dados da cidade.</returns>
+             <response code="200">Retorna a cidade encontrada.</response>
+             <response code="404">Cidade não encontrada.</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.CidadeController.Post(WebApplication3.Models.Cidade)">
+             <summary>
+             Cria uma nova cidade.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 POST /cidades
+                 {
+                     "id_cidade": 1,
+                     "NomeCidade": "São Paulo",
+                     "id_estado": 2
+                 }
+            
+             </remarks>
+             <param name="cidade">Dados da cidade.</param>
+             <returns>Cidade criada.</returns>
+             <response code="201">Cidade criada com sucesso.</response>
+             <response code="400">Dados inválidos.</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.CidadeController.Put(System.Int32,WebApplication3.Models.Cidade)">
+             <summary>
+             Atualiza os dados de uma cidade existente.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 PUT /cidades/1
+                 {
+                     "id_cidade": 1,
+                     "NomeCidade": "Campinas",
+                     "id_estado": 2
+                 }
+            
+             </remarks>
+             <param name="id">ID da cidade a ser atualizada.</param>
+             <param name="cidade">Dados atualizados da cidade.</param>
+             <returns>Sem conteúdo em caso de sucesso.</returns>
+             <response code="204">Cidade atualizada com sucesso.</response>
+             <response code="400">Dados inválidos ou ID incorreto.</response>
+             <response code="404">Cidade não encontrada.</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.CidadeController.Delete(System.Int32)">
+             <summary>
+             Remove uma cidade pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 DELETE /cidades/1
+            
+             </remarks>
+             <param name="id">ID da cidade a ser removida.</param>
+             <returns>Sem conteúdo em caso de sucesso.</returns>
+             <response code="204">Cidade removida com sucesso.</response>
+             <response code="404">Cidade não encontrada.</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.ContatoController.Get">
+             <summary>
+             Retorna todos os contatos cadastrados.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /contatos
+            
+             </remarks>
+             <returns>Lista de contatos.</returns>
+             <response code="200">Retorna a lista de contatos.</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.ContatoController.GetById(System.Int32)">
+             <summary>
+             Retorna um contato pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /contatos/1
+            
+             </remarks>
+             <param name="id">ID do contato.</param>
+             <returns>Dados do contato.</returns>
+             <response code="200">Retorna o contato encontrado.</response>
+             <response code="404">Contato não encontrado.</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.ContatoController.GetByNameDono(System.String)">
+             <summary>
+             Retorna contatos pelo nome do dono.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /contatos/nomeDono/João
+            
+             </remarks>
+             <param name="nome">Nome do dono do contato.</param>
+             <returns>Lista de contatos encontrados.</returns>
+             <response code="200">Retorna os contatos encontrados.</response>
+             <response code="404">Contato não encontrado.</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.ContatoController.Post(WebApplication3.Models.Contato)">
+             <summary>
+             Cria um novo contato.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 POST /contatos
+                 {
+                     "id_contato": 1,
+                     "nmDono": "João Silva",
+                     "status": 1,
+                     "id_Telefone": 10
+                 }
+            
+             </remarks>
+             <param name="contato">Dados do contato.</param>
+             <returns>Contato criado.</returns>
+             <response code="201">Contato criado com sucesso.</response>
+             <response code="400">Dados inválidos.</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.ContatoController.Put(System.Int32,WebApplication3.Models.Contato)">
+             <summary>
+             Atualiza os dados de um contato existente.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 PUT /contatos/1
+                 {
+                     "id_contato": 1,
+                     "nmDono": "João Silva",
+                     "status": 0,
+                     "id_Telefone": 10
+                 }
+            
+             </remarks>
+             <param name="id">ID do contato a ser atualizado.</param>
+             <param name="contato">Dados atualizados do contato.</param>
+             <returns>Sem conteúdo em caso de sucesso.</returns>
+             <response code="204">Contato atualizado com sucesso.</response>
+             <response code="400">Dados inválidos ou ID incorreto.</response>
+             <response code="404">Contato não encontrado.</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.ContatoController.Delete(System.Int32)">
+             <summary>
+             Remove um contato pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 DELETE /contatos/1
+            
+             </remarks>
+             <param name="id">ID do contato a ser removido.</param>
+             <returns>Sem conteúdo em caso de sucesso.</returns>
+             <response code="204">Contato removido com sucesso.</response>
+             <response code="404">Contato não encontrado.</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.EnderecoController.Get">
+             <summary>
+             Obtém uma lista de todos os endereços.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /enderecos
+            
+             </remarks>
+             <returns>Uma lista de endereços</returns>
+             <response code="200">Retorna a lista completa de endereços</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.EnderecoController.GetById(System.Int32)">
+             <summary>
+             Obtém um endereço pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /enderecos/1
+            
+             </remarks>
+             <param name="id">ID do endereço</param>
+             <returns>Dados do endereço</returns>
+             <response code="200">Retorna o endereço encontrado</response>
+             <response code="404">Endereço não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.EnderecoController.GetByCep(System.String)">
+             <summary>
+             Obtém endereços pelo CEP.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /enderecos/cep/12345678
+            
+             </remarks>
+             <param name="cep">CEP do endereço</param>
+             <returns>Lista de endereços encontrados</returns>
+             <response code="200">Retorna os endereços encontrados</response>
+             <response code="404">Endereço não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.EnderecoController.Post(WebApplication3.Models.Endereco)">
+             <summary>
+             Cria um novo endereço.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 POST /enderecos
+                 {
+                     "id_endereco": 1,
+                     "NomeLogradouro": "Rua das Flores",
+                     "NumeroLogradouro": "123",
+                     "Cep": "12345678",
+                     "id_cidade": 2
+                 }
+            
+             </remarks>
+             <param name="endereco">Dados do endereço</param>
+             <returns>Endereço criado</returns>
+             <response code="201">Endereço criado com sucesso</response>
+             <response code="400">Dados inválidos</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.EnderecoController.Put(System.Int32,WebApplication3.Models.Endereco)">
+             <summary>
+             Atualiza os dados de um endereço existente.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 PUT /enderecos/1
+                 {
+                     "id_endereco": 1,
+                     "NomeLogradouro": "Rua das Flores",
+                     "NumeroLogradouro": "123",
+                     "Cep": "12345678",
+                     "id_cidade": 2
+                 }
+            
+             </remarks>
+             <param name="id">ID do endereço a ser atualizado</param>
+             <param name="endereco">Dados atualizados do endereço</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Endereço atualizado com sucesso</response>
+             <response code="400">Dados inválidos ou ID incorreto</response>
+             <response code="404">Endereço não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.EnderecoController.Delete(System.Int32)">
+             <summary>
+             Remove um endereço pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 DELETE /enderecos/1
+            
+             </remarks>
+             <param name="id">ID do endereço a ser removido</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Endereço removido com sucesso</response>
+             <response code="404">Endereço não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.EstadoController.Get">
+             <summary>
+             Obtém uma lista de todos os estados.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /estados
+            
+             </remarks>
+             <returns>Uma lista de estados</returns>
+             <response code="200">Retorna a lista completa de estados</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.EstadoController.GetById(System.Int32)">
+             <summary>
+             Obtém um estado pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /estados/1
+            
+             </remarks>
+             <param name="id">ID do estado</param>
+             <returns>Dados do estado</returns>
+             <response code="200">Retorna o estado encontrado</response>
+             <response code="404">Estado não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.EstadoController.Post(WebApplication3.Models.Estado)">
+             <summary>
+             Cria um novo estado.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 POST /estados
+                 {
+                     "id_estado": 1,
+                     "NomeEstado": "São Paulo",
+                     "id_pais": 1
+                 }
+            
+             </remarks>
+             <param name="estado">Dados do estado</param>
+             <returns>Estado criado</returns>
+             <response code="201">Estado criado com sucesso</response>
+             <response code="400">Dados inválidos</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.EstadoController.Put(System.Int32,WebApplication3.Models.Estado)">
+             <summary>
+             Atualiza os dados de um estado existente.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 PUT /estados/1
+                 {
+                     "id_estado": 1,
+                     "NomeEstado": "Rio de Janeiro",
+                     "id_pais": 1
+                 }
+            
+             </remarks>
+             <param name="id">ID do estado a ser atualizado</param>
+             <param name="estado">Dados atualizados do estado</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Estado atualizado com sucesso</response>
+             <response code="400">Dados inválidos ou ID incorreto</response>
+             <response code="404">Estado não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.EstadoController.Delete(System.Int32)">
+             <summary>
+             Remove um estado pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 DELETE /estados/1
+            
+             </remarks>
+             <param name="id">ID do estado a ser removido</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Estado removido com sucesso</response>
+             <response code="404">Estado não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.FilialController.Get">
+             <summary>
+             Obtém uma lista de todas as filiais.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /filiais
+            
+             </remarks>
+             <returns>Uma lista de filiais</returns>
+             <response code="200">Retorna a lista completa de filiais</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.FilialController.GetById(System.Int32)">
+             <summary>
+             Obtém uma filial pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /filiais/1
+            
+             </remarks>
+             <param name="id">ID da filial</param>
+             <returns>Dados da filial</returns>
+             <response code="200">Retorna a filial encontrada</response>
+             <response code="404">Filial não encontrada</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.FilialController.GetByCnph(System.String)">
+             <summary>
+             Obtém filiais pelo CNPJ.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /filiais/cnpj/12345678000199
+            
+             </remarks>
+             <param name="cnpj">CNPJ da filial</param>
+             <returns>Lista de filiais encontradas</returns>
+             <response code="200">Retorna as filiais encontradas</response>
+             <response code="404">Filial não encontrada</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.FilialController.Post(WebApplication3.Models.Filial)">
+             <summary>
+             Cria uma nova filial.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 POST /filiais
+                 {
+                     "id_filial": 1,
+                     "Cnpj": "12345678000199",
+                     "senha": "senha123",
+                     "id_endereco": 2,
+                     "id_contato": 3
+                 }
+            
+             </remarks>
+             <param name="filial">Dados da filial</param>
+             <returns>Filial criada</returns>
+             <response code="201">Filial criada com sucesso</response>
+             <response code="400">Dados inválidos</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.FilialController.Put(System.Int32,WebApplication3.Models.Filial)">
+             <summary>
+             Atualiza os dados de uma filial existente.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 PUT /filiais/1
+                 {
+                     "id_filial": 1,
+                     "Cnpj": "12345678000199",
+                     "senha": "novaSenha",
+                     "id_endereco": 2,
+                     "id_contato": 3
+                 }
+            
+             </remarks>
+             <param name="id">ID da filial a ser atualizada</param>
+             <param name="filial">Dados atualizados da filial</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Filial atualizada com sucesso</response>
+             <response code="400">Dados inválidos ou ID incorreto</response>
+             <response code="404">Filial não encontrada</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.FilialController.Delete(System.Int32)">
+             <summary>
+             Remove uma filial pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 DELETE /filiais/1
+            
+             </remarks>
+             <param name="id">ID da filial a ser removida</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Filial removida com sucesso</response>
+             <response code="404">Filial não encontrada</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.MotoController.Get">
+             <summary>
+             Obtém uma lista de todas as motos.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /motos
+            
+             </remarks>
+             <returns>Uma lista de motos</returns>
+             <response code="200">Retorna a lista completa de motos</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.MotoController.GetById(System.Int32)">
+             <summary>
+             Obtém uma moto pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /motos/1
+            
+             </remarks>
+             <param name="id">ID da moto</param>
+             <returns>Dados da moto</returns>
+             <response code="200">Retorna a moto encontrada</response>
+             <response code="404">Moto não encontrada</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.MotoController.GetByIdentificador(System.String)">
+             <summary>
+             Busca moto pelo identificador dela, seja placa, chassi ou número do motor.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /motos/identificador/ABC1234
+            
+             </remarks>
+             <param name="identificador">Identificador da moto</param>
+             <returns>Lista de motos encontradas</returns>
+             <response code="200">Retorna as motos encontradas</response>
+             <response code="404">Moto não encontrada</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.MotoController.GetByIdFilial(System.Int32)">
+             <summary>
+             Obtém motos cadastradas em uma filial específica.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /motos/filial/1
+            
+             </remarks>
+             <param name="id">ID da filial</param>
+             <returns>Lista de motos da filial</returns>
+             <response code="200">Retorna as motos da filial</response>
+             <response code="404">Motos não encontradas</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.MotoController.Post(WebApplication3.Models.Moto)">
+             <summary>
+             Cria uma nova moto.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 POST /motos
+                 {
+                     "id_moto": 1,
+                     "Status": 1,
+                     "CondicaoMoto": "Nova",
+                     "IdentificadorMoto": "ABC1234",
+                     "id_filial": 2,
+                     "id_tipo_moto": 3
+                 }
+            
+             </remarks>
+             <param name="moto">Dados da moto</param>
+             <returns>Moto criada</returns>
+             <response code="201">Moto criada com sucesso</response>
+             <response code="400">Dados inválidos</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.MotoController.Put(System.Int32,WebApplication3.Models.Moto)">
+             <summary>
+             Atualiza os dados de uma moto existente.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 PUT /motos/1
+                 {
+                     "id_moto": 1,
+                     "Status": 0,
+                     "CondicaoMoto": "Usada",
+                     "IdentificadorMoto": "ABC1234",
+                     "id_filial": 2,
+                     "id_tipo_moto": 3
+                 }
+            
+             </remarks>
+             <param name="id">ID da moto a ser atualizada</param>
+             <param name="moto">Dados atualizados da moto</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Moto atualizada com sucesso</response>
+             <response code="400">Dados inválidos ou ID incorreto</response>
+             <response code="404">Moto não encontrada</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.MotoController.Delete(System.Int32)">
+             <summary>
+             Remove uma moto pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 DELETE /motos/1
+            
+             </remarks>
+             <param name="id">ID da moto a ser removida</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Moto removida com sucesso</response>
+             <response code="404">Moto não encontrada</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.PaisController.Get">
+             <summary>
+             Obtém uma lista de todos os países.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /paises
+            
+             </remarks>
+             <returns>Uma lista de países</returns>
+             <response code="200">Retorna a lista completa de países</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.PaisController.GetById(System.Int32)">
+             <summary>
+             Obtém um país pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /paises/1
+            
+             </remarks>
+             <param name="id">ID do país</param>
+             <returns>Dados do país</returns>
+             <response code="200">Retorna o país encontrado</response>
+             <response code="404">País não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.PaisController.Post(WebApplication3.Models.Pais)">
+             <summary>
+             Cria um novo país.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 POST /paises
+                 {
+                     "Id_pais": 1,
+                     "NomePais": "Brasil"
+                 }
+            
+             </remarks>
+             <param name="pais">Dados do país</param>
+             <returns>País criado</returns>
+             <response code="201">País criado com sucesso</response>
+             <response code="400">Dados inválidos</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.PaisController.Put(System.Int32,WebApplication3.Models.Pais)">
+             <summary>
+             Atualiza os dados de um país existente.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 PUT /paises/1
+                 {
+                     "Id_pais": 1,
+                     "NomePais": "Argentina"
+                 }
+            
+             </remarks>
+             <param name="id">ID do país a ser atualizado</param>
+             <param name="pais">Dados atualizados do país</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">País atualizado com sucesso</response>
+             <response code="400">Dados inválidos ou ID incorreto</response>
+             <response code="404">País não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.PaisController.Delete(System.Int32)">
+             <summary>
+             Remove um país pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 DELETE /paises/1
+            
+             </remarks>
+             <param name="id">ID do país a ser removido</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">País removido com sucesso</response>
+             <response code="404">País não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.PerfilController.Get">
+             <summary>
+             Obtém uma lista de todos os perfis.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /perfis
+            
+             </remarks>
+             <returns>Uma lista de perfis</returns>
+             <response code="200">Retorna a lista completa de perfis</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.PerfilController.GetById(System.Int32)">
+             <summary>
+             Obtém um perfil pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /perfis/1
+            
+             </remarks>
+             <param name="id">ID do perfil</param>
+             <returns>Dados do perfil</returns>
+             <response code="200">Retorna o perfil encontrado</response>
+             <response code="404">Perfil não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.PerfilController.Post(WebApplication3.Models.Perfil)">
+             <summary>
+             Cria um novo perfil.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 POST /perfis
+                 {
+                     "id_perfil": 1,
+                     "NomePerfil": "Administrador"
+                 }
+            
+             </remarks>
+             <param name="perfil">Dados do perfil</param>
+             <returns>Perfil criado</returns>
+             <response code="201">Perfil criado com sucesso</response>
+             <response code="400">Dados inválidos</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.PerfilController.Put(System.Int32,WebApplication3.Models.Perfil)">
+             <summary>
+             Atualiza os dados de um perfil existente.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 PUT /perfis/1
+                 {
+                     "id_perfil": 1,
+                     "NomePerfil": "Usuário"
+                 }
+            
+             </remarks>
+             <param name="id">ID do perfil a ser atualizado</param>
+             <param name="perfil">Dados atualizados do perfil</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Perfil atualizado com sucesso</response>
+             <response code="400">Dados inválidos ou ID incorreto</response>
+             <response code="404">Perfil não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.PerfilController.Delete(System.Int32)">
+             <summary>
+             Remove um perfil pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 DELETE /perfis/1
+            
+             </remarks>
+             <param name="id">ID do perfil a ser removido</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Perfil removido com sucesso</response>
+             <response code="404">Perfil não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.SecoesFilialController.Get">
+             <summary>
+             Obtém uma lista de todas as seções de filial.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /secoesfilial
+            
+             </remarks>
+             <returns>Uma lista de seções de filial</returns>
+             <response code="200">Retorna a lista completa de seções de filial</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.SecoesFilialController.GetById(System.Int32)">
+             <summary>
+             Obtém uma seção de filial pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /secoesfilial/1
+            
+             </remarks>
+             <param name="id">ID da seção de filial</param>
+             <returns>Dados da seção de filial</returns>
+             <response code="200">Retorna a seção de filial encontrada</response>
+             <response code="404">Seção de filial não encontrada</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.SecoesFilialController.GetByIdFilial(System.Int32)">
+             <summary>
+             Obtém seções de filial por ID da filial.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /secoesfilial/filial/1
+            
+             </remarks>
+             <param name="id">ID da filial</param>
+             <returns>Lista de seções de filial</returns>
+             <response code="200">Retorna as seções de filial encontradas</response>
+             <response code="404">Seção de filial não encontrada</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.SecoesFilialController.Post(WebApplication3.Models.SecoesFilial)">
+             <summary>
+             Cria uma nova seção de filial.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 POST /secoesfilial
+                 {
+                     "id_secao": 1,
+                     "Lado1": 100,
+                     "Lado2": 200,
+                     "Lado3": 150,
+                     "Lado4": 120,
+                     "id_tipo_secao": 2,
+                     "id_filial": 3
+                 }
+            
+             </remarks>
+             <param name="SecoesFilial">Dados da seção de filial</param>
+             <returns>Seção de filial criada</returns>
+             <response code="201">Seção de filial criada com sucesso</response>
+             <response code="400">Dados inválidos</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.SecoesFilialController.Put(System.Int32,WebApplication3.Models.SecoesFilial)">
+             <summary>
+             Atualiza os dados de uma seção de filial existente.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 PUT /secoesfilial/1
+                 {
+                     "id_secao": 1,
+                     "Lado1": 110,
+                     "Lado2": 210,
+                     "Lado3": 160,
+                     "Lado4": 130,
+                     "id_tipo_secao": 2,
+                     "id_filial": 3
+                 }
+            
+             </remarks>
+             <param name="id">ID da seção de filial a ser atualizada</param>
+             <param name="SecoesFilial">Dados atualizados da seção de filial</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Seção de filial atualizada com sucesso</response>
+             <response code="400">Dados inválidos ou ID incorreto</response>
+             <response code="404">Seção de filial não encontrada</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.SecoesFilialController.Delete(System.Int32)">
+             <summary>
+             Remove uma seção de filial pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 DELETE /secoesfilial/1
+            
+             </remarks>
+             <param name="id">ID da seção de filial a ser removida</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Seção de filial removida com sucesso</response>
+             <response code="404">Seção de filial não encontrada</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TelefoneController.Get">
+             <summary>
+             Obtém uma lista de todos os telefones.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /telefones
+            
+             </remarks>
+             <returns>Uma lista de telefones</returns>
+             <response code="200">Retorna a lista completa de telefones</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TelefoneController.GetById(System.Int32)">
+             <summary>
+             Obtém um telefone pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /telefones/1
+            
+             </remarks>
+             <param name="id">ID do telefone</param>
+             <returns>Dados do telefone</returns>
+             <response code="200">Retorna o telefone encontrado</response>
+             <response code="404">Telefone não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TelefoneController.Post(WebApplication3.Models.Telefone)">
+             <summary>
+             Cria um novo telefone.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 POST /telefones
+                 {
+                     "id_telefone": 1,
+                     "Ddd": "011",
+                     "Ddi": "055",
+                     "Numero": "912345678"
+                 }
+            
+             </remarks>
+             <param name="telefone">Dados do telefone</param>
+             <returns>Telefone criado</returns>
+             <response code="201">Telefone criado com sucesso</response>
+             <response code="400">Dados inválidos</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TelefoneController.Put(System.Int32,WebApplication3.Models.Telefone)">
+             <summary>
+             Atualiza os dados de um telefone existente.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 PUT /telefones/1
+                 {
+                     "id_telefone": 1,
+                     "Ddd": "021",
+                     "Ddi": "055",
+                     "Numero": "998877665"
+                 }
+            
+             </remarks>
+             <param name="id">ID do telefone a ser atualizado</param>
+             <param name="telefone">Dados atualizados do telefone</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Telefone atualizado com sucesso</response>
+             <response code="400">Dados inválidos ou ID incorreto</response>
+             <response code="404">Telefone não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TelefoneController.Delete(System.Int32)">
+             <summary>
+             Remove um telefone pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 DELETE /telefones/1
+            
+             </remarks>
+             <param name="id">ID do telefone a ser removido</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Telefone removido com sucesso</response>
+             <response code="404">Telefone não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TipoMotoController.Get">
+             <summary>
+             Obtém uma lista de todos os tipos de moto.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /tipomotos
+            
+             </remarks>
+             <returns>Uma lista de tipos de moto</returns>
+             <response code="200">Retorna a lista completa de tipos de moto</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TipoMotoController.GetById(System.Int32)">
+             <summary>
+             Obtém um tipo de moto pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /tipomotos/1
+            
+             </remarks>
+             <param name="id">ID do tipo de moto</param>
+             <returns>Dados do tipo de moto</returns>
+             <response code="200">Retorna o tipo de moto encontrado</response>
+             <response code="404">Tipo de moto não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TipoMotoController.Post(WebApplication3.Models.TipoMoto)">
+             <summary>
+             Cria um novo tipo de moto.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 POST /tipomotos
+                 {
+                     "id_tipo_moto": 1,
+                     "NomeTipoMoto": "Scooter"
+                 }
+            
+             </remarks>
+             <param name="tipoMoto">Dados do tipo de moto</param>
+             <returns>Tipo de moto criado</returns>
+             <response code="201">Tipo de moto criado com sucesso</response>
+             <response code="400">Dados inválidos</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TipoMotoController.Put(System.Int32,WebApplication3.Models.TipoMoto)">
+             <summary>
+             Atualiza os dados de um tipo de moto existente.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 PUT /tipomotos/1
+                 {
+                     "id_tipo_moto": 1,
+                     "NomeTipoMoto": "Custom"
+                 }
+            
+             </remarks>
+             <param name="id">ID do tipo de moto a ser atualizado</param>
+             <param name="tipoMoto">Dados atualizados do tipo de moto</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Tipo de moto atualizado com sucesso</response>
+             <response code="400">Dados inválidos ou ID incorreto</response>
+             <response code="404">Tipo de moto não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TipoMotoController.Delete(System.Int32)">
+             <summary>
+             Remove um tipo de moto pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 DELETE /tipomotos/1
+            
+             </remarks>
+             <param name="id">ID do tipo de moto a ser removido</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Tipo de moto removido com sucesso</response>
+             <response code="404">Tipo de moto não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TipoSecaoFilialController.Get">
+             <summary>
+             Obtém uma lista de todos os tipos de seção de filial.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /tiposecaofilial
+            
+             </remarks>
+             <returns>Uma lista de tipos de seção de filial</returns>
+             <response code="200">Retorna a lista completa de tipos de seção de filial</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TipoSecaoFilialController.GetById(System.Int32)">
+             <summary>
+             Obtém um tipo de seção de filial pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /tiposecaofilial/1
+            
+             </remarks>
+             <param name="id">ID do tipo de seção de filial</param>
+             <returns>Dados do tipo de seção de filial</returns>
+             <response code="200">Retorna o tipo de seção de filial encontrado</response>
+             <response code="404">Tipo de seção de filial não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TipoSecaoFilialController.Post(WebApplication3.Models.TipoSecao)">
+             <summary>
+             Cria um novo tipo de seção de filial.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 POST /tiposecaofilial
+                 {
+                     "id_tipo_secao": 1,
+                     "NomeTipoSecao": "Coberta"
+                 }
+            
+             </remarks>
+             <param name="tipoSecaoFilial">Dados do tipo de seção de filial</param>
+             <returns>Tipo de seção de filial criado</returns>
+             <response code="201">Tipo de seção de filial criado com sucesso</response>
+             <response code="400">Dados inválidos</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TipoSecaoFilialController.Put(System.Int32,WebApplication3.Models.TipoSecao)">
+             <summary>
+             Atualiza os dados de um tipo de seção de filial existente.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 PUT /tiposecaofilial/1
+                 {
+                     "id_tipo_secao": 1,
+                     "NomeTipoSecao": "Descoberta"
+                 }
+            
+             </remarks>
+             <param name="id">ID do tipo de seção de filial a ser atualizado</param>
+             <param name="tipoSecaoFilial">Dados atualizados do tipo de seção de filial</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Tipo de seção de filial atualizado com sucesso</response>
+             <response code="400">Dados inválidos ou ID incorreto</response>
+             <response code="404">Tipo de seção de filial não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.TipoSecaoFilialController.Delete(System.Int32)">
+             <summary>
+             Remove um tipo de seção de filial pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 DELETE /tiposecaofilial/1
+            
+             </remarks>
+             <param name="id">ID do tipo de seção de filial a ser removido</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Tipo de seção de filial removido com sucesso</response>
+             <response code="404">Tipo de seção de filial não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.UsuarioController.Get">
+             <summary>
+             Obtém uma lista de todos os usuários.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /usuarios
+            
+             </remarks>
+             <returns>Uma lista de usuários</returns>
+             <response code="200">Retorna a lista completa de usuários</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.UsuarioController.GetById(System.Int32)">
+             <summary>
+             Obtém um usuário pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /usuarios/1
+            
+             </remarks>
+             <param name="id">ID do usuário</param>
+             <returns>Dados do usuário</returns>
+             <response code="200">Retorna o usuário encontrado</response>
+             <response code="404">Usuário não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.UsuarioController.GetByIdFilial(System.Int32)">
+             <summary>
+             Obtém usuários por ID da filial.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /usuarios/filial/1
+            
+             </remarks>
+             <param name="id">ID da filial</param>
+             <returns>Lista de usuários da filial</returns>
+             <response code="200">Retorna os usuários da filial</response>
+             <response code="404">Usuários não encontrados</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.UsuarioController.Post(WebApplication3.Models.Usuario)">
+             <summary>
+             Cria um novo usuário.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 POST /usuarios
+                 {
+                     "id_usuario": 1,
+                     "NomeUsuario": "João Silva",
+                     "EmailUsuario": "joao@email.com",
+                     "SenhaUsuario": "senha123",
+                     "id_perfil": 2,
+                     "id_filial": 3
+                 }
+            
+             </remarks>
+             <param name="usuario">Dados do usuário</param>
+             <returns>Usuário criado</returns>
+             <response code="201">Usuário criado com sucesso</response>
+             <response code="400">Dados inválidos</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.UsuarioController.Put(System.Int32,WebApplication3.Models.Usuario)">
+             <summary>
+             Atualiza os dados de um usuário existente.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 PUT /usuarios/1
+                 {
+                     "id_usuario": 1,
+                     "NomeUsuario": "João Silva",
+                     "EmailUsuario": "joao@email.com",
+                     "SenhaUsuario": "novaSenha",
+                     "id_perfil": 2,
+                     "id_filial": 3
+                 }
+            
+             </remarks>
+             <param name="id">ID do usuário a ser atualizado</param>
+             <param name="usuario">Dados atualizados do usuário</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Usuário atualizado com sucesso</response>
+             <response code="400">Dados inválidos ou ID incorreto</response>
+             <response code="404">Usuário não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.UsuarioController.Delete(System.Int32)">
+             <summary>
+             Remove um usuário pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 DELETE /usuarios/1
+            
+             </remarks>
+             <param name="id">ID do usuário a ser removido</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">Usuário removido com sucesso</response>
+             <response code="404">Usuário não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.UwbController.Get">
+             <summary>
+             Obtém uma lista de todos os UWBs.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /uwb
+            
+             </remarks>
+             <returns>Uma lista de UWBs</returns>
+             <response code="200">Retorna a lista completa de UWBs</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.UwbController.GetById(System.Int32)">
+             <summary>
+             Obtém um UWB pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 GET /uwb/1
+            
+             </remarks>
+             <param name="id">ID do UWB</param>
+             <returns>Dados do UWB</returns>
+             <response code="200">Retorna o UWB encontrado</response>
+             <response code="404">UWB não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.UwbController.Post(WebApplication3.Models.Uwb)">
+             <summary>
+             Cria um novo UWB.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 POST /uwb
+                 {
+                     "id_uwb": 1,
+                     "id_moto": 2,
+                     "ValorUwb": "UWB123456"
+                 }
+            
+             </remarks>
+             <param name="uwb">Dados do UWB</param>
+             <returns>UWB criado</returns>
+             <response code="201">UWB criado com sucesso</response>
+             <response code="400">Dados inválidos</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.UwbController.Put(System.Int32,WebApplication3.Models.Uwb)">
+             <summary>
+             Atualiza os dados de um UWB existente.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 PUT /uwb/1
+                 {
+                     "id_uwb": 1,
+                     "id_moto": 2,
+                     "ValorUwb": "UWB654321"
+                 }
+            
+             </remarks>
+             <param name="id">ID do UWB a ser atualizado</param>
+             <param name="uwb">Dados atualizados do UWB</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">UWB atualizado com sucesso</response>
+             <response code="400">Dados inválidos ou ID incorreto</response>
+             <response code="404">UWB não encontrado</response>
+        </member>
+        <member name="M:WebApplication3.Controllers.UwbController.Delete(System.Int32)">
+             <summary>
+             Remove um UWB pelo ID.
+             </summary>
+             <remarks>
+             Exemplo de requisição:
+            
+                 DELETE /uwb/1
+            
+             </remarks>
+             <param name="id">ID do UWB a ser removido</param>
+             <returns>Sem conteúdo em caso de sucesso</returns>
+             <response code="204">UWB removido com sucesso</response>
+             <response code="404">UWB não encontrado</response>
+        </member>
+        <member name="T:WebApplication3.Migrations.firstMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:WebApplication3.Migrations.firstMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebApplication3.Migrations.firstMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebApplication3.Migrations.firstMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="P:WebApplication3.Models.Cidade.id_cidade">
+            <summary>
+            Identificador único da cidade.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Cidade.NomeCidade">
+            <summary>
+            Nome da cidade.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Cidade.id_estado">
+            <summary>
+            Identificador do estado ao qual a cidade pertence.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Contato.id_contato">
+            <summary>
+            Identificador único do contato.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Contato.nmDono">
+            <summary>
+            Nome do dono do contato.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Contato.status">
+            <summary>
+            Status do contato (0 = inativo, 1 = ativo).
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Contato.id_Telefone">
+            <summary>
+            Identificador do telefone associado ao contato.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Endereco.id_endereco">
+            <summary>
+            Identificador único do endereço.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Endereco.NomeLogradouro">
+            <summary>
+            Nome do logradouro.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Endereco.NumeroLogradouro">
+            <summary>
+            Número do logradouro.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Endereco.Cep">
+            <summary>
+            CEP do endereço.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Endereco.id_cidade">
+            <summary>
+            Identificador da cidade associada ao endereço.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Estado.id_estado">
+            <summary>
+            Identificador único do estado.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Estado.NomeEstado">
+            <summary>
+            Nome do estado.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Estado.id_pais">
+            <summary>
+            Identificador do país associado ao estado.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Filial.id_filial">
+            <summary>
+            Identificador único da filial.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Filial.Cnpj">
+            <summary>
+            CNPJ da filial.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Filial.senha">
+            <summary>
+            Senha da filial.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Filial.id_endereco">
+            <summary>
+            Identificador do endereço associado à filial.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Filial.id_contato">
+            <summary>
+            Identificador do contato associado à filial.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Moto.id_moto">
+            <summary>
+            Identificador único da moto.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Moto.Status">
+            <summary>
+            Status da moto (0 = inativa, 1 = ativa).
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Moto.CondicaoMoto">
+            <summary>
+            Condição da moto (ex: Nova, Usada).
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Moto.IdentificadorMoto">
+            <summary>
+            Identificador da moto (placa, chassi ou número do motor).
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Moto.id_filial">
+            <summary>
+            Identificador da filial associada à moto.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Moto.id_tipo_moto">
+            <summary>
+            Identificador do tipo da moto.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Pais.Id_pais">
+            <summary>
+            Identificador único do país.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Pais.NomePais">
+            <summary>
+            Nome do país.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Perfil.id_perfil">
+            <summary>
+            Identificador único do perfil.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Perfil.NomePerfil">
+            <summary>
+            Nome do perfil.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.SecoesFilial.id_secao">
+            <summary>
+            Identificador único da seção de filial.
+            </summary>        
+        </member>
+        <member name="P:WebApplication3.Models.SecoesFilial.Lado1">
+            <summary>
+            Tamanho do lado 1 da seção.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.SecoesFilial.Lado2">
+            <summary>
+            Tamanho do lado 2 da seção.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.SecoesFilial.Lado3">
+            <summary>
+            Tamanho do lado 3 da seção.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.SecoesFilial.Lado4">
+            <summary>
+            Tamanho do lado 4 da seção.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.SecoesFilial.id_tipo_secao">
+            <summary>
+            Identificador do tipo de seção.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.SecoesFilial.id_filial">
+            <summary>
+            Identificador da filial associada à seção.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Telefone.id_telefone">
+            <summary>
+            Identificador único do telefone.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Telefone.Ddd">
+            <summary>
+            DDD do telefone (3 dígitos).
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Telefone.Ddi">
+            <summary>
+            DDI do telefone (3 dígitos).
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Telefone.Numero">
+            <summary>
+            Número do telefone.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.TipoMoto.id_tipo_moto">
+            <summary>
+            Identificador único do tipo de moto.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.TipoMoto.NomeTipoMoto">
+            <summary>
+            Nome do tipo de moto.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.TipoSecao.id_tipo_secao">
+            <summary>
+            Identificador único do tipo de seção de filial.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.TipoSecao.NomeTipoSecao">
+            <summary>
+            Nome do tipo de seção de filial.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Usuario.id_usuario">
+            <summary>
+            Identificador único do usuário.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Usuario.NomeUsuario">
+            <summary>
+            Nome do usuário.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Usuario.EmailUsuario">
+            <summary>
+            Email do usuário.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Usuario.SenhaUsuario">
+            <summary>
+            Senha do usuário.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Usuario.id_perfil">
+            <summary>
+            Identificador do perfil associado ao usuário.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Usuario.id_filial">
+            <summary>
+            Identificador da filial associada ao usuário.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Uwb.id_uwb">
+            <summary>
+            Identificador único do UWB.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Uwb.id_moto">
+            <summary>
+            Identificador da moto associada ao UWB.
+            </summary>
+        </member>
+        <member name="P:WebApplication3.Models.Uwb.ValorUwb">
+            <summary>
+            Valor do UWB.
+            </summary>
+        </member>
+    </members>
+</doc>
