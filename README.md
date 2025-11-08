@@ -247,6 +247,10 @@ Integração com **OpenTelemetry** para monitoramento distribuído e rastreament
 - Abra o package manager console de: `cd .\WebApplication3`
 - Acesse o terminal NuGet e rode o comando: `dotnet restore`
 
+### 3.2 Rodar o build
+
+- Caso queira rodar o build: `dotnet build --configuration Release`
+
 ## 4. atualize o appsettings.json
 - copie o seguinte conteudo e insira as suas informações:
 <pre>
