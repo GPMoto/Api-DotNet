@@ -15,9 +15,33 @@ Essa abordagem oferece uma infraestrutura escalável e com longa vida útil, al�
 # Explicação da estrutura de pastas
 - Essa estrutura de pasta foi escolhida pensando na separação básica de responsabilidades e com compatibilidade com o projeto.
   - Controllers: Implementando o padrão MVC, separando a lógica de controle da aplicação.
+  - Services: Implementado para dividir as responsabilidades e não ficar tudo no controler, seguindo as boas práticas
+  - Repository: Implementado para fazer a comunicação com o banco de dados.
   - Connection: Centraliza as responsabilidades de conexão com o banco.
   - Models: Centraliza todas as entidades do banco de dados.
   - Migrations: Serve para manter o banco de dados versionado.
+  
+# Segurança com JWT (JSON Web Token)
+Implementação completa de **autenticação e autorização** utilizando tokens JWT:
+
+```json
+"Jwt": {
+  "Key": "chave_secreta_segura",
+  "Issuer": "https://meusitegit.com",
+  "Audience": "https://audiencia.com"
+}
+```
+
+# Observabilidade com OpenTelemetry
+Integração com **OpenTelemetry** para monitoramento distribuído e rastreamento de requisições:
+
+```json
+"OpenTelemetry": {
+  "Endpoint": "http://localhost:4317",
+  "ServiceName": "GpsMottuAPI",
+  "ServiceVersion": "1.0.0"
+}
+```
 
 # Equipe
 
@@ -27,6 +51,18 @@ Essa abordagem oferece uma infraestrutura escalável e com longa vida útil, al�
 - Júlia Medeiros Angelozi - RM556364
 
 - Felipe Ribeiro Tardochi da Silva - RM555100
+
+# Para rodar os testes
+```
+  # Após clonar o repositório
+  dotnet restore
+  
+  dotnet test
+
+  # Rodar com detalhes
+  dotnet test --verbosity detailed
+
+```
 
 
 # Rotas
