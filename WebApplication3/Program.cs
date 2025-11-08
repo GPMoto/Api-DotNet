@@ -130,7 +130,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "Gps Mottu API",
-        Version = "v3",
+        Version = "v4",
         Description = "Api desenvolvida para o challenge da mottu, ela tem como intuito ajudar na organização dos patios da mottu",
         
     });
