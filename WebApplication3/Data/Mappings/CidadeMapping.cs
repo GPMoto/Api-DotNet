@@ -9,23 +9,23 @@ namespace WebApplication3.Data.Mappings
 
         public void Configure(EntityTypeBuilder<Cidade> builder)
         {
-            builder.ToTable("t_gpsMottu_cidade");
+            builder.ToTable("T_GPMOTTU_CIDADE");
             builder.HasKey(c => c.id_cidade);
             builder.Property(c => c.id_cidade)
-                .HasColumnName("id_cidade")
+                .HasColumnName("ID_CIDADE")
                 .IsRequired()
                 .ValueGeneratedOnAdd();
             builder.Property(c => c.NomeCidade)
-                .HasColumnName("nm_cidade")
+                .HasColumnName("NM_CIDADE")
                 .IsRequired()
                 .HasMaxLength(200);
             builder.Property(c => c.id_estado)
-                .HasColumnName("id_estado")
+                .HasColumnName("ID_ESTADO")
                 .IsRequired();
             builder.HasOne<Estado>()
                 .WithMany()
                 .HasForeignKey(c => c.id_estado)
-                .HasConstraintName("cidade_estado");
+                .HasConstraintName("T_GPMOTTU_ESTADO_FK");
         }
     }
 }

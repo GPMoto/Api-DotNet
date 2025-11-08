@@ -59,6 +59,7 @@ builder.Services.AddScoped<TipoMotoService>();
 builder.Services.AddScoped<TIpoSecaoFilialService>();
 builder.Services.AddScoped<UwbService>();
 builder.Services.AddScoped<MotoMlService>();
+builder.Services.AddScoped<OracleFunctionsService>();
 
 
 builder.Services.AddControllers(options =>

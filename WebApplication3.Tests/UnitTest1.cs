@@ -55,8 +55,6 @@ public class GpsMottuMainFlowTests : IDisposable
         _tokenService = new TokenService(_configuration);
     }
 
-    #region Fluxo Principal 1: Hierarquia Geográfica (País → Estado → Cidade)
-
     [Fact]
     public async Task FluxoPrincipal_CriarHierarquiaGeografica_DeveSerSucessoECompleto()
     {
@@ -89,10 +87,6 @@ public class GpsMottuMainFlowTests : IDisposable
         cidadeNoBanco.Should().NotBeNull();
     }
 
-    #endregion
-
-    #region Fluxo Principal 2: Autenticação e Gestão de Usuários
-
     [Fact]
     public async Task FluxoPrincipal_CriarUsuarioEAutenticar_DeveGerarTokenValido()
     {
@@ -103,7 +97,6 @@ public class GpsMottuMainFlowTests : IDisposable
             NomeUsuario = "Admin Sistema",
             EmailUsuario = "admin@gpmottu.com",
             SenhaUsuario = "senha123",
-            id_perfil = 1,
             id_filial = 1
         };
 
@@ -142,9 +135,9 @@ public class GpsMottuMainFlowTests : IDisposable
 
         var usuarios = new List<Usuario>
         {
-            new Usuario { NomeUsuario = "João Filial 1", EmailUsuario = "joao@f1.com", SenhaUsuario = "123", id_perfil = 1, id_filial = 1 },
-            new Usuario { NomeUsuario = "Maria Filial 1", EmailUsuario = "maria@f1.com", SenhaUsuario = "123", id_perfil = 2, id_filial = 1 },
-            new Usuario { NomeUsuario = "Pedro Filial 2", EmailUsuario = "pedro@f2.com", SenhaUsuario = "123", id_perfil = 1, id_filial = 2 }
+            new Usuario { NomeUsuario = "João Filial 1", EmailUsuario = "joao@f1.com", SenhaUsuario = "123", id_filial = 1 },
+            new Usuario { NomeUsuario = "Maria Filial 1", EmailUsuario = "maria@f1.com", SenhaUsuario = "123", id_filial = 1 },
+            new Usuario { NomeUsuario = "Pedro Filial 2", EmailUsuario = "pedro@f2.com", SenhaUsuario = "123", id_filial = 2 }
         };
 
         foreach (var user in usuarios)
@@ -164,10 +157,6 @@ public class GpsMottuMainFlowTests : IDisposable
 
         todosUsuarios.Should().HaveCount(3);
     }
-
-    #endregion
-
-    #region Fluxo Principal 3: Gestão de Filiais
 
     [Fact]
     public async Task FluxoPrincipal_CriarEGerenciarFilial_DeveSerCompleto()
@@ -224,10 +213,6 @@ public class GpsMottuMainFlowTests : IDisposable
         filialDeletada.Should().BeNull();
     }
 
-    #endregion
-
-    #region Fluxo Principal 4: Integração Completa do Sistema
-
     [Fact]
     public async Task FluxoPrincipal_IntegracaoCompleta_SistemaGPSMottu()
     {
@@ -274,7 +259,6 @@ public class GpsMottuMainFlowTests : IDisposable
             NomeUsuario = "Administrador Master",
             EmailUsuario = "admin@gpmottu.com.br",
             SenhaUsuario = "admin123",
-            id_perfil = perfil.id_perfil,
             id_filial = filial.id_filial
         });
 
@@ -333,10 +317,7 @@ public class GpsMottuMainFlowTests : IDisposable
         secaoFilial.id_filial.Should().Be(filial.id_filial);
     }
 
-    #endregion
-
-    #region Métodos Auxiliares
-
+ 
     private async Task CriarDadosBase()
     {
         var perfil = new Perfil { id_perfil = 1, NomePerfil = "Admin" };
@@ -373,7 +354,6 @@ public class GpsMottuMainFlowTests : IDisposable
         await CriarDadosBase();
     }
 
-    #endregion
 
     public void Dispose()
     {

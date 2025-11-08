@@ -8,31 +8,30 @@ namespace WebApplication3.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Endereco> builder)
         {
-            builder.ToTable("t_gpsMottu_endereco");
+            builder.ToTable("T_GPMOTTU_ENDERECO");
             builder.HasKey(e => e.id_endereco);
             builder.Property(e => e.id_endereco)
                 .ValueGeneratedOnAdd()
-                .HasColumnName("id_endereco");
+                .HasColumnName("ID_ENDERECO");
             builder.Property(e => e.Cep)
                 .IsRequired()
                 .HasMaxLength(10)
-                .HasColumnName("cep");
+                .HasColumnName("NR_CEP");
             builder.Property(e => e.NomeLogradouro)
                 .IsRequired()
                 .HasMaxLength(100)
-                .HasColumnName("logradouro");
+                .HasColumnName("NM_LOGRADOURO");
             builder.Property(e => e.NumeroLogradouro)
                 .IsRequired()
                 .HasMaxLength(10)
-                .HasColumnName("numero");
-            builder.Property(e => e.Cep)
+                .HasColumnName("NR_LOGRADOURO");
+            builder.Property(e => e.id_cidade)
                 .IsRequired()
-                .HasMaxLength(8)
-                .HasColumnName("cep");
+                .HasColumnName("ID_CIDADE");
             builder.HasOne<Cidade>()
                 .WithMany()
                 .HasForeignKey(e=>e.id_cidade)
-                .HasConstraintName("cidade_endereco");
+                .HasConstraintName("T_GPMOTTU_CIDADE_FK");
         }
     }
 }

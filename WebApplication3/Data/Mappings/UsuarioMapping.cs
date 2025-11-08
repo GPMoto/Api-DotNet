@@ -8,31 +8,30 @@ namespace WebApplication3.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
-            builder.ToTable("t_gpsMottu_usuario");
+            builder.ToTable("T_GPMOTTU_USUARIO");
             builder.HasKey(u => u.id_usuario);
             builder.Property(u => u.id_usuario)
                 .ValueGeneratedOnAdd()
-                .HasColumnName("id_usuario");
+                .HasColumnName("ID_USUARIO");
             builder.Property(u => u.NomeUsuario)
                 .IsRequired()
                 .HasMaxLength(100)
-                .HasColumnName("nm_usuario");
+                .HasColumnName("NM_USUARIO");
             builder.Property(u => u.SenhaUsuario)
                 .IsRequired()
                 .HasMaxLength(200)
-                .HasColumnName("ds_senha");
+                .HasColumnName("SENHA");
             builder.Property(u => u.EmailUsuario)
                 .IsRequired()
                 .HasMaxLength(100)
-                .HasColumnName("ds_email");
-            builder.HasOne<Perfil>()
-                .WithMany()
-                .HasForeignKey(u => u.id_perfil)
-                .HasConstraintName("usuario_perfil");
+                .HasColumnName("NM_EMAIL");
+            builder.Property(u => u.id_filial)
+                .HasColumnName("ID_FILIAL")
+                .IsRequired();
             builder.HasOne<Filial>()
                 .WithMany()
                 .HasForeignKey(u => u.id_filial)
-                .HasConstraintName("usuario_filial");
+                .HasConstraintName("USUARIO_FILIAL_FK");
         }
     }
     

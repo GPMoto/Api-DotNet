@@ -809,6 +809,42 @@
              <response code="204">Perfil removido com sucesso</response>
              <response code="404">Perfil não encontrado</response>
         </member>
+        <member name="M:WebApplication3.Controllers.ProceduresController.GetUsuariosProcessados">
+            <summary>
+            Obtém todos os usuários processados de forma simples
+            </summary>
+            <returns>Lista de usuários com dados básicos</returns>
+        </member>
+        <member name="M:WebApplication3.Controllers.ProceduresController.PrintaJson(System.String,System.String)">
+            <summary>
+            Gera um JSON formatado com chave e valor
+            </summary>
+            <param name="chave">A chave do JSON</param>
+            <param name="valor">O valor do JSON</param>
+            <returns>String JSON formatada</returns>
+        </member>
+        <member name="M:WebApplication3.Controllers.ProceduresController.ValidaEmail(System.String)">
+            <summary>
+            Valida um email de usuário
+            </summary>
+            <param name="email">O email a ser validado</param>
+            <returns>1 se válido, 0 se inválido</returns>
+        </member>
+        <member name="M:WebApplication3.Controllers.ProceduresController.GeraMultiplosJsons(System.Collections.Generic.List{WebApplication3.Controllers.JsonRequest})">
+            <summary>
+            Gera múltiplos JSONs em um objeto
+            </summary>
+        </member>
+        <member name="M:WebApplication3.Controllers.ProceduresController.Health">
+            <summary>
+            Testa a conexão com o banco de dados
+            </summary>
+        </member>
+        <member name="T:WebApplication3.Controllers.JsonRequest">
+            <summary>
+            DTO para requisição de múltiplos JSONs
+            </summary>
+        </member>
         <member name="M:WebApplication3.Controllers.SecoesFilialController.Get">
              <summary>
              Obtém uma lista de todas as seções de filial.
@@ -958,6 +994,7 @@
                      "Ddd": "011",
                      "Ddi": "055",
                      "Numero": "912345678"
+                     "id_contato": 1
                  }
             
              </remarks>
@@ -1226,7 +1263,6 @@
                      "NomeUsuario": "João Silva",
                      "EmailUsuario": "joao@email.com",
                      "SenhaUsuario": "senha123",
-                     "id_perfil": 2,
                      "id_filial": 3
                  }
             
@@ -1578,6 +1614,11 @@
             Número do telefone.
             </summary>
         </member>
+        <member name="P:WebApplication3.Models.Telefone.id_contato">
+            <summary>
+             ID do contato associado a este telefone.
+            </summary>
+        </member>
         <member name="P:WebApplication3.Models.TipoMoto.id_tipo_moto">
             <summary>
             Identificador único do tipo de moto.
@@ -1616,11 +1657,6 @@
         <member name="P:WebApplication3.Models.Usuario.SenhaUsuario">
             <summary>
             Senha do usuário.
-            </summary>
-        </member>
-        <member name="P:WebApplication3.Models.Usuario.id_perfil">
-            <summary>
-            Identificador do perfil associado ao usuário.
             </summary>
         </member>
         <member name="P:WebApplication3.Models.Usuario.id_filial">

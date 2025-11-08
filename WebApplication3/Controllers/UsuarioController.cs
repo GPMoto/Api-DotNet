@@ -106,7 +106,6 @@ namespace WebApplication3.Controllers
         ///         "NomeUsuario": "João Silva",
         ///         "EmailUsuario": "joao@email.com",
         ///         "SenhaUsuario": "senha123",
-        ///         "id_perfil": 2,
         ///         "id_filial": 3
         ///     }
         ///

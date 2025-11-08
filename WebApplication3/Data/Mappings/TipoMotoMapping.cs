@@ -8,14 +8,14 @@ namespace WebApplication3.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<TipoMoto> builder)
         {
-            builder.ToTable("t_gpsMottu_tipo_moto");
+            builder.ToTable("T_GPMOTTU_TIPO_MOTO");
             builder.HasKey(t => t.id_tipo_moto);
             builder.Property(t => t.id_tipo_moto)
-                .HasColumnName("id_tipo_moto")
+                .HasColumnName("ID_TIPO_MOTO")
                 .ValueGeneratedOnAdd()
                 .IsRequired();
             builder.Property(t => t.NomeTipoMoto)
-                .HasColumnName("nm_tipo_moto")
+                .HasColumnName("NM_TIPO")
                 .IsRequired()
                 .HasMaxLength(50);
         }

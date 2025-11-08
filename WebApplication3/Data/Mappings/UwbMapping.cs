@@ -8,19 +8,21 @@ namespace WebApplication3.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Uwb> builder)
         {
-            builder.ToTable("t_gpsMottu_uwb");
+            builder.ToTable("T_GPMOTTU_UWB");
             builder.HasKey(u => u.id_uwb);
             builder.Property(u => u.id_uwb)
-                .HasColumnName("id_uwb")
+                .HasColumnName("ID_UWB")
                 .ValueGeneratedOnAdd();
             builder.HasOne<Moto>()
                 .WithMany()
-                .HasForeignKey(u => u.id_moto)
-                .IsRequired();
+                .HasForeignKey(u => u.id_moto);
             builder.Property(u => u.ValorUwb)
-                .HasColumnName("vl_iwb")
+                .HasColumnName("VL_UWB")
                 .IsRequired()
                 .HasMaxLength(200);
+            builder.Property(u => u.id_moto)
+                .HasColumnName("ID_MOTO")
+                .IsRequired();
         }
     }
 }

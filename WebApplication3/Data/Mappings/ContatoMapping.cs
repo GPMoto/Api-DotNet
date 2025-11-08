@@ -8,15 +8,21 @@ namespace WebApplication3.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Contato> builder)
         {
-            builder.ToTable("t_gpsMottu_contato");
+            builder.ToTable("T_GPMOTTU_CONTATO");
             builder.HasKey(c => c.id_contato);
             builder.Property(c => c.id_contato)
                 .ValueGeneratedOnAdd()
-                .HasColumnName("id_contato");
+                .HasColumnName("ID_CONTATO");
             builder.Property(c => c.nmDono)
                 .IsRequired()
                 .HasMaxLength(200)
-                .HasColumnName("nm_dono");
+                .HasColumnName("NM_DONO");
+            builder.Property(c => c.status)
+                .IsRequired()
+                .HasColumnName("STATUS");
+            builder.Property(c => c.id_Telefone)
+                .IsRequired()
+                .HasColumnName("ID_TELEFONE");
             builder.HasOne<Contato>()
                 .WithOne()
                 .HasForeignKey<Contato>(t => t.id_Telefone)

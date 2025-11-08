@@ -21,5 +21,6 @@ namespace WebApplication3.Models
         /// Valor do UWB.
         /// </summary>
         public string ValorUwb { get; set; }
+
     }
 }

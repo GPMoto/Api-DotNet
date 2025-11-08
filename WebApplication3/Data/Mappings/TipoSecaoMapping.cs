@@ -8,14 +8,14 @@ namespace WebApplication3.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<TipoSecao> builder)
         {
-            builder.ToTable("t_gpsMottu_tipo_secao");
+            builder.ToTable("T_GPMOTTU_TIPO_SECAO");
             builder.HasKey(t => t.id_tipo_secao);
             builder.Property(t => t.id_tipo_secao)
-                .HasColumnName("id_tipo_secao")
+                .HasColumnName("ID_TIPO_SECAO")
                 .IsRequired()
                 .ValueGeneratedOnAdd();
             builder.Property(t => t.NomeTipoSecao)
-                .HasColumnName("nm_tipo_secao")
+                .HasColumnName("NM_SECAO")
                 .IsRequired()
                 .HasMaxLength(50);
         }

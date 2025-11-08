@@ -8,7 +8,7 @@ namespace WebApplication3.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Pais> builder)
         {
-            builder.ToTable("t_gpsMottu_pais");
+            builder.ToTable("T_GPMOTTU_PAIS");
             builder.HasKey(p => p.Id_pais);
             builder.Property(p => p.Id_pais)
                 .ValueGeneratedOnAdd()
@@ -16,7 +16,7 @@ namespace WebApplication3.Data.Mappings
             builder.Property(p => p.NomePais)
                 .IsRequired()
                 .HasMaxLength(100)
-                .HasColumnName("nm_pais");
+                .HasColumnName("NM_PAIS");
         }
     }
 }

@@ -8,13 +8,13 @@ namespace WebApplication3.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Perfil> builder)
         {
-            builder.ToTable("t_gpsMottu_perfil");
+            builder.ToTable("T_GPMOTTU_PERFIL");
             builder.HasKey(p => p.id_perfil);
             builder.Property(p => p.id_perfil)
-                .HasColumnName("id_perfil")
+                .HasColumnName("ID_PERFIL")
                 .ValueGeneratedOnAdd();
             builder.Property(p => p.NomePerfil)
-                .HasColumnName("nm_perfil")
+                .HasColumnName("NM_PERFIL")
                 .IsRequired()
                 .HasMaxLength(200);
         }

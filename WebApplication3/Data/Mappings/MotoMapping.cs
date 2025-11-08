@@ -8,28 +8,34 @@ namespace WebApplication3.Data.Mappings
     {
         public void Configure (EntityTypeBuilder<Moto> builder)
         {
-            builder.ToTable("t_gpsMottu_moto");
+            builder.ToTable("T_GPMOTTU_MOTO");
             builder.HasKey(e => e.id_moto);
             builder.Property(e => e.id_moto)
-                .HasColumnName("id_moto")
+                .HasColumnName("ID_MOTO")
                 .ValueGeneratedOnAdd();
+            builder.Property(e => e.id_tipo_moto)
+                .HasColumnName("ID_TIPO_MOTO")
+                .IsRequired();
+            builder.Property(e => e.id_filial)
+                .HasColumnName("ID_FILIAL")
+                .IsRequired();
             builder.HasOne<TipoMoto>()
                 .WithMany()
                 .HasForeignKey(e => e.id_tipo_moto)
-                .HasConstraintName("FK_Moto_TipoMoto");
+                .HasConstraintName("T_GPMOTTU_TIPO_MOTO_FK");
             builder.HasOne<Filial>()
                 .WithMany()
                 .HasForeignKey(e => e.id_filial)
-                .HasConstraintName("FK_Moto_Filial");
+                .HasConstraintName("MOTO_FILIAL_FK");
             builder.Property(e => e.Status)
-                .HasColumnName("status")
+                .HasColumnName("STATUS")
                 .IsRequired();
             builder.Property(e => e.CondicaoMoto)
-                .HasColumnName("condicao_manutencao_moto")
+                .HasColumnName("CONDICOES_MANUTENCAO")
                 .HasMaxLength(200)
                 .IsRequired();
             builder.Property(e => e.IdentificadorMoto)
-                .HasColumnName("identificador_moto")
+                .HasColumnName("IDENTIFICADOR")
                 .HasMaxLength(50)
                 .IsRequired();
         }

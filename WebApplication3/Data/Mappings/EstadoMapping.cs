@@ -8,19 +8,22 @@ namespace WebApplication3.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Estado> builder)
         {
-            builder.ToTable("t_gpsMottu_estado");
+            builder.ToTable("T_GPMOTTU_ESTADO");
             builder.HasKey(e => e.id_estado);
             builder.Property(e => e.id_estado)
                 .ValueGeneratedOnAdd()
-                .HasColumnName("id_estado");
+                .HasColumnName("ID_ESTADO");
             builder.Property(e => e.NomeEstado)
                 .IsRequired()
                 .HasMaxLength(50)
-                .HasColumnName("nm_estado");
+                .HasColumnName("NM_ESTADO");
+            builder.Property(e => e.id_pais)
+                .IsRequired()
+                .HasColumnName("ID_PAIS");
             builder.HasOne<Pais>()
                 .WithMany()
                 .HasForeignKey(e => e.id_pais)
-                .HasConstraintName("estado_pais");
+                .HasConstraintName("T_GPMOTTU_PAIS_FK");
 
         }
     }

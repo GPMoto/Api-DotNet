@@ -1,5 +1,78 @@
 [
   {
+    "ContainingType": "WebApplication3.Controllers.ProceduresController",
+    "Method": "GeraMultiplosJsons",
+    "RelativePath": "api/Procedures/gera-jsons",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dados",
+        "Type": "System.Collections.Generic.List\u00601[[WebApplication3.Controllers.JsonRequest, WebApplication3, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApplication3.Controllers.ProceduresController",
+    "Method": "Health",
+    "RelativePath": "api/Procedures/health",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApplication3.Controllers.ProceduresController",
+    "Method": "PrintaJson",
+    "RelativePath": "api/Procedures/printa-json",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chave",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "valor",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApplication3.Controllers.ProceduresController",
+    "Method": "GetUsuariosProcessados",
+    "RelativePath": "api/Procedures/usuarios-processados",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApplication3.Controllers.ProceduresController",
+    "Method": "ValidaEmail",
+    "RelativePath": "api/Procedures/valida-email",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "email",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "WebApplication3.Controllers.TelemetryController",
     "Method": "HealthCheck",
     "RelativePath": "api/Telemetry/health",

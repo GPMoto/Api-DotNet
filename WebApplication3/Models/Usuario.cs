@@ -26,11 +26,6 @@ namespace WebApplication3.Models
         public string SenhaUsuario { get; set; }
 
         /// <summary>
-        /// Identificador do perfil associado ao usuário.
-        /// </summary>
-        public int id_perfil { get; set; }
-
-        /// <summary>
         /// Identificador da filial associada ao usuário.
         /// </summary>
         public int id_filial { get; set; }

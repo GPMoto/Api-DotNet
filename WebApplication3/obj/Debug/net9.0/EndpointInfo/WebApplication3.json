@@ -2793,6 +2793,127 @@
         }
       }
     },
+    "/api/Procedures/usuarios-processados": {
+      "get": {
+        "tags": [
+          "Procedures"
+        ],
+        "summary": "Obtém todos os usuários processados de forma simples",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Procedures/printa-json": {
+      "get": {
+        "tags": [
+          "Procedures"
+        ],
+        "summary": "Gera um JSON formatado com chave e valor",
+        "parameters": [
+          {
+            "name": "chave",
+            "in": "query",
+            "description": "A chave do JSON",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "valor",
+            "in": "query",
+            "description": "O valor do JSON",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Procedures/valida-email": {
+      "get": {
+        "tags": [
+          "Procedures"
+        ],
+        "summary": "Valida um email de usuário",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "O email a ser validado",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Procedures/gera-jsons": {
+      "post": {
+        "tags": [
+          "Procedures"
+        ],
+        "summary": "Gera múltiplos JSONs em um objeto",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/JsonRequest"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/JsonRequest"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/JsonRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Procedures/health": {
+      "get": {
+        "tags": [
+          "Procedures"
+        ],
+        "summary": "Testa a conexão com o banco de dados",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/secoesfilial": {
       "get": {
         "tags": [
@@ -3209,7 +3330,7 @@
           "Telefone"
         ],
         "summary": "Cria um novo telefone.",
-        "description": "Exemplo de requisição:\r\n            \r\n    POST /telefones\r\n    {\r\n        \"id_telefone\": 1,\r\n        \"Ddd\": \"011\",\r\n        \"Ddi\": \"055\",\r\n        \"Numero\": \"912345678\"\r\n    }",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /telefones\r\n    {\r\n        \"id_telefone\": 1,\r\n        \"Ddd\": \"011\",\r\n        \"Ddi\": \"055\",\r\n        \"Numero\": \"912345678\"\r\n        \"id_contato\": 1\r\n    }",
         "requestBody": {
           "description": "Dados do telefone",
           "content": {
@@ -4144,7 +4265,7 @@
           "Usuario"
         ],
         "summary": "Cria um novo usuário.",
-        "description": "Exemplo de requisição:\r\n            \r\n    POST /usuarios\r\n    {\r\n        \"id_usuario\": 1,\r\n        \"NomeUsuario\": \"João Silva\",\r\n        \"EmailUsuario\": \"joao@email.com\",\r\n        \"SenhaUsuario\": \"senha123\",\r\n        \"id_perfil\": 2,\r\n        \"id_filial\": 3\r\n    }",
+        "description": "Exemplo de requisição:\r\n            \r\n    POST /usuarios\r\n    {\r\n        \"id_usuario\": 1,\r\n        \"NomeUsuario\": \"João Silva\",\r\n        \"EmailUsuario\": \"joao@email.com\",\r\n        \"SenhaUsuario\": \"senha123\",\r\n        \"id_filial\": 3\r\n    }",
         "requestBody": {
           "description": "Dados do usuário",
           "content": {
@@ -4905,6 +5026,21 @@
         },
         "additionalProperties": false
       },
+      "JsonRequest": {
+        "type": "object",
+        "properties": {
+          "chave": {
+            "type": "string",
+            "nullable": true
+          },
+          "valor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para requisição de múltiplos JSONs"
+      },
       "Moto": {
         "type": "object",
         "properties": {
@@ -5110,6 +5246,11 @@
             "type": "string",
             "description": "Número do telefone.",
             "nullable": true
+          },
+          "id_contato": {
+            "type": "integer",
+            "description": "ID do contato associado a este telefone.",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -5182,11 +5323,6 @@
             "type": "string",
             "description": "Senha do usuário.",
             "nullable": true
-          },
-          "id_perfil": {
-            "type": "integer",
-            "description": "Identificador do perfil associado ao usuário.",
-            "format": "int32"
           },
           "id_filial": {
             "type": "integer",

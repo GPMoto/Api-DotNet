@@ -77,6 +77,7 @@ namespace WebApplication3.Controllers
         ///         "Ddd": "011",
         ///         "Ddi": "055",
         ///         "Numero": "912345678"
+        ///         "id_contato": 1
         ///     }
         ///
         /// </remarks>

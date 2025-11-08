@@ -26,5 +26,11 @@ namespace WebApplication3.Models
         public string Numero { get; set; }
 
 
+        /// <summary>
+        ///  ID do contato associado a este telefone.
+        /// </summary>
+        public int id_contato { get; set; }
+
+
     }
 }
